@@ -1,9 +1,11 @@
-# Run tests before push
-echo "Running tests before push..."
-npm run test:run
+# Run linting, tests with coverage, and build before push
+echo "🔍 Running linting..."
+npm run lint
 
-# Run build to ensure everything compiles
-echo "Running build check..."
+echo "🧪 Running tests with coverage..."
+npm run test:coverage
+
+echo "🏗️ Running build check..."
 npm run build
 
 echo "✅ Pre-push checks passed!"

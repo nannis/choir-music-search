@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for scripts/generate-test.js</title>
+    <title>Code coverage report for backend/setup-supabase.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">scripts</a> generate-test.js</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">backend</a> setup-supabase.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/170</span>
+                <span class='fraction'>0/150</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/170</span>
+                <span class='fraction'>0/150</span>
             </div>
         
             
@@ -214,26 +214,7 @@
 <a name='L149'></a><a href='#L149'>149</a>
 <a name='L150'></a><a href='#L150'>150</a>
 <a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a>
-<a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a>
-<a name='L158'></a><a href='#L158'>158</a>
-<a name='L159'></a><a href='#L159'>159</a>
-<a name='L160'></a><a href='#L160'>160</a>
-<a name='L161'></a><a href='#L161'>161</a>
-<a name='L162'></a><a href='#L162'>162</a>
-<a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a>
-<a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a>
-<a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L152'></a><a href='#L152'>152</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -383,196 +364,158 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >#!/usr/bin/env node</span></span></span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Test Generator Script</span>
-<span class="cstat-no" title="statement not covered" > * Generates test files for new components and functions</span>
-<span class="cstat-no" title="statement not covered" > * Usage: node scripts/generate-test.js &lt;file-path&gt;</span>
-<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >// Supabase Database Setup Script for Choir Music Search</span>
+<span class="cstat-no" title="statement not covered" >// This script sets up the database schema on Supabase PostgreSQL</span>
 <span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >const { Pool } = require('pg');</span>
 <span class="cstat-no" title="statement not covered" >const fs = require('fs');</span>
 <span class="cstat-no" title="statement not covered" >const path = require('path');</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >function generateTestFile(filePath) {</span>
-<span class="cstat-no" title="statement not covered" >  const fullPath = path.resolve(filePath);</span>
-<span class="cstat-no" title="statement not covered" >  const ext = path.extname(fullPath);</span>
-<span class="cstat-no" title="statement not covered" >  const baseName = path.basename(fullPath, ext);</span>
-<span class="cstat-no" title="statement not covered" >  const dir = path.dirname(fullPath);</span>
-<span class="cstat-no" title="statement not covered" >  const testFileName = `${baseName}.test${ext}`;</span>
-<span class="cstat-no" title="statement not covered" >  const testFilePath = path.join(dir, testFileName);</span>
+<span class="cstat-no" title="statement not covered" >// Load environment variables from .env file</span>
+<span class="cstat-no" title="statement not covered" >require('dotenv').config();</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  // Check if file exists</span>
-<span class="cstat-no" title="statement not covered" >  if (!fs.existsSync(fullPath)) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error(`❌ File not found: ${fullPath}`);</span>
-<span class="cstat-no" title="statement not covered" >    process.exit(1);</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >// Colors for console output</span>
+<span class="cstat-no" title="statement not covered" >const colors = {</span>
+<span class="cstat-no" title="statement not covered" >  reset: '\x1b[0m',</span>
+<span class="cstat-no" title="statement not covered" >  bright: '\x1b[1m',</span>
+<span class="cstat-no" title="statement not covered" >  red: '\x1b[31m',</span>
+<span class="cstat-no" title="statement not covered" >  green: '\x1b[32m',</span>
+<span class="cstat-no" title="statement not covered" >  yellow: '\x1b[33m',</span>
+<span class="cstat-no" title="statement not covered" >  blue: '\x1b[34m',</span>
+<span class="cstat-no" title="statement not covered" >  magenta: '\x1b[35m',</span>
+<span class="cstat-no" title="statement not covered" >  cyan: '\x1b[36m'</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  // Check if test file already exists</span>
-<span class="cstat-no" title="statement not covered" >  if (fs.existsSync(testFilePath)) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error(`❌ Test file already exists: ${testFilePath}`);</span>
-<span class="cstat-no" title="statement not covered" >    process.exit(1);</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  // Read the source file to understand its structure</span>
-<span class="cstat-no" title="statement not covered" >  const sourceContent = fs.readFileSync(fullPath, 'utf8');</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  let testContent = '';</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  if (ext === '.tsx' || ext === '.jsx') {</span>
-<span class="cstat-no" title="statement not covered" >    // React component test</span>
-<span class="cstat-no" title="statement not covered" >    testContent = generateComponentTest(baseName, sourceContent);</span>
-<span class="cstat-no" title="statement not covered" >  } else if (ext === '.ts' || ext === '.js') {</span>
-<span class="cstat-no" title="statement not covered" >    // Function/service test</span>
-<span class="cstat-no" title="statement not covered" >    testContent = generateFunctionTest(baseName, sourceContent);</span>
-<span class="cstat-no" title="statement not covered" >  } else {</span>
-<span class="cstat-no" title="statement not covered" >    console.error(`❌ Unsupported file type: ${ext}`);</span>
-<span class="cstat-no" title="statement not covered" >    process.exit(1);</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  // Write test file</span>
-<span class="cstat-no" title="statement not covered" >  fs.writeFileSync(testFilePath, testContent);</span>
-<span class="cstat-no" title="statement not covered" >  console.log(`✅ Generated test file: ${testFilePath}`);</span>
+<span class="cstat-no" title="statement not covered" >function log(message, color = 'reset') {</span>
+<span class="cstat-no" title="statement not covered" >  console.log(`${colors[color]}${message}${colors.reset}`);</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >function generateComponentTest(componentName, sourceContent) {</span>
-<span class="cstat-no" title="statement not covered" >  // Extract props from component</span>
-<span class="cstat-no" title="statement not covered" >  const propsMatch = sourceContent.match(/interface\s+(\w+Props)\s*{([^}]*)}/);</span>
-<span class="cstat-no" title="statement not covered" >  const props = propsMatch ? propsMatch[2].split('\n').map(line =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const match = line.match(/(\w+)(\?)?:\s*([^;]+)/);</span>
-<span class="cstat-no" title="statement not covered" >    return match ? { name: match[1], optional: !!match[2], type: match[3].trim() } : null;</span>
-<span class="cstat-no" title="statement not covered" >  }).filter(Boolean) : [];</span>
+<span class="cstat-no" title="statement not covered" >async function setupSupabaseDatabase() {</span>
+<span class="cstat-no" title="statement not covered" >  log('🚀 Setting up Choir Music Search Database on Supabase...', 'cyan');</span>
+<span class="cstat-no" title="statement not covered" >  </span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    // Check if DATABASE_URL is provided (Supabase automatically provides this)</span>
+<span class="cstat-no" title="statement not covered" >    if (!process.env.DATABASE_URL) {</span>
+<span class="cstat-no" title="statement not covered" >      log('❌ DATABASE_URL environment variable not found!', 'red');</span>
+<span class="cstat-no" title="statement not covered" >      log('💡 Make sure you\'re running this in Supabase or have DATABASE_URL set locally', 'yellow');</span>
+<span class="cstat-no" title="statement not covered" >      log('💡 Get your DATABASE_URL from Supabase Dashboard → Settings → Database', 'yellow');</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  return `import { describe, it, expect, vi } from 'vitest';</span>
-<span class="cstat-no" title="statement not covered" >import { render, screen, fireEvent } from '@testing-library/react';</span>
-<span class="cstat-no" title="statement not covered" >import userEvent from '@testing-library/user-event';</span>
-<span class="cstat-no" title="statement not covered" >import ${componentName} from './${componentName}';</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >describe('${componentName}', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  it('should render correctly', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    render(&lt;${componentName} /&gt;);</span>
-<span class="cstat-no" title="statement not covered" >    // Add your assertions here</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  it('should handle user interactions', async () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const user = userEvent.setup();</span>
-<span class="cstat-no" title="statement not covered" >    render(&lt;${componentName} /&gt;);</span>
+<span class="cstat-no" title="statement not covered" >    log('🔍 Connecting to Supabase PostgreSQL database...', 'blue');</span>
 <span class="cstat-no" title="statement not covered" >    </span>
-<span class="cstat-no" title="statement not covered" >    // Add your interaction tests here</span>
-<span class="cstat-no" title="statement not covered" >    // Example:</span>
-<span class="cstat-no" title="statement not covered" >    // const button = screen.getByRole('button');</span>
-<span class="cstat-no" title="statement not covered" >    // await user.click(button);</span>
-<span class="cstat-no" title="statement not covered" >    // expect(screen.getByText('Expected result')).toBeInTheDocument();</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" >    // Create connection to Supabase</span>
+<span class="cstat-no" title="statement not covered" >    const pool = new Pool({</span>
+<span class="cstat-no" title="statement not covered" >      connectionString: process.env.DATABASE_URL,</span>
+<span class="cstat-no" title="statement not covered" >      ssl: { rejectUnauthorized: false }</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  it('should handle props correctly', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const testProps = {</span>
-<span class="cstat-no" title="statement not covered" >      // Add test props here</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
+<span class="cstat-no" title="statement not covered" >    // Test connection</span>
+<span class="cstat-no" title="statement not covered" >    const client = await pool.connect();</span>
+<span class="cstat-no" title="statement not covered" >    const result = await client.query('SELECT version()');</span>
+<span class="cstat-no" title="statement not covered" >    client.release();</span>
 <span class="cstat-no" title="statement not covered" >    </span>
-<span class="cstat-no" title="statement not covered" >    render(&lt;${componentName} {...testProps} /&gt;);</span>
-<span class="cstat-no" title="statement not covered" >    // Add your assertions here</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" >    log('✅ Supabase database connection successful!', 'green');</span>
+<span class="cstat-no" title="statement not covered" >    log(`📊 PostgreSQL version: ${result.rows[0].version.split(' ')[0]}`, 'green');</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  it('should handle error states', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    // Test error conditions</span>
-<span class="cstat-no" title="statement not covered" >    render(&lt;${componentName} error="Test error" /&gt;);</span>
-<span class="cstat-no" title="statement not covered" >    // Add your error state assertions here</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" >    // Read and execute schema</span>
+<span class="cstat-no" title="statement not covered" >    log('📄 Reading PostgreSQL database schema...', 'blue');</span>
+<span class="cstat-no" title="statement not covered" >    const schemaPath = path.join(__dirname, '..', 'database', 'schema-postgresql.sql');</span>
+<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" >    if (!fs.existsSync(schemaPath)) {</span>
+<span class="cstat-no" title="statement not covered" >      log('❌ Schema file not found. Please ensure database/schema-postgresql.sql exists.', 'red');</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  it('should handle loading states', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    // Test loading conditions</span>
-<span class="cstat-no" title="statement not covered" >    render(&lt;${componentName} loading={true} /&gt;);</span>
-<span class="cstat-no" title="statement not covered" >    // Add your loading state assertions here</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
-<span class="cstat-no" title="statement not covered" >});</span>
-<span class="cstat-no" title="statement not covered" >`;</span>
+<span class="cstat-no" title="statement not covered" >    const schema = fs.readFileSync(schemaPath, 'utf8');</span>
+<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" >    // Split schema into individual statements</span>
+<span class="cstat-no" title="statement not covered" >    const statements = schema</span>
+<span class="cstat-no" title="statement not covered" >      .split(';')</span>
+<span class="cstat-no" title="statement not covered" >      .map(stmt =&gt; stmt.trim())</span>
+<span class="cstat-no" title="statement not covered" >      .filter(stmt =&gt; stmt.length &gt; 0 &amp;&amp; !stmt.startsWith('--'));</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    log('🏗️  Executing database schema on Supabase...', 'blue');</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    for (const statement of statements) {</span>
+<span class="cstat-no" title="statement not covered" >      try {</span>
+<span class="cstat-no" title="statement not covered" >        await pool.query(statement);</span>
+<span class="cstat-no" title="statement not covered" >        log(`✅ Executed: ${statement.substring(0, 50)}...`, 'green');</span>
+<span class="cstat-no" title="statement not covered" >      } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >        if (error.code === '42P07' || error.message.includes('already exists')) {</span>
+<span class="cstat-no" title="statement not covered" >          log(`⚠️  Table/function already exists: ${statement.substring(0, 50)}...`, 'yellow');</span>
+<span class="cstat-no" title="statement not covered" >        } else {</span>
+<span class="cstat-no" title="statement not covered" >          log(`❌ Error executing statement: ${error.message}`, 'red');</span>
+<span class="cstat-no" title="statement not covered" >          log(`Statement: ${statement.substring(0, 100)}...`, 'red');</span>
+<span class="cstat-no" title="statement not covered" >        }</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Test the tables</span>
+<span class="cstat-no" title="statement not covered" >    log('\n🧪 Testing database tables...', 'blue');</span>
+<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" >    const tablesResult = await pool.query(`</span>
+<span class="cstat-no" title="statement not covered" >      SELECT table_name </span>
+<span class="cstat-no" title="statement not covered" >      FROM information_schema.tables </span>
+<span class="cstat-no" title="statement not covered" >      WHERE table_schema = 'public' </span>
+<span class="cstat-no" title="statement not covered" >      ORDER BY table_name</span>
+<span class="cstat-no" title="statement not covered" >    `);</span>
+<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" >    log(`✅ Found ${tablesResult.rows.length} tables:`, 'green');</span>
+<span class="cstat-no" title="statement not covered" >    tablesResult.rows.forEach(table =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      log(`   - ${table.table_name}`, 'green');</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Test data insertion</span>
+<span class="cstat-no" title="statement not covered" >    const songCountResult = await pool.query('SELECT COUNT(*) as count FROM songs');</span>
+<span class="cstat-no" title="statement not covered" >    log(`✅ Songs table has ${songCountResult.rows[0].count} records`, 'green');</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Test full-text search</span>
+<span class="cstat-no" title="statement not covered" >    const searchResult = await pool.query(`</span>
+<span class="cstat-no" title="statement not covered" >      SELECT title, composer </span>
+<span class="cstat-no" title="statement not covered" >      FROM songs </span>
+<span class="cstat-no" title="statement not covered" >      WHERE to_tsvector('english', search_text || ' ' || title || ' ' || composer || ' ' || COALESCE(description, '')) </span>
+<span class="cstat-no" title="statement not covered" >      @@ plainto_tsquery('english', 'Bach') </span>
+<span class="cstat-no" title="statement not covered" >      LIMIT 3</span>
+<span class="cstat-no" title="statement not covered" >    `);</span>
+<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" >    log(`✅ Full-text search test: Found ${searchResult.rows.length} results`, 'green');</span>
+<span class="cstat-no" title="statement not covered" >    searchResult.rows.forEach(song =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      log(`   - ${song.title} by ${song.composer}`, 'green');</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    await pool.end();</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    log('\n🎉 Supabase database setup completed successfully!', 'green');</span>
+<span class="cstat-no" title="statement not covered" >    log('\n📋 Next steps:', 'yellow');</span>
+<span class="cstat-no" title="statement not covered" >    log('1. Your Supabase app should now be able to connect to the database', 'cyan');</span>
+<span class="cstat-no" title="statement not covered" >    log('2. Test the API: curl https://your-app.vercel.app/api/health', 'cyan');</span>
+<span class="cstat-no" title="statement not covered" >    log('3. Update your frontend to use the Supabase API URL', 'cyan');</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    log(`❌ Supabase database setup failed: ${error.message}`, 'red');</span>
+<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" >    if (error.code === '28P01') {</span>
+<span class="cstat-no" title="statement not covered" >      log('💡 Check your DATABASE_URL credentials', 'yellow');</span>
+<span class="cstat-no" title="statement not covered" >    } else if (error.code === 'ECONNREFUSED') {</span>
+<span class="cstat-no" title="statement not covered" >      log('💡 Check if the Supabase database is running', 'yellow');</span>
+<span class="cstat-no" title="statement not covered" >    } else if (error.code === '3D000') {</span>
+<span class="cstat-no" title="statement not covered" >      log('💡 The database might not exist. Check your Supabase project.', 'yellow');</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" >    log('\n💡 Supabase Database Tips:', 'blue');</span>
+<span class="cstat-no" title="statement not covered" >    log('- DATABASE_URL format: postgresql://user:password@host:port/database', 'blue');</span>
+<span class="cstat-no" title="statement not covered" >    log('- Get DATABASE_URL from Supabase Dashboard → Settings → Database', 'blue');</span>
+<span class="cstat-no" title="statement not covered" >    log('- Check Supabase dashboard for database status', 'blue');</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >function generateFunctionTest(functionName, sourceContent) {</span>
-<span class="cstat-no" title="statement not covered" >  // Extract function exports</span>
-<span class="cstat-no" title="statement not covered" >  const exportMatches = sourceContent.match(/export\s+(?:const|function|class)\s+(\w+)/g);</span>
-<span class="cstat-no" title="statement not covered" >  const functions = exportMatches ? exportMatches.map(match =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const nameMatch = match.match(/export\s+(?:const|function|class)\s+(\w+)/);</span>
-<span class="cstat-no" title="statement not covered" >    return nameMatch ? nameMatch[1] : null;</span>
-<span class="cstat-no" title="statement not covered" >  }).filter(Boolean) : [functionName];</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  return `import { describe, it, expect, vi, beforeEach } from 'vitest';</span>
-<span class="cstat-no" title="statement not covered" >import { ${functions.join(', ')} } from './${functionName}';</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >describe('${functionName}', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  beforeEach(() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    // Reset mocks and state before each test</span>
-<span class="cstat-no" title="statement not covered" >    vi.clearAllMocks();</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  describe('${functions[0]}', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    it('should work correctly with valid input', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      // Arrange</span>
-<span class="cstat-no" title="statement not covered" >      const input = 'test input';</span>
-<span class="cstat-no" title="statement not covered" >      </span>
-<span class="cstat-no" title="statement not covered" >      // Act</span>
-<span class="cstat-no" title="statement not covered" >      const result = ${functions[0]}(input);</span>
-<span class="cstat-no" title="statement not covered" >      </span>
-<span class="cstat-no" title="statement not covered" >      // Assert</span>
-<span class="cstat-no" title="statement not covered" >      expect(result).toBeDefined();</span>
-<span class="cstat-no" title="statement not covered" >      // Add more specific assertions here</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    it('should handle invalid input', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      // Test error conditions</span>
-<span class="cstat-no" title="statement not covered" >      expect(() =&gt; ${functions[0]}(null)).toThrow();</span>
-<span class="cstat-no" title="statement not covered" >      // Add more error case tests here</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    it('should handle edge cases', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      // Test boundary conditions</span>
-<span class="cstat-no" title="statement not covered" >      const result = ${functions[0]}('');</span>
-<span class="cstat-no" title="statement not covered" >      expect(result).toBeDefined();</span>
-<span class="cstat-no" title="statement not covered" >      // Add more edge case tests here</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  // Add tests for other exported functions here</span>
-<span class="cstat-no" title="statement not covered" >  ${functions.slice(1).map(func =&gt; `</span>
-<span class="cstat-no" title="statement not covered" >  describe('${func}', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    it('should work correctly', () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      // Add tests for ${func} here</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >  });`).join('')}</span>
-<span class="cstat-no" title="statement not covered" >});</span>
-<span class="cstat-no" title="statement not covered" >`;</span>
-<span class="cstat-no" title="statement not covered" >}</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >// Main execution</span>
-<span class="cstat-no" title="statement not covered" >if (process.argv.length &lt; 3) {</span>
-<span class="cstat-no" title="statement not covered" >  console.log('Usage: node scripts/generate-test.js &lt;file-path&gt;');</span>
-<span class="cstat-no" title="statement not covered" >  console.log('Example: node scripts/generate-test.js src/components/Button.tsx');</span>
-<span class="cstat-no" title="statement not covered" >  process.exit(1);</span>
-<span class="cstat-no" title="statement not covered" >}</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >const filePath = process.argv[2];</span>
-<span class="cstat-no" title="statement not covered" >generateTestFile(filePath);</span>
+<span class="cstat-no" title="statement not covered" >// Run the setup</span>
+<span class="cstat-no" title="statement not covered" >setupSupabaseDatabase().catch(console.error);</span>
+&nbsp;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

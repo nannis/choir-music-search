@@ -7,9 +7,21 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
+    exclude: [
+      'node_modules/**',
+      'dist/**',
+      'coverage/**',
+      '**/components_backup/**',
+      '**/hooks_backup/**',
+      '**/lib_backup/**',
+      '**/pages_backup/**',
+      '**/services_backup/**',
+      'backend/node_modules/**',
+      'supabase/node_modules/**'
+    ],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'json-summary', 'html'],
       include: [
         'src/**/*.{ts,tsx}',
         'backend/**/*.{ts,js}',
@@ -27,7 +39,12 @@ export default defineConfig({
         '**/main.tsx',
         'tests/**/*',
         '**/*.test.{ts,tsx,js,jsx}',
-        '**/*.spec.{ts,tsx,js,jsx}'
+        '**/*.spec.{ts,tsx,js,jsx}',
+        '**/components_backup/**/*',
+        '**/hooks_backup/**/*',
+        '**/lib_backup/**/*',
+        '**/pages_backup/**/*',
+        '**/services_backup/**/*'
       ],
       thresholds: {
         global: {
