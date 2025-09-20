@@ -1,4 +1,5 @@
 import { useState } from "react";
+import VersionInfo from "./components/VersionInfo";
 
 // Simple interface for search results
 interface SearchResult {
@@ -155,6 +156,9 @@ const App = () => {
           </div>
         )}
       </div>
+      
+      {/* Version info for deployment tracking */}
+      <VersionInfo />
     </div>
   );
 };
