@@ -5,15 +5,26 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:prod": "VITE_BUILD_MODE=production npm run build",
+    "build:prod": "npm run build",
     "preview": "vite preview",
     "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "test:generate": "node scripts/generate-test.js",
     "status": "startup-summary.bat",
     "backend": "cd backend && npm run dev",
     "setup": "npm install && cd backend && npm install",
     "deploy:onecom": "npm run build:prod && node scripts/deploy-onecom.js",
     "deploy:preview": "npm run build:prod && node scripts/deploy-onecom.js --preview",
-    "deploy:dry-run": "npm run build:prod && node scripts/deploy-onecom.js --dry-run"
+    "deploy:dry-run": "npm run build:prod && node scripts/deploy-onecom.js --dry-run",
+    "deploy:git": "bash scripts/deploy-git.sh",
+    "deploy:git-win": "scripts\\deploy-git.bat",
+    "deploy:onecom-git": "scripts\\deploy-onecom-git.bat",
+    "setup:ssh": "scripts\\setup-ssh-keys.bat",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.12",
@@ -23,6 +34,7 @@
     "@radix-ui/react-toast": "^1.2.15",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tanstack/react-query": "^5.89.0",
+    "@types/node": "^24.5.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.263.1",
@@ -34,18 +46,36 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
     "@vitejs/plugin-react-swc": "^3.4.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "ftp-deploy": "^2.4.7",
+    "husky": "^9.1.7",
+    "jsdom": "^27.0.0",
+    "lint-staged": "^16.1.6",
     "postcss": "^8.4.27",
+    "ssh2-sftp-client": "^12.0.1",
     "supabase": "^2.40.7",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
-    "vite": "^6.3.6"
+    "vite": "^6.3.6",
+    "vitest": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{js,jsx}": [
+      "eslint --fix"
+    ]
   }
 }

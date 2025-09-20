@@ -1,0 +1,5 @@
+---
+description: All code written should be covered by tests in order to early detect if changes messes up functionality
+globs:
+alwaysApply: true
+---

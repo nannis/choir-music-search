@@ -1,0 +1,5 @@
+---
+description: check the memory if what you suggest already have been tried.
+globs:
+alwaysApply: true
+---

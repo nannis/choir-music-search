@@ -1,5 +1,12 @@
-# Pre-push hook disabled for now
-echo "Pre-push hook disabled for now"
+# Run tests before push
+echo "Running tests before push..."
+npm run test:run
+
+# Run build to ensure everything compiles
+echo "Running build check..."
+npm run build
+
+echo "✅ Pre-push checks passed!"
 
 
 

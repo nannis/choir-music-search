@@ -1,0 +1,216 @@
+# Supabase Deployment Instructions
+
+## Quick Start
+To deploy your Supabase Edge Functions, run:
+```
+supabase functions deploy choir-music-api
+```
+
+## What This Command Does
+1. Builds your Edge Function
+2. Deploys it to Supabase
+3. Makes it available at: `https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api`
+
+## Prerequisites (Already Set Up)
+✅ Supabase CLI installed  
+✅ Supabase project initialized  
+✅ Edge Function created (`supabase/functions/choir-music-api/`)  
+✅ Environment variables configured  
+
+## Manual Deployment Steps
+
+### Step 1: Navigate to Project Root
+```
+cd C:\Users\nanni\Cursor_code\choir-music-search
+```
+
+### Step 2: Deploy Edge Function
+```
+supabase functions deploy choir-music-api
+```
+
+### Step 3: Verify Deployment
+```
+supabase functions list
+```
+
+## Your Supabase URLs
+- **Edge Function**: https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api
+- **Search Endpoint**: https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api/search
+- **Health Check**: https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api/health
+
+## Testing Your Deployment
+
+### Test Health Endpoint
+```bash
+curl -X GET "https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api/health" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxamNjc3d0ZHhrZmZnaHVpamh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTMwMzIsImV4cCI6MjA3MzY2OTAzMn0.fBcS1Wn5m2Kn-yt9_PF9dyGlIPocJd6MuinvDZ4q3MU"
+```
+
+### Test Search Endpoint
+```bash
+curl -X GET "https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api/search?q=Bach" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxamNjc3d0ZHhrZmZnaHVpamh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTMwMzIsImV4cCI6MjA3MzY2OTAzMn0.fBcS1Wn5m2Kn-yt9_PF9dyGlIPocJd6MuinvDZ4q3MU"
+```
+
+## Environment Variables
+
+### Required Variables (Already Set)
+- `SUPABASE_URL`: https://kqjccswtdxkffghuijhu.supabase.co
+- `SUPABASE_ANON_KEY`: Your anonymous key
+- `SUPABASE_SERVICE_ROLE_KEY`: Your service role key
+
+### Frontend Variables (.env)
+```
+VITE_SUPABASE_URL=https://kqjccswtdxkffghuijhu.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxamNjc3d0ZHhrZmZnaHVpamh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTMwMzIsImV4cCI6MjA3MzY2OTAzMn0.fBcS1Wn5m2Kn-yt9_PF9dyGlIPocJd6MuinvDZ4q3MU
+```
+
+## File Structure
+```
+supabase/
+├── functions/
+│   └── choir-music-api/
+│       └── index.ts          # Your Edge Function code
+├── config.toml               # Supabase configuration
+└── .env                      # Environment variables
+```
+
+## Troubleshooting
+
+### If Deployment Fails
+1. Check if you're logged in:
+   ```
+   supabase auth status
+   ```
+
+2. Login if needed:
+   ```
+   supabase login
+   ```
+
+3. Link to your project:
+   ```
+   supabase link --project-ref kqjccswtdxkffghuijhu
+   ```
+
+### If Function Returns 404
+1. Check function exists:
+   ```
+   supabase functions list
+   ```
+
+2. Redeploy:
+   ```
+   supabase functions deploy choir-music-api
+   ```
+
+### If Function Returns 500 Error
+1. Check logs:
+   ```
+   supabase functions logs choir-music-api
+   ```
+
+2. Test locally first:
+   ```
+   supabase functions serve choir-music-api
+   ```
+
+### If CORS Issues
+The function includes CORS headers, but if you have issues:
+1. Check the `corsHeaders` in your function
+2. Verify the request origin matches allowed origins
+
+## Local Development
+
+### Start Local Supabase
+```
+supabase start
+```
+
+### Serve Functions Locally
+```
+supabase functions serve choir-music-api
+```
+
+### Test Local Function
+```
+curl -X GET "http://localhost:54321/functions/v1/choir-music-api/health"
+```
+
+## 🗄️ Database Setup
+
+### Initial Schema Migration
+1. **Run the migration** to create tables and sample data:
+   ```bash
+   supabase db push
+   ```
+   This will apply `supabase/migrations/20240101000000_initial_schema.sql`
+
+2. **Alternative Manual Setup**: If migrations don't work, run the SQL manually:
+   - Open Supabase Dashboard → SQL Editor
+   - Copy and paste the contents of `database/schema-postgresql.sql`
+   - Execute the SQL
+
+3. **Verify Setup**: Check that these tables were created:
+   - `songs` (main table with sample data)
+   - `user_submissions` (for community contributions)
+   - `ingestion_jobs` (for automated data collection)
+   - `query_cache` (for performance optimization)
+
+### Add More Music Data
+Use the Edge Function to add more songs:
+```bash
+curl -X POST "https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api/add-songs" \
+  -H "Authorization: Bearer [YOUR_ANON_KEY]" \
+  -H "Content-Type: application/json" \
+  -d '{"songs": [{"title": "New Song", "composer": "Composer", ...}]}'
+```
+
+## Database Connection
+
+### Direct Database Access
+- **Host**: db.kqjccswtdxkffghuijhu.supabase.co
+- **Port**: 5432
+- **Database**: postgres
+- **Username**: postgres
+- **Password**: [Your database password]
+
+### Connection Pooler (Recommended)
+- **Host**: aws-0-eu-west-1.pooler.supabase.com
+- **Port**: 6543
+- **Database**: postgres
+- **Username**: postgres.[project-ref]
+- **Password**: [Your database password]
+
+## Success Indicators
+✅ `supabase functions deploy` completes without errors  
+✅ Function appears in `supabase functions list`  
+✅ Health endpoint returns 200 OK  
+✅ Search endpoint returns JSON results  
+✅ Frontend can connect to Edge Function  
+
+## Important Notes
+- Edge Functions run on Deno runtime
+- Use `Deno.serve()` for the main handler
+- Environment variables are automatically injected
+- Functions have a 10-second timeout by default
+- CORS headers are required for browser requests
+
+## Support Commands
+```bash
+# Check Supabase status
+supabase status
+
+# View function logs
+supabase functions logs choir-music-api
+
+# Delete function (if needed)
+supabase functions delete choir-music-api
+
+# Get function URL
+supabase functions list
+```
+
+---
+*Your Supabase project: kqjccswtdxkffghuijhu*

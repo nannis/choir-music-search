@@ -1,8 +1,9 @@
-# npx lint-staged
-echo "Pre-commit hook disabled for now"
+# Run linting on staged files
+echo "Running linting on staged files..."
+npx lint-staged
 
+# Run tests with coverage before commit
+echo "Running tests with coverage before commit..."
+npm run test:coverage
 
-
-
-
-
+echo "✅ Pre-commit checks passed!"

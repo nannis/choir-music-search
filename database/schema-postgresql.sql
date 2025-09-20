@@ -1,5 +1,14 @@
 -- PostgreSQL Database Schema for Choir Music Search
 -- Optimized for Supabase with full-text search capabilities
+-- 
+-- IMPORTANT: This file contains PostgreSQL-specific syntax
+-- Do not run this on SQL Server, MySQL, or other databases
+-- This is designed specifically for Supabase (PostgreSQL)
+--
+-- To configure your IDE to recognize this as PostgreSQL:
+-- 1. Set file association to PostgreSQL
+-- 2. Install PostgreSQL language support
+-- 3. Use .sqlfluff configuration (included in project root)
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -158,6 +167,7 @@ INSERT INTO ingestion_jobs (id, source, url, parser, schedule, status) VALUES
 (uuid_generate_v4(), 'IMSLP', 'https://imslp.org/wiki/Category:For_female_chorus', 'IMSLPParser', '0 2 * * *', 'active'),
 (uuid_generate_v4(), 'MuseScore', 'https://musescore.com/sheetmusic/womens-choir', 'MuseScoreParser', '0 */6 * * *', 'active'),
 (uuid_generate_v4(), 'SundMusik', 'https://sundmusik.com/product-category/kornoter/damkor/', 'SundMusikParser', '0 3 * * 0', 'active');
+
 
 
 

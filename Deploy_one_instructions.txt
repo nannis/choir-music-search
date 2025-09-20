@@ -1,0 +1,101 @@
+# One.com Deployment Instructions
+
+## Quick Start
+To deploy your choir music search application to one.com, simply run:
+```
+npm run deploy:onecom-git
+```
+
+## What This Command Does
+1. Builds your project for production
+2. Commits all changes to Git
+3. Pushes to one.com (no password required!)
+4. Triggers automatic deployment
+5. Deploys files to your live website
+
+## Prerequisites (Already Set Up)
+✅ SSH keys generated and configured  
+✅ Git repository created on one.com server  
+✅ Post-receive hook configured  
+✅ Web root directory identified  
+
+## Manual Deployment Steps (If Needed)
+
+### Step 1: Build Your Project
+```
+npm run build:prod
+```
+
+### Step 2: Commit Changes
+```
+git add .
+git commit -m "Deploy to one.com - [your message]"
+```
+
+### Step 3: Push to One.com
+```
+$env:GIT_SSH_COMMAND='ssh -i "C:\Users\nanni\.ssh\onecom-deploy-key"'; git push onecom main
+```
+
+### Step 4: Trigger Deployment
+```
+ssh -i C:\Users\nanni\.ssh\onecom-hook-key czg3h0vh1_ssh@ssh.czg3h0vh1.service.one "echo 'Deployment triggered'"
+```
+
+## Your Website URLs
+- **Live Site**: https://ssaasearch.se
+- **Alternative**: https://www.ssaasearch.se
+
+## Troubleshooting
+
+### If Git Asks for Password
+Make sure you're using the SSH command:
+```
+$env:GIT_SSH_COMMAND='ssh -i "C:\Users\nanni\.ssh\onecom-deploy-key"'; git push onecom main
+```
+
+### If Deployment Doesn't Work
+1. Check if files are in the web root:
+   ```
+   ssh czg3h0vh1_ssh@ssh.czg3h0vh1.service.one "ls -la /customers/b/4/9/czg3h0vh1/webroots/418441ef/"
+   ```
+
+2. Manually trigger the hook:
+   ```
+   ssh czg3h0vh1_ssh@ssh.czg3h0vh1.service.one "cd ~/website.git && sh hooks/post-receive"
+   ```
+
+### If You Need to Rebuild Everything
+Run the setup script:
+```
+npm run setup:ssh
+```
+
+## File Locations
+- **SSH Keys**: `C:\Users\nanni\.ssh\`
+  - `onecom-deploy-key` - For Git operations
+  - `onecom-hook-key` - For deployment hook
+- **Deployment Script**: `scripts\deploy-onecom-git.bat`
+- **Web Root**: `/customers/b/4/9/czg3h0vh1/webroots/418441ef`
+
+## Important Notes
+- The deployment uses a **two-key system** (one for Git, one for hooks)
+- Files are deployed to `/customers/b/4/9/czg3h0vh1/webroots/418441ef` (not `/www`)
+- The post-receive hook automatically runs `git checkout -f main`
+- No passwords are required once SSH keys are set up
+
+## Success Indicators
+✅ Git push completes without password prompt  
+✅ Hook execution shows "Deployment complete!"  
+✅ Files appear in web root directory  
+✅ Website loads at https://ssaasearch.se  
+
+## Support
+If you encounter issues, check:
+1. SSH key permissions
+2. Git remote URL configuration
+3. Post-receive hook content and permissions
+4. Web root directory access
+
+---
+*Based on solution from: https://www.digitalcomet.be/blog/ssh-and-git-on-one-dot-com/*
