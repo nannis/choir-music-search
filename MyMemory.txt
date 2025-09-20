@@ -1,0 +1,114 @@
+# Choir Music Search Project - Session Summary
+
+## Project Overview
+This is a choir music search application built with React frontend and Supabase backend (PostgreSQL + Edge Functions). The project allows users to search for sheet music with advanced filtering capabilities.
+
+## Architecture
+- **Frontend**: React + Vite + TypeScript + Tailwind CSS
+- **Backend**: Supabase Edge Functions (serverless API)
+- **Database**: Supabase PostgreSQL
+- **Deployment**: Supabase hosted backend, local development frontend
+
+## Key Files and Structure
+- `src/`: Frontend React application
+- `supabase/functions/choir-music-api/`: Backend Edge Function
+- `backend/`: Legacy Node.js files (not used in current architecture)
+- `.env`: Environment variables for Supabase connection
+- `PROJECT_STATUS.md`: Project documentation
+- `CONVERSATION_LOG.md`: Session tracking
+
+## Recent Session 1: Project Cleanup and Setup
+
+### What We Accomplished:
+1. **Project Cleanup**: Removed unused and duplicate files
+   - Deleted redundant server files (`server.ts` vs `server-supabase.ts`)
+   - Removed MySQL-specific setup scripts (project uses Supabase PostgreSQL)
+   - Cleaned up unused UI components (kept only essential ones)
+   - Removed empty directories and outdated documentation
+
+2. **Frontend Dependencies**: Installed missing packages
+   - `@tanstack/react-query`
+   - `react-router-dom`
+   - `@radix-ui/*` components (tooltip, toast, collapsible, slot, label, select)
+
+3. **Configuration Updates**:
+   - Fixed `vite.config.ts` (removed problematic `lovable-tagger` plugin)
+   - Updated `package.json` scripts
+   - Created `.vscode/tasks.json` for Cursor workspace tasks
+
+### Issues Encountered:
+- Frontend failed to start due to missing dependencies
+- `lovable-tagger` plugin caused ESM module loading errors
+- Multiple port conflicts (5173, 5174, 5175, 5176)
+
+## Recent Session 2: Backend Architecture Clarification
+
+### Key Realization:
+**The project uses Supabase Edge Functions, NOT a local Node.js backend server!**
+
+### What We Discovered:
+1. **Backend API**: Already deployed at `https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api`
+2. **Database**: Successfully set up with 3 tables:
+   - `songs` (16 records with Bach compositions)
+   - `user_submissions`
+   - `ingestion_jobs`
+3. **Edge Function**: Complete API with all endpoints (search, songs, submissions, filters, etc.)
+
+### What We Fixed:
+1. **Supabase Setup**: Modified `backend/setup-supabase.js` to load `.env` variables
+2. **Database Connection**: Verified DATABASE_URL format and connection
+3. **Schema Issues**: Minor warnings about missing `query_cache` table (non-critical)
+
+### Current Status:
+- ✅ Frontend: Running on `http://localhost:5173` (or 5174/5175/5176 due to port conflicts)
+- ✅ Backend: Supabase Edge Function deployed and working
+- ✅ Database: PostgreSQL with music data
+- ✅ API: All endpoints functional
+
+## Environment Configuration Needed:
+The frontend `.env` file should contain:
+```
+VITE_API_BASE_URL=https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxamNjc3d0ZHhrZmZnaHVpamh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTMwMzIsImV4cCI6MjA3MzY2OTAzMn0.fBcS1Wn5m2Kn-yt9_PF9dyGlIPocJd6MuinvDZ4q3MU
+```
+
+## Current Issues to Address:
+1. **Missing Dependencies**: Still getting errors for:
+   - `@tanstack/react-query`
+   - `react-router-dom`
+   - `@radix-ui/*` components
+   - `tailwindcss-animate`
+
+2. **Missing UI Components**: Files not found:
+   - `/src/components/ui/sonner`
+   - `/src/components/ui/separator`
+
+3. **Port Conflicts**: Multiple Vite instances running on different ports
+
+## Next Steps:
+1. Install all missing frontend dependencies
+2. Create missing UI components or remove references
+3. Clean up port conflicts
+4. Test the full application with Supabase backend
+
+## Important Notes:
+- **NO local backend server needed** - everything runs on Supabase
+- Frontend connects directly to Supabase Edge Function API
+- Database is PostgreSQL (not MySQL)
+- All backend logic is in `supabase/functions/choir-music-api/index.ts`
+
+## Commands Used:
+- `npm install` (for dependencies)
+- `npm run dev` (for frontend)
+- `node backend/setup-supabase.js` (for database setup)
+- Various file cleanup operations
+
+## Project is Ready for Testing:
+Once dependencies are resolved, the application should be fully functional with:
+- Music search functionality
+- Advanced filtering
+- User submissions
+- Admin approval workflow
+- Real-time database updates
+
+

@@ -1,0 +1,22 @@
+# Railway Deployment Configuration
+# This file configures Railway for deploying the Choir Music Search backend
+
+# Build configuration
+[build]
+builder = "nixpacks"
+
+# Deploy configuration  
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+# Environment variables (will be set in Railway dashboard)
+# DATABASE_URL - automatically provided by Railway MySQL addon
+# PORT - automatically provided by Railway
+# NODE_ENV=production
+
+
+
