@@ -91,6 +91,7 @@ async function deployFiles() {
     
     console.log('✅ Deployment completed successfully!');
     console.log(`📁 Files uploaded to: ${remoteRoot}`);
+    console.log(`📊 Upload result: ${uploadResult ? 'Success' : 'Failed'}`);
     
     const siteUrl = process.env.VITE_SITE_URL || 'https://your-domain.com';
     console.log(`🌐 Your site is live at: ${siteUrl}`);

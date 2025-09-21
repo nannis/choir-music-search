@@ -1,0 +1,227 @@
+name: Frontend Automated Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'vite.config.ts'
+      - 'tailwind.config.js'
+      - 'postcss.config.js'
+      - 'tsconfig*.json'
+      - 'package.json'
+      - 'package-lock.json'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'vite.config.ts'
+      - 'tailwind.config.js'
+      - 'postcss.config.js'
+      - 'tsconfig*.json'
+      - 'package.json'
+      - 'package-lock.json'
+
+jobs:
+  frontend-tests:
+    name: Frontend Tests & Accessibility
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Run unit tests
+      run: npm run test:run
+      
+    - name: Run accessibility tests
+      run: npm run test:accessibility
+      
+    - name: Run comprehensive frontend tests
+      run: npm run test:frontend
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.node-version }}
+        path: |
+          frontend-test-report.json
+          accessibility-report.json
+          coverage/
+          
+    - name: Comment PR with test results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          let comment = '## 🧪 Frontend Test Results\n\n';
+          
+          // Try to read test reports
+          try {
+            if (fs.existsSync('frontend-test-report.json')) {
+              const report = JSON.parse(fs.readFileSync('frontend-test-report.json', 'utf8'));
+              comment += `### Overall Status: ${report.overallPassed ? '✅ PASSED' : '❌ FAILED'}\n\n`;
+              
+              comment += '| Test Type | Status | Score |\n';
+              comment += '|-----------|--------|-------|\n';
+              
+              report.results.forEach(result => {
+                const status = result.passed ? '✅' : '❌';
+                const score = result.score ? `${result.score}%` : 'N/A';
+                comment += `| ${result.type.toUpperCase()} | ${status} | ${score} |\n`;
+              });
+              
+              if (report.recommendations.length > 0) {
+                comment += '\n### 💡 Recommendations\n';
+                report.recommendations.forEach(rec => {
+                  comment += `- ${rec}\n`;
+                });
+              }
+            }
+          } catch (error) {
+            comment += '❌ Could not read test results\n';
+          }
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+
+  accessibility-audit:
+    name: WCAG 2.2 Compliance Audit
+    runs-on: ubuntu-latest
+    needs: frontend-tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Start preview server
+      run: npm run preview &
+      
+    - name: Wait for server
+      run: npx wait-on http://localhost:4173
+      
+    - name: Run Lighthouse audit
+      run: |
+        npx lighthouse http://localhost:4173 \
+          --output=json \
+          --output-path=lighthouse-report.json \
+          --chrome-flags="--headless" \
+          --only-categories=accessibility,performance,best-practices,seo
+          
+    - name: Run axe-core audit
+      run: npm run test:accessibility
+      
+    - name: Upload accessibility reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: accessibility-reports
+        path: |
+          lighthouse-report.json
+          accessibility-report.json
+          
+    - name: Check accessibility thresholds
+      run: |
+        node -e "
+          const lighthouse = JSON.parse(require('fs').readFileSync('lighthouse-report.json', 'utf8'));
+          const accessibility = lighthouse.categories.accessibility.score * 100;
+          const performance = lighthouse.categories.performance.score * 100;
+          
+          console.log('Accessibility Score:', accessibility);
+          console.log('Performance Score:', performance);
+          
+          if (accessibility < 95) {
+            console.error('❌ Accessibility score below threshold (95%)');
+            process.exit(1);
+          }
+          
+          if (performance < 90) {
+            console.error('❌ Performance score below threshold (90%)');
+            process.exit(1);
+          }
+          
+          console.log('✅ All thresholds met');
+        "
+
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    needs: [frontend-tests, accessibility-audit]
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build and deploy preview
+      run: npm run deploy:preview
+      env:
+        # Add your deployment environment variables here
+        DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        
+    - name: Comment PR with preview link
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🚀 Preview deployment completed! Check the preview at: [Preview Link](https://preview.example.com)'
+          });

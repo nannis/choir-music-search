@@ -16,9 +16,9 @@ describe('Choir Music Search Frontend', () => {
     it('should render search form elements', () => {
       render(<App />);
       
-      expect(screen.getByText('🎵 Choir Sheet Music Search')).toBeInTheDocument();
+      expect(screen.getByText('Choir Sheet Music Search')).toBeInTheDocument();
       expect(screen.getByPlaceholderText('Search for music by composer, title, or style...')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Search for music' })).toBeInTheDocument();
     });
 
     it('should update input value when typing', async () => {
@@ -35,7 +35,7 @@ describe('Choir Music Search Frontend', () => {
       const user = userEvent.setup();
       render(<App />);
       
-      const button = screen.getByRole('button', { name: 'Search' });
+      const button = screen.getByRole('button', { name: 'Search for music' });
       await user.click(button);
       
       // Should not call fetch for empty search
@@ -76,7 +76,7 @@ describe('Choir Music Search Frontend', () => {
       render(<App />);
       
       const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
-      const button = screen.getByRole('button', { name: 'Search' });
+      const button = screen.getByRole('button', { name: 'Search for music' });
       
       await user.type(input, 'test');
       await user.click(button);
@@ -112,7 +112,7 @@ describe('Choir Music Search Frontend', () => {
       render(<App />);
       
       const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
-      const button = screen.getByRole('button', { name: 'Search' });
+      const button = screen.getByRole('button', { name: 'Search for music' });
       
       await user.type(input, 'nonexistent');
       await user.click(button);
@@ -130,7 +130,7 @@ describe('Choir Music Search Frontend', () => {
       render(<App />);
       
       const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
-      const button = screen.getByRole('button', { name: 'Search' });
+      const button = screen.getByRole('button', { name: 'Search for music' });
       
       await user.type(input, 'test');
       await user.click(button);
@@ -152,7 +152,7 @@ describe('Choir Music Search Frontend', () => {
       render(<App />);
       
       const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
-      const button = screen.getByRole('button', { name: 'Search' });
+      const button = screen.getByRole('button', { name: 'Search for music' });
       
       await user.type(input, 'test');
       await user.click(button);
@@ -180,7 +180,7 @@ describe('Choir Music Search Frontend', () => {
       render(<App />);
       
       const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
-      const button = screen.getByRole('button', { name: 'Search' });
+      const button = screen.getByRole('button', { name: 'Search for music' });
       
       await user.type(input, 'test');
       await user.click(button);
@@ -219,7 +219,7 @@ describe('Choir Music Search Frontend', () => {
       render(<App />);
       
       const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
-      const button = screen.getByRole('button', { name: 'Search' });
+      const button = screen.getByRole('button', { name: 'Search for music' });
       
       await user.type(input, 'Bach');
       await user.click(button);

@@ -16,3 +16,33 @@ code {
 * {
   box-sizing: border-box;
 }
+
+/* Accessibility utilities */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus indicators for accessibility */
+input:focus,
+button:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Ensure proper contrast and sizing */
+button {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+input {
+  min-height: 44px;
+}

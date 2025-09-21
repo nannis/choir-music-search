@@ -57,6 +57,11 @@ function generateComponentTest(componentName, sourceContent) {
     const match = line.match(/(\w+)(\?)?:\s*([^;]+)/);
     return match ? { name: match[1], optional: !!match[2], type: match[3].trim() } : null;
   }).filter(Boolean) : [];
+  
+  // Log props for debugging
+  if (props.length > 0) {
+    console.log(`Found ${props.length} props for ${componentName}`);
+  }
 
   return `import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
