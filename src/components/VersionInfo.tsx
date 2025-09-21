@@ -6,10 +6,10 @@ interface VersionInfoProps {
 
 const VersionInfo: React.FC<VersionInfoProps> = ({ showInConsole = true }) => {
   const versionInfo = {
-    appVersion: window.APP_VERSION || '1.0.0',
-    buildDate: window.BUILD_DATE || '2025-09-20',
-    deploymentId: window.DEPLOYMENT_ID || '975fa4fc3253daa7bb2e386caa26d88f1c358193',
-    gitCommit: window.GIT_COMMIT || '975fa4fc3253daa7bb2e386caa26d88f1c358193',
+    appVersion: (window as any).APP_VERSION || '1.0.0',
+    buildDate: (window as any).BUILD_DATE || '2025-09-20',
+    deploymentId: (window as any).DEPLOYMENT_ID || '975fa4fc3253daa7bb2e386caa26d88f1c358193',
+    gitCommit: (window as any).GIT_COMMIT || '975fa4fc3253daa7bb2e386caa26d88f1c358193',
     timestamp: new Date().toISOString()
   };
 
