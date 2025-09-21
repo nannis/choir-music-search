@@ -49,7 +49,7 @@ class AccessibilityTester {
       }
 
       // Start a local server for testing
-      const serverProcess = this.startTestServer();
+      const serverProcess = await this.startTestServer();
       
       // Wait for server to start
       await this.waitForServer('http://localhost:4173');
@@ -72,11 +72,30 @@ class AccessibilityTester {
   /**
    * Start a local server for testing
    */
-  startTestServer() {
+  async startTestServer() {
+    console.log('🚀 Building project for testing...');
+    
+    // First build the project
+    const { exec } = require('child_process');
+    const { promisify } = require('util');
+    const execAsync = promisify(exec);
+    
+    try {
+      await execAsync('npm run build', { cwd: process.cwd() });
+      console.log('✅ Build completed');
+    } catch (error) {
+      console.error('❌ Build failed:', error.message);
+      throw error;
+    }
+    
     console.log('🚀 Starting test server...');
-    return require('child_process').spawn('npm', ['run', 'preview'], {
+    const { spawn } = require('child_process');
+    
+    // Use shell: true for Windows compatibility
+    return spawn('npm', ['run', 'preview'], {
       stdio: 'pipe',
-      detached: true
+      detached: true,
+      shell: true
     });
   }
 
