@@ -118,7 +118,7 @@ describe('Choir Music Search Frontend', () => {
       await user.click(button);
 
       await waitFor(() => {
-        expect(screen.getByText('No results found for "nonexistent"')).toBeInTheDocument();
+        expect(screen.getByText('No results found')).toBeInTheDocument();
         expect(screen.getByText('Try different search terms or check your spelling')).toBeInTheDocument();
       });
     });

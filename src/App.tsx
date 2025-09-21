@@ -1,23 +1,14 @@
 import { useState, useEffect } from "react";
 import VersionInfo from "./components/VersionInfo";
+import { SearchForm, SearchResults, ErrorAlert, WelcomeMessage } from "./components";
+import { SearchService } from "./services/searchService";
+import { SearchResult } from "./components/SearchForm";
 
-// Simple interface for search results
-interface SearchResult {
-  id?: string;
-  title: string;
-  composer: string;
-  textWriter?: string;
-  description?: string;
-  language?: string;
-  voicing?: string;
-  difficulty?: string;
-  season?: string;
-  theme?: string;
-  sourceLink?: string;
-}
-
+/**
+ * Main App component for the Choir Music Search application
+ * Orchestrates the search functionality and manages application state
+ */
 const App = () => {
-  const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
@@ -28,39 +19,15 @@ const App = () => {
     document.title = "Choir Music Search";
   }, []);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-
+  const handleSearch = async (query: string) => {
     setIsLoading(true);
     setHasSearched(true);
     setError("");
-    
+
     try {
-      console.log('Searching for:', query);
-
-      // API call to the working Edge Function (GET request with proper headers)
-      const response = await fetch(`https://kqjccswtdxkffghuijhu.supabase.co/functions/v1/choir-music-api/search?q=${encodeURIComponent(query.trim())}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxamNjc3d0ZHhrZmZnaHVpamh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTMwMzIsImV4cCI6MjA3MzY2OTAzMn0.fBcS1Wn5m2Kn-yt9_PF9dyGlIPocJd6MuinvDZ4q3MU`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      console.log('API response status:', response.status);
-      
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      console.log('API response data:', data);
-      
-      setResults(data.results || []);
-      
+      const searchResults = await SearchService.searchMusic(query);
+      setResults(searchResults);
     } catch (error) {
-      console.error('Search failed:', error);
       setError(error instanceof Error ? error.message : 'Search failed');
       setResults([]);
     } finally {
@@ -69,112 +36,32 @@ const App = () => {
   };
 
   return (
-    <div style={{ padding: '20px', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '30px', color: '#333' }}>
+    <div className="min-h-screen bg-secondary-50">
+      <div className="container-main section-spacing">
+        <h1 className="heading-1 text-center mb-8">
           Choir Sheet Music Search
         </h1>
 
-        <form onSubmit={handleSearch} style={{ marginBottom: '30px' }} role="form" aria-label="Search for choir music">
-          <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-            <label htmlFor="search-input" className="sr-only">
-              Search for choir music
-            </label>
-            <input
-              id="search-input"
-              type="text"
-              placeholder="Search for music by composer, title, or style..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              style={{
-                flex: 1,
-                padding: '12px',
-                border: '1px solid #ddd',
-                borderRadius: '6px',
-                fontSize: '16px',
-                minHeight: '44px' // WCAG minimum target size
-              }}
-              aria-describedby="search-help"
-            />
-            <button
-              type="submit"
-              disabled={isLoading}
-              style={{
-                padding: '12px 24px',
-                backgroundColor: isLoading ? '#ccc' : '#007bff',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                fontSize: '16px',
-                minHeight: '44px', // WCAG minimum target size
-                minWidth: '44px'
-              }}
-              aria-label={isLoading ? 'Searching for music' : 'Search for music'}
-            >
-              {isLoading ? 'Searching...' : 'Search'}
-            </button>
-          </div>
-          <div id="search-help" style={{ fontSize: '14px', color: '#666', marginTop: '5px' }}>
-            Search suggestions: Try composers like "Bach", "Mozart", or styles like "Christmas", "Latin"
-          </div>
-        </form>
+        <SearchForm onSearch={handleSearch} isLoading={isLoading} />
 
-        {error && (
-          <div role="alert" aria-live="assertive" style={{ backgroundColor: '#fee', padding: '15px', borderRadius: '6px', marginBottom: '20px', border: '1px solid #fcc' }}>
-            <strong>Error:</strong> {error}
-          </div>
-        )}
+        <ErrorAlert error={error} />
 
         {results.length > 0 && (
-          <div role="region" aria-label="Search results" style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-            <h2>Search Results ({results.length} found)</h2>
-            {results.map((result, index) => (
-              <div key={result.id || index} style={{ padding: '15px', borderBottom: '1px solid #eee' }}>
-                <h3 style={{ margin: '0 0 8px 0', color: '#333' }}>{result.title}</h3>
-                <p style={{ margin: '0 0 4px 0', color: '#666' }}><strong>Composer:</strong> {result.composer}</p>
-                {result.textWriter && <p style={{ margin: '0 0 4px 0', color: '#666' }}><strong>Text:</strong> {result.textWriter}</p>}
-                {result.description && <p style={{ margin: '0 0 4px 0', color: '#666' }}><strong>Description:</strong> {result.description}</p>}
-                {result.language && <p style={{ margin: '0 0 4px 0', color: '#666' }}><strong>Language:</strong> {result.language}</p>}
-                {result.voicing && <p style={{ margin: '0 0 4px 0', color: '#666' }}><strong>Voicing:</strong> {result.voicing}</p>}
-                {result.difficulty && <p style={{ margin: '0 0 4px 0', color: '#666' }}><strong>Difficulty:</strong> {result.difficulty}</p>}
-                {result.season && <p style={{ margin: '0 0 4px 0', color: '#666' }}><strong>Season:</strong> {result.season}</p>}
-                {result.theme && <p style={{ margin: '0 0 4px 0', color: '#666' }}><strong>Theme:</strong> {result.theme}</p>}
-                {result.sourceLink && (
-                  <a
-                    href={result.sourceLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#007bff', textDecoration: 'none', minHeight: '44px', display: 'inline-block', padding: '8px 0' }}
-                    aria-label={`View source for ${result.title} by ${result.composer}`}
-                  >
-                    View Source →
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
+          <SearchResults results={results} query={hasSearched ? "search" : ""} />
         )}
 
         {hasSearched && results.length === 0 && !isLoading && !error && (
-          <div role="status" aria-live="polite" style={{ textAlign: 'center', color: '#666', marginTop: '50px' }}>
-            <p>No results found for "{query}"</p>
-            <p style={{ fontSize: '14px', marginTop: '10px' }}>
+          <div role="status" aria-live="polite" className="text-center text-secondary-600 mt-12">
+            <p className="body-large">No results found</p>
+            <p className="body-small mt-3">
               Try different search terms or check your spelling
             </p>
           </div>
         )}
 
-        {!hasSearched && (
-          <div style={{ textAlign: 'center', color: '#666', marginTop: '50px' }}>
-            <p>Enter a search term above to find choir music!</p>
-            <p style={{ fontSize: '14px', marginTop: '10px' }}>
-              Try searching for composers like "Bach", "Mozart", or styles like "Christmas", "Latin"
-            </p>
-          </div>
-        )}
+        {!hasSearched && <WelcomeMessage />}
       </div>
-      
+
       {/* Version info for deployment tracking */}
       <VersionInfo />
     </div>
