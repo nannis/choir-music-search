@@ -21,6 +21,11 @@ export class SearchService {
   static async searchMusic(query: string): Promise<SearchResult[]> {
     const { supabaseUrl, supabaseKey } = this.getSupabaseConfig();
     
+    // Return early for empty or whitespace-only queries
+    if (!query.trim()) {
+      return [];
+    }
+    
     console.log('Searching for:', query);
 
     try {
@@ -44,7 +49,11 @@ export class SearchService {
       return data.results || [];
     } catch (error) {
       console.error('Search failed:', error);
-      throw error instanceof Error ? error : new Error('Search failed');
+      // If it's already an Error object, re-throw it; otherwise create a new one
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Search failed');
     }
   }
 }

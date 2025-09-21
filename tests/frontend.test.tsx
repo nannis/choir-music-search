@@ -118,7 +118,36 @@ describe('Choir Music Search Frontend', () => {
       await user.click(button);
 
       await waitFor(() => {
-        expect(screen.getByText('No results found')).toBeInTheDocument();
+        expect(screen.getByText('No results found for "nonexistent"')).toBeInTheDocument();
+        expect(screen.getByText('Try different search terms or check your spelling')).toBeInTheDocument();
+      });
+    });
+
+    it('should display no results message with query when search returns empty', async () => {
+      const mockResults = {
+        results: [],
+        total: 0,
+        page: 1,
+        limit: 20,
+        hasMore: false
+      };
+
+      (fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResults
+      });
+
+      const user = userEvent.setup();
+      render(<App />);
+      
+      const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
+      const button = screen.getByRole('button', { name: 'Search for music' });
+      
+      await user.type(input, 'testquery');
+      await user.click(button);
+
+      await waitFor(() => {
+        expect(screen.getByText('No results found for "testquery"')).toBeInTheDocument();
         expect(screen.getByText('Try different search terms or check your spelling')).toBeInTheDocument();
       });
     });

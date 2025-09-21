@@ -13,6 +13,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState<string>("");
+  const [currentQuery, setCurrentQuery] = useState<string>("");
 
   // Set document title for accessibility
   useEffect(() => {
@@ -23,6 +24,7 @@ const App = () => {
     setIsLoading(true);
     setHasSearched(true);
     setError("");
+    setCurrentQuery(query);
 
     try {
       const searchResults = await SearchService.searchMusic(query);
@@ -47,16 +49,11 @@ const App = () => {
         <ErrorAlert error={error} />
 
         {results.length > 0 && (
-          <SearchResults results={results} query={hasSearched ? "search" : ""} />
+          <SearchResults results={results} query={currentQuery} />
         )}
 
         {hasSearched && results.length === 0 && !isLoading && !error && (
-          <div role="status" aria-live="polite" className="text-center text-secondary-600 mt-12">
-            <p className="body-large">No results found</p>
-            <p className="body-small mt-3">
-              Try different search terms or check your spelling
-            </p>
-          </div>
+          <SearchResults results={[]} query={currentQuery} />
         )}
 
         {!hasSearched && <WelcomeMessage />}

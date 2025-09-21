@@ -83,6 +83,11 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
 
       it('should submit form with Enter key', async () => {
         const user = userEvent.setup();
+        fetch.mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({ results: [], total: 0, page: 1, limit: 20, hasMore: false }),
+        });
+
         render(<App />);
         
         const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
@@ -185,9 +190,9 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
 
     describe('3.3 Input Assistance', () => {
       it('should provide error identification', async () => {
-        (fetch as any).mockRejectedValueOnce(new Error('Network error'));
-
         const user = userEvent.setup();
+        fetch.mockRejectedValueOnce(new Error('Network error'));
+
         render(<App />);
         
         const input = screen.getByPlaceholderText('Search for music by composer, title, or style...');
