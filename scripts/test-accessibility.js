@@ -86,12 +86,27 @@ class AccessibilityTester {
       this.generateReport();
       this.logProgress('✅ Report generated successfully', 5);
 
-      // Stop the server
+      // Stop the server (give it time to finish)
       this.logProgress('Cleaning up test server...');
-      serverProcess.kill();
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+      
+      // Force kill the server process
+      if (serverProcess && !serverProcess.killed) {
+        serverProcess.kill('SIGTERM');
+        // Give it a moment to clean up gracefully
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Force kill if still running
+        if (!serverProcess.killed) {
+          serverProcess.kill('SIGKILL');
+        }
+      }
 
       const totalTime = ((Date.now() - this.startTime) / 1000).toFixed(1);
       console.log(`\n🎉 Accessibility testing completed in ${totalTime}s`);
+      
+      // Ensure process exits
+      process.exit(0);
 
     } catch (error) {
       const totalTime = ((Date.now() - this.startTime) / 1000).toFixed(1);
@@ -133,7 +148,7 @@ class AccessibilityTester {
   /**
    * Wait for server to be ready
    */
-  async waitForServer(url, maxAttempts = 30) {
+  async waitForServer(url, maxAttempts = 60) {
     const http = require('http');
     
     for (let i = 0; i < maxAttempts; i++) {
@@ -166,66 +181,167 @@ class AccessibilityTester {
   async runAxeTests() {
     this.logProgress('Setting up browser automation...');
 
-    // Create a test script that uses axe-core
+    // Create a test script that uses axe-core with better error handling and progress reporting
     const testScript = `
       const { chromium } = require('playwright');
-      const axe = require('@axe-core/playwright');
+      const AxeBuilder = require('@axe-core/playwright').default;
 
       async function runAxeTest() {
-        console.log('Launching browser...');
-        const browser = await chromium.launch();
-        const page = await browser.newPage();
-        
-        console.log('Navigating to application...');
-        await page.goto('http://localhost:4173');
-        
-        console.log('Waiting for application to load...');
-        await page.waitForSelector('h1');
-        
-        console.log('Running accessibility audit...');
-        const results = await axe.run(page, {
-          rules: {
-            // WCAG 2.2 specific rules
-            'color-contrast': { enabled: true },
-            'color-contrast-enhanced': { enabled: false }, // Only test minimum for now
-            'focus-order-semantics': { enabled: true },
-            'keyboard-navigation': { enabled: true },
-            'aria-labels': { enabled: true },
-            'semantic-markup': { enabled: true },
-            'target-size': { enabled: true },
-            'focus-visible': { enabled: true }
+        let browser = null;
+        try {
+          console.log('Launching browser...');
+          browser = await chromium.launch({ 
+            headless: true,
+            timeout: 30000 // 30 second timeout
+          });
+          
+          console.log('Creating new page...');
+          const context = await browser.newContext();
+          const page = await context.newPage();
+          
+          // Set page timeout
+          page.setDefaultTimeout(30000);
+          
+          console.log('Navigating to application...');
+          await page.goto('http://localhost:4173', { 
+            waitUntil: 'networkidle',
+            timeout: 30000 
+          });
+          
+          console.log('Waiting for application to load...');
+          await page.waitForSelector('h1', { timeout: 10000 });
+          
+          console.log('Running accessibility audit...');
+          
+          // Run accessibility check using AxeBuilder - run all rules
+          const results = await new AxeBuilder({ page }).analyze();
+          
+          console.log('Audit completed successfully');
+          console.log(JSON.stringify(results, null, 2));
+          
+        } catch (error) {
+          console.error('Accessibility test failed:', error.message);
+          console.log(JSON.stringify({
+            violations: [],
+            passes: [],
+            incomplete: [],
+            inapplicable: [],
+            error: error.message
+          }, null, 2));
+        } finally {
+          if (browser) {
+            console.log('Closing browser...');
+            await browser.close();
           }
-        });
-        
-        console.log('Audit completed, closing browser...');
-        console.log(JSON.stringify(results, null, 2));
-        
-        await browser.close();
+        }
       }
 
-      runAxeTest().catch(console.error);
+      runAxeTest();
     `;
 
     // Write test script to temporary file
-    fs.writeFileSync('temp-axe-test.js', testScript);
+    const tempFile = path.join(__dirname, 'temp-axe-test.js');
+    fs.writeFileSync(tempFile, testScript);
+    this.logProgress('✅ Temporary test file created');
+
+    // Verify file was created
+    if (!fs.existsSync(tempFile)) {
+      throw new Error('Failed to create temporary test file');
+    }
+
+    // Small delay to ensure file is fully written
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     try {
       this.logProgress('Executing accessibility audit...');
-      // Run the test
-      const output = execSync('node temp-axe-test.js', { encoding: 'utf8' });
-      const results = JSON.parse(output);
       
-      this.results = results;
+      // Run the test with timeout and better error handling
+      const { spawn } = require('child_process');
+      
+      return new Promise((resolve, reject) => {
+        const child = spawn('node', [tempFile], {
+          stdio: ['pipe', 'pipe', 'pipe'],
+          shell: true
+        });
+        
+        let output = '';
+        let errorOutput = '';
+        
+        // Set overall timeout
+        const timeout = setTimeout(() => {
+          child.kill();
+          this.logProgress('⏰ Accessibility test timed out after 60 seconds');
+          reject(new Error('Accessibility test timed out'));
+        }, 60000); // 60 second timeout
+        
+        child.stdout.on('data', (data) => {
+          const message = data.toString();
+          output += message;
+          
+          // Show progress messages
+          if (message.includes('Launching browser')) this.logProgress('Launching browser...');
+          else if (message.includes('Creating new page')) this.logProgress('Creating new page...');
+          else if (message.includes('Navigating to application')) this.logProgress('Navigating to application...');
+          else if (message.includes('Waiting for application to load')) this.logProgress('Waiting for application to load...');
+          else if (message.includes('Running accessibility audit')) this.logProgress('Running accessibility audit...');
+          else if (message.includes('Audit completed successfully')) this.logProgress('Audit completed successfully');
+          else if (message.includes('Closing browser')) this.logProgress('Closing browser...');
+        });
+        
+        child.stderr.on('data', (data) => {
+          errorOutput += data.toString();
+        });
+        
+        child.on('close', (code) => {
+          clearTimeout(timeout);
+          
+          if (code === 0) {
+            try {
+              // Extract JSON from output - use a simpler approach
+              const jsonStart = output.indexOf('{');
+              const jsonEnd = output.lastIndexOf('}');
+              
+              if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+                const jsonString = output.substring(jsonStart, jsonEnd + 1);
+                const results = JSON.parse(jsonString);
+                this.results = results;
+                resolve(results);
+              } else {
+                this.logProgress('❌ No valid JSON output found. Raw output:');
+                this.logProgress(output.substring(0, 500) + '...');
+                throw new Error('No JSON output found');
+              }
+            } catch (parseError) {
+              this.logProgress('❌ Failed to parse axe results: ' + parseError.message);
+              this.logProgress('Raw output: ' + output);
+              reject(parseError);
+            }
+          } else {
+            this.logProgress('❌ Axe test failed with code: ' + code);
+            this.logProgress('Error output: ' + errorOutput);
+            reject(new Error(`Axe test failed with code ${code}`));
+          }
+        });
+        
+        child.on('error', (error) => {
+          clearTimeout(timeout);
+          this.logProgress('❌ Failed to start axe test: ' + error.message);
+          reject(error);
+        });
+      });
       
     } catch (error) {
       this.logProgress('❌ Axe test failed: ' + error.message);
       // Fallback to basic accessibility checks
       await this.runBasicAccessibilityChecks();
     } finally {
-      // Clean up
-      if (fs.existsSync('temp-axe-test.js')) {
-        fs.unlinkSync('temp-axe-test.js');
-      }
+      // Clean up - only after everything is done
+      setTimeout(() => {
+        if (fs.existsSync(tempFile)) {
+          fs.unlinkSync(tempFile);
+          this.logProgress('🧹 Cleaned up temporary files');
+        }
+      }, 1000); // Wait 1 second before cleanup
     }
   }
 

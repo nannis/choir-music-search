@@ -39,10 +39,12 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50">
-      <div className="container-main section-spacing">
-        <h1 className="heading-1 text-center mb-8">
-          Choir Sheet Music Search
-        </h1>
+      <main className="container-main section-spacing">
+        <header>
+          <h1 className="heading-1 text-center mb-8">
+            Choir Sheet Music Search
+          </h1>
+        </header>
 
         <SearchForm onSearch={handleSearch} isLoading={isLoading} />
 
@@ -57,7 +59,7 @@ const App = () => {
         )}
 
         {!hasSearched && <WelcomeMessage />}
-      </div>
+      </main>
 
       {/* Version info for deployment tracking */}
       <VersionInfo />
