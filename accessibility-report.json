@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-09-21T19:45:57.583Z",
+  "wcagVersion": "2.2",
+  "summary": {
+    "violations": 2,
+    "passes": 0,
+    "incomplete": 0,
+    "inapplicable": 0
+  },
+  "results": {
+    "violations": [
+      {
+        "id": "basic-check",
+        "description": "Images missing alt attributes",
+        "help": "Manual accessibility check failed",
+        "helpUrl": "https://www.w3.org/WAI/WCAG22/quickref/",
+        "nodes": []
+      },
+      {
+        "id": "basic-check",
+        "description": "Missing focus indicators in CSS",
+        "help": "Manual accessibility check failed",
+        "helpUrl": "https://www.w3.org/WAI/WCAG22/quickref/",
+        "nodes": []
+      }
+    ],
+    "passes": [],
+    "incomplete": [],
+    "inapplicable": []
+  }
+}

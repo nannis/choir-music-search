@@ -33,38 +33,69 @@ class AccessibilityTester {
       incomplete: [],
       inapplicable: []
     };
+    this.startTime = Date.now();
+    this.currentStep = 0;
+    this.totalSteps = 5;
+  }
+
+  /**
+   * Log progress with step indication
+   */
+  logProgress(message, step = null) {
+    if (step !== null) {
+      this.currentStep = step;
+    }
+    const elapsed = ((Date.now() - this.startTime) / 1000).toFixed(1);
+    console.log(`[${this.currentStep}/${this.totalSteps}] ⏱️  ${elapsed}s - ${message}`);
   }
 
   /**
    * Run accessibility tests on the built application
    */
   async runTests() {
-    console.log('♿ Running WCAG 2.2 accessibility tests...\n');
+    console.log('♿ Starting WCAG 2.2 accessibility tests...\n');
+    this.logProgress('Initializing accessibility test suite', 1);
 
     try {
-      // Ensure the app is built
+      // Step 1: Ensure the app is built
+      this.logProgress('Checking if application is built...', 1);
       if (!fs.existsSync('dist/index.html')) {
-        console.log('📦 Building application for accessibility testing...');
+        this.logProgress('Building application for accessibility testing...', 1);
         execSync('npm run build', { stdio: 'pipe' });
+        this.logProgress('✅ Build completed successfully', 1);
+      } else {
+        this.logProgress('✅ Application already built', 1);
       }
 
-      // Start a local server for testing
+      // Step 2: Start test server
+      this.logProgress('Starting local test server...', 2);
       const serverProcess = await this.startTestServer();
       
-      // Wait for server to start
+      // Step 3: Wait for server to be ready
+      this.logProgress('Waiting for server to be ready...', 3);
       await this.waitForServer('http://localhost:4173');
+      this.logProgress('✅ Server is ready and responding', 3);
 
-      // Run axe-core tests
+      // Step 4: Run axe-core tests
+      this.logProgress('Running axe-core accessibility audit...', 4);
       await this.runAxeTests();
+      this.logProgress('✅ Accessibility audit completed', 4);
+
+      // Step 5: Generate report
+      this.logProgress('Generating accessibility report...', 5);
+      this.generateReport();
+      this.logProgress('✅ Report generated successfully', 5);
 
       // Stop the server
+      this.logProgress('Cleaning up test server...');
       serverProcess.kill();
 
-      // Generate report
-      this.generateReport();
+      const totalTime = ((Date.now() - this.startTime) / 1000).toFixed(1);
+      console.log(`\n🎉 Accessibility testing completed in ${totalTime}s`);
 
     } catch (error) {
-      console.error('❌ Accessibility testing failed:', error.message);
+      const totalTime = ((Date.now() - this.startTime) / 1000).toFixed(1);
+      console.error(`❌ Accessibility testing failed after ${totalTime}s:`, error.message);
       process.exit(1);
     }
   }
@@ -73,7 +104,7 @@ class AccessibilityTester {
    * Start a local server for testing
    */
   async startTestServer() {
-    console.log('🚀 Building project for testing...');
+    this.logProgress('Building project for testing...');
     
     // First build the project
     const { exec } = require('child_process');
@@ -82,13 +113,13 @@ class AccessibilityTester {
     
     try {
       await execAsync('npm run build', { cwd: process.cwd() });
-      console.log('✅ Build completed');
+      this.logProgress('✅ Build completed');
     } catch (error) {
-      console.error('❌ Build failed:', error.message);
+      this.logProgress('❌ Build failed: ' + error.message);
       throw error;
     }
     
-    console.log('🚀 Starting test server...');
+    this.logProgress('Starting preview server...');
     const { spawn } = require('child_process');
     
     // Use shell: true for Windows compatibility
@@ -118,9 +149,11 @@ class AccessibilityTester {
           req.on('error', reject);
           req.setTimeout(1000, () => reject(new Error('Timeout')));
         });
-        console.log('✅ Test server is ready');
         return;
       } catch (error) {
+        if (i % 5 === 0) { // Log every 5th attempt to avoid spam
+          this.logProgress(`Waiting for server... (attempt ${i + 1}/${maxAttempts})`);
+        }
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
@@ -131,7 +164,7 @@ class AccessibilityTester {
    * Run axe-core accessibility tests
    */
   async runAxeTests() {
-    console.log('🔍 Running axe-core accessibility audit...');
+    this.logProgress('Setting up browser automation...');
 
     // Create a test script that uses axe-core
     const testScript = `
@@ -139,16 +172,17 @@ class AccessibilityTester {
       const axe = require('@axe-core/playwright');
 
       async function runAxeTest() {
+        console.log('Launching browser...');
         const browser = await chromium.launch();
         const page = await browser.newPage();
         
-        // Navigate to the app
+        console.log('Navigating to application...');
         await page.goto('http://localhost:4173');
         
-        // Wait for the app to load
+        console.log('Waiting for application to load...');
         await page.waitForSelector('h1');
         
-        // Run axe-core tests
+        console.log('Running accessibility audit...');
         const results = await axe.run(page, {
           rules: {
             // WCAG 2.2 specific rules
@@ -163,6 +197,7 @@ class AccessibilityTester {
           }
         });
         
+        console.log('Audit completed, closing browser...');
         console.log(JSON.stringify(results, null, 2));
         
         await browser.close();
@@ -175,6 +210,7 @@ class AccessibilityTester {
     fs.writeFileSync('temp-axe-test.js', testScript);
 
     try {
+      this.logProgress('Executing accessibility audit...');
       // Run the test
       const output = execSync('node temp-axe-test.js', { encoding: 'utf8' });
       const results = JSON.parse(output);
@@ -182,7 +218,7 @@ class AccessibilityTester {
       this.results = results;
       
     } catch (error) {
-      console.error('❌ Axe test failed:', error.message);
+      this.logProgress('❌ Axe test failed: ' + error.message);
       // Fallback to basic accessibility checks
       await this.runBasicAccessibilityChecks();
     } finally {
@@ -197,7 +233,7 @@ class AccessibilityTester {
    * Run basic accessibility checks as fallback
    */
   async runBasicAccessibilityChecks() {
-    console.log('🔍 Running basic accessibility checks...');
+    this.logProgress('Running basic accessibility checks as fallback...');
 
     const html = fs.readFileSync('dist/index.html', 'utf8');
     const issues = [];
