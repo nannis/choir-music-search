@@ -51,10 +51,10 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="btn-primary"
+          className="btn-elegant"
           aria-label={isLoading ? 'Searching for music' : 'Search for music'}
         >
-          {isLoading ? 'Searching...' : 'Search'}
+          {isLoading ? 'Söker...' : 'Sök'}
         </button>
       </div>
       <div id="search-help" className="body-small text-secondary-600">

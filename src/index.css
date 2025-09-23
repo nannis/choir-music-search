@@ -2,22 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design System - Semantic Tokens */
+/* Design System - Stockholm Elegant Aesthetic */
 @layer base {
   :root {
-    /* Color Tokens */
-    --color-primary: theme('colors.primary.600');
-    --color-primary-hover: theme('colors.primary.700');
-    --color-primary-light: theme('colors.primary.50');
-    --color-secondary: theme('colors.secondary.600');
-    --color-secondary-hover: theme('colors.secondary.700');
-    --color-background: theme('colors.secondary.50');
-    --color-surface: theme('colors.white');
-    --color-text-primary: theme('colors.secondary.900');
-    --color-text-secondary: theme('colors.secondary.600');
-    --color-border: theme('colors.secondary.200');
-    --color-error: theme('colors.red.500');
-    --color-success: theme('colors.green.500');
+    /* Elegant Color Palette - Stockholm Inspired */
+    --color-primary: 45 7% 15%;        /* Deep charcoal */
+    --color-primary-hover: 45 7% 10%;  /* Darker charcoal */
+    --color-primary-light: 45 15% 95%; /* Light cream */
+    --color-secondary: 42 15% 25%;     /* Warm gray */
+    --color-secondary-hover: 42 15% 20%; /* Darker warm gray */
+    --color-background: 42 25% 98%;    /* Warm cream background */
+    --color-surface: 0 0% 100%;        /* Pure white */
+    --color-text-primary: 45 7% 15%;   /* Deep charcoal text */
+    --color-text-secondary: 42 15% 45%; /* Muted warm gray */
+    --color-border: 42 15% 85%;        /* Light warm border */
+    --color-error: 0 70% 50%;          /* Classic red */
+    --color-success: 120 40% 45%;      /* Classic green */
+    
+    /* Elegant Accent Colors */
+    --color-accent: 200 15% 25%;       /* Muted blue-gray */
+    --color-accent-light: 200 25% 95%; /* Very light blue-gray */
     
     /* Spacing Tokens */
     --spacing-xs: 0.25rem;
@@ -42,17 +46,21 @@
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
     
-    /* Shadow Tokens */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    /* Elegant Shadow Tokens */
+    --shadow-sm: 0 1px 3px 0 hsl(var(--color-primary) / 0.05);
+    --shadow-md: 0 4px 12px -2px hsl(var(--color-primary) / 0.08);
+    --shadow-lg: 0 8px 25px -5px hsl(var(--color-primary) / 0.12);
+    --shadow-elegant: 0 4px 20px -4px hsl(var(--color-primary) / 0.15);
+    --shadow-soft: 0 2px 8px -2px hsl(var(--color-secondary) / 0.1);
   }
 
   body {
-    @apply font-sans text-base text-secondary-900 bg-secondary-50;
+    @apply font-serif text-base bg-cream-50;
+    color: hsl(var(--color-text-primary));
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
   }
 
   code {
@@ -65,66 +73,99 @@
 }
 
 @layer components {
-  /* Button Components */
+  /* Elegant Button Components - Stockholm Inspired */
   .btn-primary {
-    @apply bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-primary-600 text-cream-50 px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-primary-700 hover:shadow-elegant focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
     min-height: 44px;
     min-width: 44px;
+    font-family: 'Crimson Text', Georgia, serif;
+    letter-spacing: 0.025em;
+  }
+
+  .btn-elegant {
+    @apply bg-primary-600 text-cream-50 px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-primary-700 hover:shadow-elegant hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    min-height: 44px;
+    min-width: 44px;
+    font-family: 'Crimson Text', Georgia, serif;
+    letter-spacing: 0.025em;
   }
 
   .btn-secondary {
-    @apply bg-secondary-100 text-secondary-700 px-6 py-3 rounded-lg font-medium transition-colors duration-200 hover:bg-secondary-200 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-cream-100 text-primary-700 px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-cream-200 hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
     min-height: 44px;
     min-width: 44px;
+    font-family: 'Crimson Text', Georgia, serif;
   }
 
-  /* Input Components */
+  /* Elegant Input Components */
   .input-primary {
-    @apply w-full px-4 py-3 border border-secondary-200 rounded-lg text-base text-secondary-900 placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200;
+    @apply w-full px-4 py-3 border border-secondary-200 rounded-xl text-base text-primary-600 placeholder-secondary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 focus:shadow-soft;
     min-height: 44px;
+    font-family: 'Crimson Text', Georgia, serif;
+    background: hsl(var(--color-surface));
   }
 
-  /* Card Components */
+  /* Elegant Card Components */
   .card {
-    @apply bg-white rounded-xl shadow-md p-6 border border-secondary-200;
+    @apply bg-white rounded-2xl shadow-soft p-8 border border-cream-100;
+    background: linear-gradient(145deg, hsl(var(--color-surface)), hsl(42 20% 99%));
+  }
+
+  .card-elegant {
+    @apply bg-white rounded-2xl shadow-elegant p-8 border border-cream-100;
+    background: linear-gradient(145deg, hsl(var(--color-surface)), hsl(42 20% 99%));
   }
 
   .card-elevated {
-    @apply bg-white rounded-xl shadow-lg p-6 border border-secondary-200;
+    @apply bg-white rounded-2xl shadow-lg p-8 border border-cream-100;
+    background: linear-gradient(145deg, hsl(var(--color-surface)), hsl(42 20% 99%));
   }
 
   /* Layout Components */
   .container-main {
-    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-4xl mx-auto px-6 sm:px-8 lg:px-12;
   }
 
   .section-spacing {
-    @apply py-8 md:py-12 lg:py-16;
+    @apply py-12 md:py-16 lg:py-20;
   }
 
-  /* Typography Components */
+  /* Elegant Typography Components */
   .heading-1 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-900;
+    @apply text-4xl md:text-5xl lg:text-6xl font-serif font-semibold text-primary-600 leading-tight;
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.025em;
   }
 
   .heading-2 {
-    @apply text-2xl md:text-3xl font-semibold text-secondary-900;
+    @apply text-2xl md:text-3xl lg:text-4xl font-serif font-medium text-primary-600;
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.015em;
   }
 
   .heading-3 {
-    @apply text-xl md:text-2xl font-semibold text-secondary-900;
+    @apply text-xl md:text-2xl font-serif font-medium text-primary-600;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .subtitle-elegant {
+    @apply text-lg md:text-xl text-secondary-600 font-serif italic leading-relaxed;
+    font-family: 'Crimson Text', Georgia, serif;
   }
 
   .body-large {
-    @apply text-lg text-secondary-900;
+    @apply text-lg text-primary-600 leading-relaxed;
+    font-family: 'Crimson Text', Georgia, serif;
   }
 
   .body-base {
-    @apply text-base text-secondary-900;
+    @apply text-base text-primary-600 leading-relaxed;
+    font-family: 'Crimson Text', Georgia, serif;
   }
 
   .body-small {
-    @apply text-sm text-secondary-600;
+    @apply text-sm text-secondary-600 leading-relaxed;
+    font-family: 'Crimson Text', Georgia, serif;
   }
 
   /* Status Components */

@@ -38,15 +38,20 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary-50">
-      <main className="container-main section-spacing">
-        <header>
-          <h1 className="heading-1 text-center mb-8">
-            Choir Sheet Music Search
+    <div className="min-h-screen bg-cream-50">
+      <main className="container-main section-spacing" role="main">
+        <header className="text-center mb-12">
+          <h1 className="heading-1 mb-4">
+            Choir Music Search
           </h1>
+          <p className="subtitle-elegant mb-8">
+            Låt vår musik förgyll din dag
+          </p>
         </header>
 
-        <SearchForm onSearch={handleSearch} isLoading={isLoading} />
+        <div className="card-elegant mb-8">
+          <SearchForm onSearch={handleSearch} isLoading={isLoading} />
+        </div>
 
         <ErrorAlert error={error} />
 

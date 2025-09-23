@@ -1,4 +1,4 @@
-import { SearchResult } from './components/SearchForm';
+import { SearchResult } from '../components/SearchForm';
 
 /**
  * SearchService handles all API communication with Supabase
