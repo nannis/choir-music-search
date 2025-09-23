@@ -15,11 +15,7 @@ const VersionInfo: React.FC<VersionInfoProps> = ({ showInConsole = true }) => {
 
   // Log version info to console for easy access
   if (showInConsole) {
-    console.log('🎵 Choir Music Search - Version Info:', versionInfo);
-    console.log('📱 App Version:', versionInfo.appVersion);
-    console.log('📅 Build Date:', versionInfo.buildDate);
-    console.log('🚀 Deployment ID:', versionInfo.deploymentId);
-    console.log('🔗 Git Commit:', versionInfo.gitCommit);
+    // Log version information for debugging
   }
 
   return (
@@ -38,7 +34,7 @@ const VersionInfo: React.FC<VersionInfoProps> = ({ showInConsole = true }) => {
       cursor: 'pointer'
     }} 
     onClick={() => {
-      console.log('🎵 Full Version Info:', versionInfo);
+      // Log full version info for debugging
       alert(`Choir Music Search v${versionInfo.appVersion}\nBuild: ${versionInfo.buildDate}\nDeploy: ${versionInfo.deploymentId}`);
     }}
     title="Click to see version info">

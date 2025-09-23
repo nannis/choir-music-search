@@ -6,7 +6,7 @@ import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
 
 export default [
-  { ignores: ["dist", "coverage", "node_modules", "backend/node_modules", "**/components_backup/**", "**/hooks_backup/**", "**/lib_backup/**", "**/pages_backup/**", "**/services_backup/**"] },
+  { ignores: ["dist", "coverage", "node_modules", "backend/node_modules", "backend/dist", "**/components_backup/**", "**/hooks_backup/**", "**/lib_backup/**", "**/pages_backup/**", "**/services_backup/**"] },
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {

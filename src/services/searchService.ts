@@ -26,7 +26,7 @@ export class SearchService {
       return [];
     }
     
-    console.log('Searching for:', query);
+    // Search for music using the API
 
     try {
       const response = await fetch(`${supabaseUrl}/functions/v1/choir-music-api/search?q=${encodeURIComponent(query)}`, {
@@ -37,14 +37,14 @@ export class SearchService {
         }
       });
 
-      console.log('API response status:', response.status);
+      // Handle API response
 
       if (!response.ok) {
         throw new Error(`API request failed: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log('API response data:', data);
+      // Process response data
 
       return data.results || [];
     } catch (error) {

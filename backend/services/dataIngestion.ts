@@ -75,7 +75,7 @@ class IMSLPParser extends BaseParser {
     super(2000); // 2 second delay for IMSLP
   }
   
-  async parse(url: string): Promise<SongRecord[]> {
+  async parse(_url: string): Promise<SongRecord[]> {
     try {
       await this.delayRequest();
       
@@ -147,7 +147,7 @@ class MuseScoreParser extends BaseParser {
     super(1000); // 1 second delay for MuseScore
   }
   
-  async parse(url: string): Promise<SongRecord[]> {
+  async parse(_url: string): Promise<SongRecord[]> {
     try {
       await this.delayRequest();
       
@@ -223,7 +223,7 @@ class SundMusikParser extends BaseParser {
     super(1500); // 1.5 second delay for Sund Musik
   }
   
-  async parse(url: string): Promise<SongRecord[]> {
+  async parse(_url: string): Promise<SongRecord[]> {
     try {
       // Use curated list for Sund Musik (more reliable than parsing)
       const knownSongs = [
@@ -378,8 +378,6 @@ export class DataIngestionService {
       // Create cron job
       const task = cron.schedule(job.schedule, async () => {
         await this.runJob(job.id);
-      }, {
-        scheduled: false
       });
       
       this.jobs.set(job.id, task);
@@ -484,7 +482,7 @@ export class DataIngestionService {
       // Update job status with error
       await this.db.execute(
         'UPDATE ingestion_jobs SET status = "error", error_message = ? WHERE id = ?',
-        [error.message, jobId]
+        [(error as Error).message, jobId]
       );
     }
   }

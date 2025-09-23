@@ -1,0 +1,54 @@
+{
+  "timestamp": "2025-09-22T16:01:50.994Z",
+  "wcagVersion": "2.2",
+  "testType": "simple",
+  "summary": {
+    "violations": 2,
+    "passes": 2,
+    "incomplete": 0,
+    "inapplicable": 0
+  },
+  "results": {
+    "violations": [
+      {
+        "id": "heading-structure",
+        "description": "No heading elements found",
+        "help": "Add proper heading structure (h1, h2, etc.)",
+        "helpUrl": "https://www.w3.org/WAI/WCAG22/quickref/?showtechniques=131#headings-and-labels",
+        "nodes": [
+          {
+            "target": [
+              "body"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "focus-styles",
+        "description": "Missing focus indicators in CSS",
+        "help": "Add visible focus indicators for keyboard navigation",
+        "helpUrl": "https://www.w3.org/WAI/WCAG22/quickref/?showtechniques=131#focus-visible",
+        "nodes": [
+          {
+            "target": [
+              "css"
+            ]
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "html-lang",
+        "description": "HTML element has language attribute"
+      },
+      {
+        "id": "page-title",
+        "description": "Page has title element"
+      }
+    ],
+    "incomplete": [],
+    "inapplicable": []
+  },
+  "note": "This is a simple accessibility check. For comprehensive testing, use browser-based tools like axe-core."
+}
