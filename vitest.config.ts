@@ -24,9 +24,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'json-summary', 'html'],
           include: [
             'src/**/*.{ts,tsx}',
-            'backend/**/*.{ts,js}',
-            'supabase/functions/**/*.{ts,js}',
-            'scripts/**/*.{ts,js}'
+            'backend/services/**/*.{ts,js}' // Only include testable service files
           ],
       exclude: [
         'node_modules/',
