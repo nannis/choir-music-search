@@ -34,31 +34,31 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-8" role="form" aria-label="Search for choir music">
-      <div className="flex gap-3 mb-5">
+    <form onSubmit={handleSubmit} className="space-y-6" role="form" aria-label="Search for choir music">
+      <div className="flex flex-col sm:flex-row gap-4">
         <label htmlFor="search-input" className="sr-only">
           Search for choir music
         </label>
         <input
           id="search-input"
           type="text"
-          placeholder="Search for music by composer, title, or style..."
+          placeholder="Sök efter körstycken, kompositörer eller stilar..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="input-primary flex-1"
+          className="input-elegant flex-1"
           aria-describedby="search-help"
         />
         <button
           type="submit"
           disabled={isLoading}
-          className="btn-elegant"
+          className="btn-refined"
           aria-label={isLoading ? 'Searching for music' : 'Search for music'}
         >
           {isLoading ? 'Söker...' : 'Sök'}
         </button>
       </div>
-      <div id="search-help" className="body-small text-secondary-600">
-        Search suggestions: Try composers like "Bach", "Mozart", or styles like "Christmas", "Latin"
+      <div id="search-help" className="body-small text-secondary-600 text-center">
+        Sökförslag: Prova kompositörer som "Bach", "Mozart", eller stilar som "Lucia", "Advent"
       </div>
     </form>
   );

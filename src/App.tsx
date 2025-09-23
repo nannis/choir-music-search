@@ -40,16 +40,19 @@ const App = () => {
   return (
     <div className="min-h-screen bg-cream-50">
       <main className="container-main section-spacing" role="main">
-        <header className="text-center mb-12">
-          <h1 className="heading-1 mb-4">
+        <header className="text-center mb-16">
+          <h1 className="heading-1 mb-6">
             Choir Music Search
           </h1>
-          <p className="subtitle-elegant mb-8">
+          <p className="subtitle-elegant mb-2">
             Låt vår musik förgyll din dag
+          </p>
+          <p className="body-base text-secondary-500">
+            En elegant portal för att upptäcka körmusik från hela världen
           </p>
         </header>
 
-        <div className="card-elegant mb-8">
+        <div className="card-refined mb-12">
           <SearchForm onSearch={handleSearch} isLoading={isLoading} />
         </div>
 

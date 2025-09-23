@@ -12,41 +12,43 @@ interface SearchResultsProps {
 export const SearchResults = ({ results, query }: SearchResultsProps) => {
   if (results.length === 0) {
     return (
-      <div role="status" aria-live="polite" className="text-center text-secondary-600 mt-12">
-        <p className="body-large">No results found for "{query}"</p>
-        <p className="body-small mt-3">
-          Try different search terms or check your spelling
-        </p>
+      <div role="status" aria-live="polite" className="text-center text-secondary-600 mt-16">
+        <div className="card-refined max-w-md mx-auto">
+          <p className="body-large mb-3">Inga resultat hittades för "{query}"</p>
+          <p className="body-small text-secondary-500">
+            Prova andra söktermer eller kontrollera stavningen
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div role="region" aria-label="Search results" className="card-elevated animate-fade-in">
-      <h2 className="heading-2 mb-6">Search Results ({results.length} found)</h2>
-      <div className="space-y-4">
+    <div role="region" aria-label="Search results" className="card-refined animate-fade-in">
+      <h2 className="heading-2 mb-8 text-center">Sökresultat ({results.length} hittade)</h2>
+      <div className="space-y-6">
         {results.map((result, index) => (
-          <div key={result.id || index} className="p-4 border-b border-secondary-200 last:border-b-0">
-            <h3 className="heading-3 mb-2">{result.title}</h3>
-            <div className="space-y-1">
-              <p className="body-base"><strong>Composer:</strong> {result.composer}</p>
-              {result.textWriter && <p className="body-base"><strong>Text:</strong> {result.textWriter}</p>}
-              {result.description && <p className="body-base"><strong>Description:</strong> {result.description}</p>}
-              {result.language && <p className="body-base"><strong>Language:</strong> {result.language}</p>}
-              {result.voicing && <p className="body-base"><strong>Voicing:</strong> {result.voicing}</p>}
-              {result.difficulty && <p className="body-base"><strong>Difficulty:</strong> {result.difficulty}</p>}
-              {result.season && <p className="body-base"><strong>Season:</strong> {result.season}</p>}
-              {result.theme && <p className="body-base"><strong>Theme:</strong> {result.theme}</p>}
+          <div key={result.id || index} className="p-6 border-b border-secondary-100 last:border-b-0 hover:bg-cream-50 transition-colors duration-200 rounded-xl">
+            <h3 className="heading-3 mb-3 text-primary-700">{result.title}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <p className="body-base"><span className="font-medium text-primary-600">Kompositör:</span> {result.composer}</p>
+              {result.textWriter && <p className="body-base"><span className="font-medium text-primary-600">Text:</span> {result.textWriter}</p>}
+              {result.language && <p className="body-base"><span className="font-medium text-primary-600">Språk:</span> {result.language}</p>}
+              {result.voicing && <p className="body-base"><span className="font-medium text-primary-600">Stämsättning:</span> {result.voicing}</p>}
+              {result.difficulty && <p className="body-base"><span className="font-medium text-primary-600">Svårighet:</span> {result.difficulty}</p>}
+              {result.season && <p className="body-base"><span className="font-medium text-primary-600">Säsong:</span> {result.season}</p>}
+              {result.theme && <p className="body-base"><span className="font-medium text-primary-600">Tema:</span> {result.theme}</p>}
             </div>
+            {result.description && <p className="body-base mt-3 text-secondary-600 italic">{result.description}</p>}
             {result.sourceLink && (
               <a
                 href={result.sourceLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block mt-3 text-primary-600 hover:text-primary-700 transition-colors duration-200 focus-ring rounded px-2 py-1"
+                className="inline-block mt-4 text-primary-600 hover:text-primary-700 transition-colors duration-200 focus-ring rounded-lg px-3 py-2 bg-primary-50 hover:bg-primary-100"
                 aria-label={`View source for ${result.title} by ${result.composer}`}
               >
-                View Source →
+                Visa källa →
               </a>
             )}
           </div>

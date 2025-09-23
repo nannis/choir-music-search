@@ -90,6 +90,16 @@
     letter-spacing: 0.025em;
   }
 
+  .btn-refined {
+    @apply bg-primary-600 text-cream-50 px-10 py-4 rounded-2xl font-medium transition-all duration-400 hover:bg-primary-700 hover:shadow-elegant hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-primary-200 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    min-height: 60px;
+    min-width: 120px;
+    font-family: 'Crimson Text', Georgia, serif;
+    letter-spacing: 0.025em;
+    font-size: 1.125rem;
+    background: linear-gradient(135deg, hsl(var(--color-primary)), hsl(42 7% 20%));
+  }
+
   .btn-secondary {
     @apply bg-cream-100 text-primary-700 px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-cream-200 hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
     min-height: 44px;
@@ -99,10 +109,22 @@
 
   /* Elegant Input Components */
   .input-primary {
-    @apply w-full px-4 py-3 border border-secondary-200 rounded-xl text-base text-primary-600 placeholder-secondary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 focus:shadow-soft;
-    min-height: 44px;
+    @apply w-full px-6 py-4 border border-secondary-200 rounded-2xl text-lg text-primary-600 placeholder-secondary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 focus:shadow-elegant;
+    min-height: 60px;
     font-family: 'Crimson Text', Georgia, serif;
     background: hsl(var(--color-surface));
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+
+  .input-elegant {
+    @apply w-full px-8 py-5 border-2 border-secondary-200 rounded-2xl text-lg text-primary-600 placeholder-secondary-400 focus:outline-none focus:ring-4 focus:ring-primary-200 focus:border-primary-500 transition-all duration-400 focus:shadow-elegant;
+    min-height: 70px;
+    font-family: 'Crimson Text', Georgia, serif;
+    background: linear-gradient(145deg, hsl(var(--color-surface)), hsl(42 20% 99%));
+    font-size: 1.125rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
   }
 
   /* Elegant Card Components */
@@ -116,6 +138,12 @@
     background: linear-gradient(145deg, hsl(var(--color-surface)), hsl(42 20% 99%));
   }
 
+  .card-refined {
+    @apply bg-white rounded-3xl shadow-elegant p-12 border border-cream-100;
+    background: linear-gradient(145deg, hsl(var(--color-surface)), hsl(42 20% 99%));
+    backdrop-filter: blur(10px);
+  }
+
   .card-elevated {
     @apply bg-white rounded-2xl shadow-lg p-8 border border-cream-100;
     background: linear-gradient(145deg, hsl(var(--color-surface)), hsl(42 20% 99%));
@@ -127,7 +155,11 @@
   }
 
   .section-spacing {
-    @apply py-12 md:py-16 lg:py-20;
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .section-spacing-large {
+    @apply py-20 md:py-28 lg:py-36;
   }
 
   /* Elegant Typography Components */
