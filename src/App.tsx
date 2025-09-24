@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import VersionInfo from "./components/VersionInfo";
-import { SearchForm, SearchResults, ErrorAlert, WelcomeMessage } from "./components";
+import { SearchForm, SearchResults, ErrorAlert } from "./components";
 import { SearchService } from "./services/searchService";
 import { SearchResult } from "./components/SearchForm";
 
@@ -17,7 +17,7 @@ const App = () => {
 
   // Set document title for accessibility
   useEffect(() => {
-    document.title = "Choir Music Search";
+    document.title = "FemVoice Repertoire - Choir Music Search";
   }, []);
 
   const handleSearch = async (query: string) => {
@@ -38,38 +38,36 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="container mx-auto px-6 py-12" role="main">
-        {/* Header */}
-        <header className="text-center mb-12">
-          <h1 className="heading-main mb-4">
-            Körmusik Repertoire
-          </h1>
-          <p className="subtitle-main">
-            Upptäck körmusik för alla körer
-          </p>
-        </header>
+    <div className="min-h-screen" style={{ background: 'hsl(var(--color-background))' }}>
+      <header className="page-header">
+        <div className="container-main py-8">
+          <div className="max-w-4xl">
+            <h1 className="heading-main mb-2">
+              FemVoice Repertoire
+            </h1>
+            <p className="subtitle-main">
+              Discover sheet music for all-female choirs
+            </p>
+          </div>
+        </div>
+      </header>
 
-        {/* Search Container */}
-        <div className="search-container mb-12">
+      <main role="main" className="container-main py-8">
+        <div className="mb-8">
           <SearchForm onSearch={handleSearch} isLoading={isLoading} />
         </div>
 
         <ErrorAlert error={error} />
 
-        {results.length > 0 && (
-          <SearchResults results={results} query={currentQuery} />
-        )}
+        <SearchResults 
+          results={results} 
+          query={currentQuery} 
+          isLoading={isLoading}
+          hasSearched={hasSearched}
+        />
 
-        {hasSearched && results.length === 0 && !isLoading && !error && (
-          <SearchResults results={[]} query={currentQuery} />
-        )}
-
-        {!hasSearched && <WelcomeMessage />}
+        <VersionInfo />
       </main>
-
-      {/* Version info for deployment tracking */}
-      <VersionInfo />
     </div>
   );
 };
