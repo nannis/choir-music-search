@@ -12,11 +12,11 @@ interface SearchResultsProps {
 export const SearchResults = ({ results, query }: SearchResultsProps) => {
   if (results.length === 0) {
     return (
-      <div role="status" aria-live="polite" className="text-center text-secondary-600 mt-16">
-        <div className="card-refined max-w-md mx-auto">
-          <p className="body-large mb-3">Inga resultat hittades för "{query}"</p>
-          <p className="body-small text-secondary-500">
-            Prova andra söktermer eller kontrollera stavningen
+      <div role="status" aria-live="polite" className="text-center mt-16">
+        <div className="max-w-md mx-auto">
+          <h2 className="heading-results mb-4">Inga resultat hittades</h2>
+          <p className="text-meta">
+            Försök med andra söktermer för "{query}"
           </p>
         </div>
       </div>
@@ -24,33 +24,68 @@ export const SearchResults = ({ results, query }: SearchResultsProps) => {
   }
 
   return (
-    <div role="region" aria-label="Search results" className="card-refined animate-fade-in">
-      <h2 className="heading-2 mb-8 text-center">Sökresultat ({results.length} hittade)</h2>
-      <div className="space-y-6">
+    <div role="region" aria-label="Search results" className="max-w-6xl mx-auto">
+      <h2 className="heading-results mb-8">Alla körmusik stycken</h2>
+      <p className="text-meta mb-8">{results.length} stycken funna • Sida 1 av 1</p>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {results.map((result, index) => (
-          <div key={result.id || index} className="p-6 border-b border-secondary-100 last:border-b-0 hover:bg-cream-50 transition-colors duration-200 rounded-xl">
-            <h3 className="heading-3 mb-3 text-primary-700">{result.title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <p className="body-base"><span className="font-medium text-primary-600">Kompositör:</span> {result.composer}</p>
-              {result.textWriter && <p className="body-base"><span className="font-medium text-primary-600">Text:</span> {result.textWriter}</p>}
-              {result.language && <p className="body-base"><span className="font-medium text-primary-600">Språk:</span> {result.language}</p>}
-              {result.voicing && <p className="body-base"><span className="font-medium text-primary-600">Stämsättning:</span> {result.voicing}</p>}
-              {result.difficulty && <p className="body-base"><span className="font-medium text-primary-600">Svårighet:</span> {result.difficulty}</p>}
-              {result.season && <p className="body-base"><span className="font-medium text-primary-600">Säsong:</span> {result.season}</p>}
-              {result.theme && <p className="body-base"><span className="font-medium text-primary-600">Tema:</span> {result.theme}</p>}
+          <div key={result.id || index} className="card-result">
+            <div className="flex gap-4">
+              <div className="w-16 h-16 bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center">
+                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-body font-semibold mb-1 truncate">{result.title}</h3>
+                <p className="text-meta mb-2">av {result.composer}</p>
+                
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {result.voicing && (
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                      {result.voicing}
+                    </span>
+                  )}
+                  {result.difficulty && (
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-700">
+                      {result.difficulty}
+                    </span>
+                  )}
+                  {result.language && (
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-700">
+                      {result.language}
+                    </span>
+                  )}
+                </div>
+
+                {result.description && (
+                  <p className="text-meta text-sm leading-relaxed line-clamp-2">{result.description}</p>
+                )}
+                
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex items-center gap-4">
+                    <button className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                      👁 Preview
+                    </button>
+                    {result.sourceLink && (
+                      <a
+                        href={result.sourceLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                        aria-label={`View source for ${result.title}`}
+                      >
+                        🔗 Source
+                      </a>
+                    )}
+                  </div>
+                  <button className="btn-primary text-sm px-4 py-2">
+                    Download
+                  </button>
+                </div>
+              </div>
             </div>
-            {result.description && <p className="body-base mt-3 text-secondary-600 italic">{result.description}</p>}
-            {result.sourceLink && (
-              <a
-                href={result.sourceLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-4 text-primary-600 hover:text-primary-700 transition-colors duration-200 focus-ring rounded-lg px-3 py-2 bg-primary-50 hover:bg-primary-100"
-                aria-label={`View source for ${result.title} by ${result.composer}`}
-              >
-                Visa källa →
-              </a>
-            )}
           </div>
         ))}
       </div>

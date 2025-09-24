@@ -38,21 +38,20 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cream-50">
-      <main className="container-main section-spacing" role="main">
-        <header className="text-center mb-16">
-          <h1 className="heading-1 mb-6">
-            Choir Music Search
+    <div className="min-h-screen bg-gray-50">
+      <main className="container mx-auto px-6 py-12" role="main">
+        {/* Header */}
+        <header className="text-center mb-12">
+          <h1 className="heading-main mb-4">
+            Körmusik Repertoire
           </h1>
-          <p className="subtitle-elegant mb-2">
-            Låt vår musik förgyll din dag
-          </p>
-          <p className="body-base text-secondary-500">
-            En elegant portal för att upptäcka körmusik från hela världen
+          <p className="subtitle-main">
+            Upptäck körmusik för alla körer
           </p>
         </header>
 
-        <div className="card-refined mb-12">
+        {/* Search Container */}
+        <div className="search-container mb-12">
           <SearchForm onSearch={handleSearch} isLoading={isLoading} />
         </div>
 

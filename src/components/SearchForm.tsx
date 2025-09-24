@@ -35,30 +35,30 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" role="form" aria-label="Search for choir music">
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <label htmlFor="search-input" className="sr-only">
           Search for choir music
         </label>
         <input
           id="search-input"
           type="text"
-          placeholder="Sök efter körstycken, kompositörer eller stilar..."
+          placeholder="Sök efter titel, kompositör eller nyckelord..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="input-elegant flex-1"
+          className="search-input-main flex-1"
           aria-describedby="search-help"
         />
         <button
           type="submit"
           disabled={isLoading}
-          className="btn-refined"
-          aria-label={isLoading ? 'Searching for music' : 'Search for music'}
+          className="btn-filters flex items-center gap-2 whitespace-nowrap"
+          aria-label={isLoading ? 'Searching for music' : 'Search filters'}
         >
-          {isLoading ? 'Söker...' : 'Sök'}
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707v4.586a1 1 0 01-.293.707l-2 2A1 1 0 0110 21v-7.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          Filter
         </button>
-      </div>
-      <div id="search-help" className="body-small text-secondary-600 text-center">
-        Sökförslag: Prova kompositörer som "Bach", "Mozart", eller stilar som "Lucia", "Advent"
       </div>
     </form>
   );
