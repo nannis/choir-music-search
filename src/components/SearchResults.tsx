@@ -96,7 +96,7 @@ export const SearchResults = ({ results, query, isLoading, hasSearched }: Search
         </p>
       </div>
       
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="space-y-6">
         {displayResults.map((result, index) => (
           <div key={result.id || index} className="card-content">
             <div className="flex gap-4">
@@ -111,9 +111,9 @@ export const SearchResults = ({ results, query, isLoading, hasSearched }: Search
               
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-start mb-2">
+                <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
-                    <h3 className="content-title">
+                    <h3 className="content-title mb-1">
                       {result.title}
                     </h3>
                     <p className="content-composer">
@@ -121,47 +121,54 @@ export const SearchResults = ({ results, query, isLoading, hasSearched }: Search
                     </p>
                   </div>
                   {result.price && (
-                    <div className="content-price">
+                    <div className="content-price text-right">
                       {result.price}
                     </div>
                   )}
                 </div>
                 
-                {/* Rating */}
-                {result.rating && (
-                  <div className="rating-stars mb-2">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <svg key={i} className={`w-4 h-4 ${i < Math.floor(result.rating!) ? 'rating-star' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <span className="rating-text ml-2">
-                      {result.rating} ({result.reviewCount})
-                    </span>
+                {/* Rating - Make sure this is visible */}
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <svg 
+                        key={i} 
+                        className={`w-4 h-4 ${i < Math.floor(result.rating || 0) ? 'text-yellow-400' : 'text-gray-300'}`} 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
                   </div>
-                )}
+                  <span className="text-sm font-medium" style={{ color: 'hsl(var(--color-text-secondary))' }}>
+                    {result.rating} ({result.reviewCount} reviews)
+                  </span>
+                </div>
                 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-3">
                   {result.voicing && (
-                    <span className="content-tag voicing">
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">
                       {result.voicing}
                     </span>
                   )}
                   {result.difficulty && (
-                    <span className={`content-tag ${result.difficulty === 'Medium' ? 'difficulty-medium' : result.difficulty === 'Challenging' ? 'difficulty-challenging' : ''}`}>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${
+                      result.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-800' : 
+                      result.difficulty === 'Challenging' ? 'bg-orange-100 text-orange-800' : 
+                      'bg-gray-100 text-gray-800'
+                    }`}>
                       {result.difficulty}
                     </span>
                   )}
                   {result.season && (
-                    <span className="content-tag">
+                    <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs font-medium">
                       {result.season}
                     </span>
                   )}
                   {result.duration && (
-                    <span className="content-tag">
+                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">
                       {result.duration}
                     </span>
                   )}
@@ -169,7 +176,7 @@ export const SearchResults = ({ results, query, isLoading, hasSearched }: Search
                 
                 {/* Description */}
                 {result.description && (
-                  <p className="content-description mb-4">
+                  <p className="content-description mb-3">
                     {result.description}
                   </p>
                 )}
@@ -182,14 +189,15 @@ export const SearchResults = ({ results, query, isLoading, hasSearched }: Search
                 )}
                 
                 {/* Action buttons */}
-                <div className="flex gap-2">
-                  <button className="flex items-center gap-1 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50 transition-colors" style={{ borderColor: 'hsl(var(--color-border))', color: 'hsl(var(--color-text-secondary))' }}>
+                <div className="flex gap-3">
+                  <button className="flex items-center gap-2 px-4 py-2 text-sm border rounded-lg hover:bg-gray-50 transition-colors" style={{ borderColor: 'hsl(var(--color-border))', color: 'hsl(var(--color-text-secondary))' }}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-5-4v8a3 3 0 006 0V7a3 3 0 00-3-3H9a3 3 0 00-3 3v4z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12c0 1.93-8.75 8-9 8s-9-6.07-9-8c0-4.43 4.03-8 9-8s9 3.57 9 8z" />
                     </svg>
                     Preview
                   </button>
-                  <button className="btn-primary flex items-center gap-1 px-3 py-2 text-sm">
+                  <button className="btn-primary flex items-center gap-2 px-4 py-2 text-sm">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
