@@ -103,16 +103,16 @@ export const SearchResults = ({ results, query, isLoading, hasSearched }: Search
         </p>
       </div>
       
-      <div className="space-y-6">
+      <div className="grid gap-6 md:grid-cols-2">
         {displayResults.map((result, index) => (
-          <div key={result.id || index} className="card-content">
+          <div key={result.id || index} className="card-content border rounded-lg p-6">
             <div className="flex gap-4">
               {/* Thumbnail */}
               <div className="flex-shrink-0">
                 <img 
                   src={result.thumbnail || sheetMusic1} 
                   alt={`Sheet music for ${result.title}`}
-                  className="music-thumbnail"
+                  className="music-thumbnail w-20 h-20 rounded-md object-cover flex-shrink-0"
                 />
               </div>
               
@@ -134,13 +134,13 @@ export const SearchResults = ({ results, query, isLoading, hasSearched }: Search
                   )}
                 </div>
                 
-                {/* Rating - Make sure this is visible */}
+                {/* Rating - visible */}
                 <div className="flex items-center gap-2 mb-3">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <svg 
                         key={i} 
-                        className={`w-4 h-4 ${i < Math.floor(result.rating || 0) ? 'text-yellow-400' : 'text-gray-300'}`} 
+                        className={`w-5 h-5 ${i < Math.floor(result.rating || 0) ? 'text-yellow-400' : 'text-gray-300'}`} 
                         fill="currentColor" 
                         viewBox="0 0 20 20"
                       >
@@ -156,7 +156,7 @@ export const SearchResults = ({ results, query, isLoading, hasSearched }: Search
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-3">
                   {result.voicing && (
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">
+                    <span className="content-tag voicing px-2 py-1 rounded text-xs font-medium">
                       {result.voicing}
                     </span>
                   )}
