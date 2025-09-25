@@ -54,6 +54,13 @@ const mockResults: SearchResult[] = [
 export const SearchResults = ({ results, query, isLoading, hasSearched }: SearchResultsProps) => {
   // Use mock data for demonstration when no real results
   const displayResults = results.length > 0 ? results : (!hasSearched ? mockResults : []);
+  
+  console.log('SearchResults debug:', { 
+    results: results.length, 
+    hasSearched, 
+    displayResults: displayResults.length,
+    firstResult: displayResults[0]
+  });
 
   if (isLoading) {
     return (
