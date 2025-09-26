@@ -77,17 +77,41 @@ npm run test:run
 npm run test:quick
 ```
 
-## Pre-push Hook Optimization
+## Smart Pre-push Hook
 
-The pre-push hook has been optimized to run only essential tests:
+The pre-push hook intelligently determines which tests to run based on what files have changed:
 
-1. **Unit tests** - Fast, essential functionality
-2. **Frontend tests** - UI and component tests
-3. **Accessibility tests** - WCAG compliance
-4. **Integration tests** - Optional (warnings only)
-5. **Coverage check** - Testable code coverage
-6. **Build verification** - Production build
-7. **Linting** - Code quality
+### Backend Changes Detected
+When any of these files/patterns change:
+- `backend/**` - Backend services and logic
+- `supabase/**` - Edge functions and database
+- `database/**` - Database schemas and migrations
+- `scripts/**` - Build and deployment scripts
+- `*.sql` - SQL files
+- `package.json`, `package-lock.json` - Dependencies
+- `vitest.config.ts`, `tsconfig.json` - Test/build configuration
+
+**Runs**: Full comprehensive test suite (`npm run test:run`)
+- All unit, frontend, backend, and integration tests
+- Coverage checks (60% threshold)
+- Build verification
+- **Time**: ~60+ seconds
+
+### Frontend-Only Changes
+When only frontend files change (e.g., `src/**`, CSS, components):
+
+**Runs**: Essential tests only
+- Unit tests (`npm run test:unit`)
+- Frontend tests (`npm run test:frontend-only`) 
+- Accessibility tests (`npm run test:accessibility-only`)
+- Build verification
+- **Time**: ~15-20 seconds
+
+### Benefits
+- **Smart**: Only runs comprehensive tests when backend code changes
+- **Fast**: Frontend changes get quick feedback
+- **Thorough**: Backend changes get full validation
+- **Reliable**: Ensures backend integrity when needed
 
 ## Development Workflow
 
