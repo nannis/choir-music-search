@@ -73,14 +73,33 @@ async function deployFiles() {
     console.log('📁 Checking remote directory...');
     const remoteExists = await sftp.exists(remoteRoot);
     if (!remoteExists) {
-      console.log(`📁 Creating remote directory: ${remoteRoot}`);
+      console.log(`❌ Remote directory does not exist: ${remoteRoot}`);
+      console.log('🔍 Listing root directory to see available paths...');
+      
       try {
-        await sftp.mkdir(remoteRoot, true);
-      } catch (mkdirError) {
-        console.log(`⚠️  Could not create directory ${remoteRoot}: ${mkdirError.message}`);
-        console.log('📁 Directory may already exist or have different permissions');
-        console.log('🔄 Continuing with upload...');
+        const rootContents = await sftp.list('/');
+        console.log('📂 Contents of root directory (/):');
+        rootContents.forEach(item => {
+          console.log(`   ${item.type === 'd' ? '📁' : '📄'} ${item.name}`);
+        });
+        
+        // Also try listing webroots
+        try {
+          const webrootsContents = await sftp.list('/webroots');
+          console.log('📂 Contents of /webroots:');
+          webrootsContents.forEach(item => {
+            console.log(`   ${item.type === 'd' ? '📁' : '📄'} ${item.name}`);
+          });
+        } catch (err) {
+          console.log('❌ Could not list /webroots directory');
+        }
+        
+      } catch (err) {
+        console.log(`❌ Could not list root directory: ${err.message}`);
       }
+      
+      console.log('💡 Please check your onecom.config.js remoteRoot setting.');
+      process.exit(1);
     } else {
       console.log(`✅ Remote directory exists: ${remoteRoot}`);
     }

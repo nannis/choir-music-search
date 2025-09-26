@@ -179,13 +179,22 @@ class MuseScoreParser extends BaseParser {
           if (title.length < 3 || composer.length < 2) continue;
           if (title.toLowerCase().includes('musescore') || title.toLowerCase().includes('sheet music')) continue;
           
+          // Determine voicing based on title/content analysis
+          let voicing = 'SSA'; // Default
+          const titleLower = title.toLowerCase();
+          if (titleLower.includes('ssaa') || titleLower.includes('4-part') || titleLower.includes('four part')) {
+            voicing = 'SSAA';
+          } else if (titleLower.includes('ssa') || titleLower.includes('3-part') || titleLower.includes('three part')) {
+            voicing = 'SSA';
+          }
+          
           const songData: Partial<SongRecord> = {
             title,
             composer,
-            description: 'Score from MuseScore women\'s choir collection',
+            description: `Score from MuseScore women's choir collection (${voicing})`,
             sourceLink: 'https://musescore.com/sheetmusic/womens-choir',
             source: 'MuseScore',
-            voicing: 'SSA',
+            voicing,
             difficulty: 'Intermediate',
           };
           

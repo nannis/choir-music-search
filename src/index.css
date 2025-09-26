@@ -2,27 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design System - Music Platform Aesthetic */
+/* Modern Aesthetic Design System */
 @layer base {
   :root {
-    /* Modern Music Platform Color Palette */
-    --color-primary: 213 94% 68%;      /* Blue accent */
-    --color-primary-hover: 213 94% 60%; /* Darker blue */
-    --color-background: 0 0% 98%;      /* Light gray background */
-    --color-surface: 0 0% 100%;        /* Pure white cards */
-    --color-text-primary: 0 0% 15%;    /* Dark gray text */
-    --color-text-secondary: 0 0% 45%;  /* Medium gray text */
-    --color-text-muted: 0 0% 60%;      /* Light gray text */
-    --color-border: 0 0% 90%;          /* Light border */
-    --color-border-light: 0 0% 95%;    /* Very light border */
-    --color-success: 142 76% 36%;      /* Green for ratings */
-    --color-warning: 45 93% 47%;       /* Orange/yellow for ratings */
-    
-    /* Content Card Colors */
-    --color-card-bg: 0 0% 100%;        /* White card background */
-    --color-card-shadow: 0 0% 0%;      /* Black shadow */
-    --color-tag-bg: 0 0% 95%;          /* Light tag background */
-    --color-price: 142 76% 36%;        /* Green for pricing */
+    /* Modern Color Palette */
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-primary-light: #eff6ff;
+    --color-secondary: #64748b;
+    --color-secondary-hover: #475569;
+    --color-background: #fafafa;
+    --color-surface: #ffffff;
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #64748b;
+    --color-border: #e2e8f0;
+    --color-error: #ef4444;
+    --color-success: #10b981;
     
     /* Spacing Tokens */
     --spacing-xs: 0.25rem;
@@ -47,22 +42,17 @@
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
     
-    /* Elegant Shadow Tokens */
-    --shadow-sm: 0 1px 3px 0 hsl(var(--color-primary) / 0.05);
-    --shadow-md: 0 4px 12px -2px hsl(var(--color-primary) / 0.08);
-    --shadow-lg: 0 8px 25px -5px hsl(var(--color-primary) / 0.12);
-    --shadow-elegant: 0 4px 20px -4px hsl(var(--color-primary) / 0.15);
-    --shadow-soft: 0 2px 8px -2px hsl(var(--color-secondary) / 0.1);
+    /* Shadow Tokens */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 
   body {
-    @apply font-sans text-base;
-    background: hsl(var(--color-background));
-    color: hsl(var(--color-text-primary));
+    @apply font-sans text-base text-secondary-900 bg-secondary-50;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.6;
   }
 
   code {
@@ -75,148 +65,66 @@
 }
 
 @layer components {
-  /* Music Platform Components */
+  /* Button Components */
   .btn-primary {
-    background: hsl(var(--color-primary));
-    @apply text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
     min-height: 44px;
-    font-size: 14px;
-  }
-  
-  .btn-primary:hover {
-    background: hsl(var(--color-primary-hover));
-  }
-  
-  .btn-primary:focus {
-    ring-color: hsl(var(--color-primary) / 0.5);
+    min-width: 44px;
   }
 
-  .btn-filters {
-    @apply bg-white border text-gray-700 px-4 py-3 rounded-lg font-medium transition-all duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-    border-color: hsl(var(--color-border));
+  .btn-secondary {
+    @apply bg-secondary-100 text-secondary-700 px-6 py-3 rounded-lg font-medium transition-colors duration-200 hover:bg-secondary-200 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
     min-height: 44px;
-    font-size: 14px;
-    box-shadow: 0 1px 2px 0 hsl(var(--color-card-shadow) / 0.05);
+    min-width: 44px;
   }
 
-  /* Search Input */
-  .search-input-main {
-    @apply w-full px-4 py-3 border rounded-lg text-base placeholder-gray-500 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200;
-    background: hsl(var(--color-surface));
-    border-color: hsl(var(--color-border));
-    color: hsl(var(--color-text-primary));
+  /* Input Components */
+  .input-primary {
+    @apply w-full px-4 py-3 border border-secondary-200 rounded-lg text-base text-secondary-900 placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200;
     min-height: 44px;
-    font-size: 14px;
-    line-height: 1.5;
-    box-shadow: 0 1px 2px 0 hsl(var(--color-card-shadow) / 0.05);
   }
 
-  .search-input-main:focus {
-    ring-color: hsl(var(--color-primary) / 0.5);
-    box-shadow: 0 1px 2px 0 hsl(var(--color-card-shadow) / 0.05), 0 0 0 3px hsl(var(--color-primary) / 0.1);
+  /* Card Components */
+  .card {
+    @apply bg-white rounded-xl shadow-md p-6 border border-secondary-200;
   }
 
-  /* Content Cards */
-  .card-content {
-    background: hsl(var(--color-card-bg));
-    @apply rounded-lg border p-6 transition-shadow duration-200 hover:shadow-md;
-    border-color: hsl(var(--color-border-light));
-    box-shadow: 0 1px 3px 0 hsl(var(--color-card-shadow) / 0.1);
-  }
-
-  .card-content:hover {
-    box-shadow: 0 4px 12px 0 hsl(var(--color-card-shadow) / 0.15);
-  }
-
-  /* Music Thumbnail */
-  .music-thumbnail {
-    @apply w-16 h-16 rounded-md object-cover flex-shrink-0;
-    background: hsl(var(--color-border));
-  }
-
-  /* Content Tags */
-  .content-tag {
-    @apply px-2 py-1 rounded text-xs font-medium;
-    background: hsl(var(--color-tag-bg));
-    color: hsl(var(--color-text-secondary));
-  }
-
-  .content-tag.difficulty-medium {
-    @apply bg-yellow-100 text-yellow-800;
-  }
-
-  .content-tag.difficulty-challenging {
-    @apply bg-orange-100 text-orange-800;
-  }
-
-  .content-tag.voicing {
-    @apply bg-blue-100 text-blue-800;
+  .card-elevated {
+    @apply bg-white rounded-xl shadow-lg p-6 border border-secondary-200;
   }
 
   /* Layout Components */
   .container-main {
-    @apply max-w-6xl mx-auto px-6;
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  .page-header {
-    background: hsl(var(--color-surface));
-    @apply border-b;
-    border-color: hsl(var(--color-border-light));
+  .section-spacing {
+    @apply py-8 md:py-12 lg:py-16;
   }
 
   /* Typography Components */
-  .heading-main {
-    @apply text-2xl font-semibold leading-tight;
-    color: hsl(var(--color-text-primary));
+  .heading-1 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-900;
   }
 
-  .subtitle-main {
-    @apply text-base leading-normal;
-    color: hsl(var(--color-text-secondary));
+  .heading-2 {
+    @apply text-2xl md:text-3xl font-semibold text-secondary-900;
   }
 
-  .heading-results {
-    @apply text-xl font-semibold leading-tight;
-    color: hsl(var(--color-text-primary));
+  .heading-3 {
+    @apply text-xl md:text-2xl font-semibold text-secondary-900;
   }
 
-  .results-meta {
-    @apply text-sm leading-normal;
-    color: hsl(var(--color-text-muted));
+  .body-large {
+    @apply text-lg text-secondary-900;
   }
 
-  .content-title {
-    @apply text-lg font-semibold leading-tight;
-    color: hsl(var(--color-text-primary));
+  .body-base {
+    @apply text-base text-secondary-900;
   }
 
-  .content-composer {
-    @apply text-sm leading-normal;
-    color: hsl(var(--color-text-secondary));
-  }
-
-  .content-description {
-    @apply text-sm leading-relaxed;
-    color: hsl(var(--color-text-secondary));
-  }
-
-  .content-price {
-    @apply text-lg font-bold;
-    color: hsl(var(--color-price));
-  }
-
-  /* Rating Stars */
-  .rating-stars {
-    @apply flex items-center gap-1;
-  }
-
-  .rating-star {
-    @apply text-yellow-400;
-  }
-
-  .rating-text {
-    @apply text-sm font-medium;
-    color: hsl(var(--color-text-secondary));
+  .body-small {
+    @apply text-sm text-secondary-600;
   }
 
   /* Status Components */
@@ -276,4 +184,52 @@
       opacity: 1; 
     }
   }
+}
+
+/* Modern Header Styles */
+.page-header {
+  @apply bg-white border-b border-gray-200;
+}
+
+.heading-main {
+  @apply text-4xl font-bold text-gray-900;
+}
+
+.subtitle-main {
+  @apply text-lg text-gray-600;
+}
+
+/* Modern Container Styles */
+.container-main {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Modern Search Styles */
+.search-input-main {
+  @apply block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg;
+}
+
+.btn-search-main {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2;
+}
+
+/* Modern Results Styles */
+.heading-results {
+  @apply text-2xl font-semibold text-gray-900 mb-4;
+}
+
+.results-meta {
+  @apply text-gray-600 mb-6;
+}
+
+.card-content {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200;
+}
+
+.content-title {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.content-composer {
+  @apply text-gray-600;
 }

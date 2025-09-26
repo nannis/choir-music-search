@@ -3,4 +3,5 @@ export { SearchForm } from './SearchForm';
 export { SearchResults } from './SearchResults';
 export { ErrorAlert } from './ErrorAlert';
 export { WelcomeMessage } from './WelcomeMessage';
+export { SearchFilters } from './SearchFilters';
 export { default as VersionInfo } from './VersionInfo';

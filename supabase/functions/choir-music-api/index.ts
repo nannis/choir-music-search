@@ -134,12 +134,125 @@ serve(async (req) => {
       }
     }
 
-    // Search endpoint with real database queries
+    // Examples endpoint - returns random selection of songs for front page
+    if ((path === '/examples' || path === '/choir-music-api/examples') && method === 'GET') {
+      try {
+        // Get a random selection of songs to showcase the collection
+        // First, get the total count of active songs
+        const { count, error: countError } = await supabase
+          .from('songs')
+          .select('*', { count: 'exact', head: true })
+          .eq('is_active', true);
+
+        if (countError) {
+          console.error('Database count error:', countError);
+          return new Response(JSON.stringify({ 
+            error: 'Database query failed',
+            details: countError.message 
+          }), {
+            status: 500,
+            headers: { 
+              ...corsHeaders, 
+              'Access-Control-Allow-Origin': req.headers.get('origin') || '*',
+              'Content-Type': 'application/json' 
+            }
+          });
+        }
+
+        const totalSongs = count || 0;
+        let examples = [];
+
+        if (totalSongs > 0) {
+          // For truly random selection, we'll fetch more songs than needed and then randomly select
+          const numExamples = Math.min(6, totalSongs);
+          const fetchLimit = Math.min(50, totalSongs); // Fetch up to 50 songs for better randomness
+          
+          // Fetch a larger set of songs
+          const { data: songs, error } = await supabase
+            .from('songs')
+            .select('*')
+            .eq('is_active', true)
+            .order('created_at', { ascending: false })
+            .limit(fetchLimit);
+
+          if (error) {
+            console.error('Database query error:', error);
+            return new Response(JSON.stringify({ 
+              error: 'Database query failed',
+              details: error.message 
+            }), {
+              status: 500,
+              headers: { 
+                ...corsHeaders, 
+                'Access-Control-Allow-Origin': req.headers.get('origin') || '*',
+                'Content-Type': 'application/json' 
+              }
+            });
+          }
+
+          // Randomly select the desired number of examples
+          const shuffled = songs?.sort(() => Math.random() - 0.5) || [];
+          examples = shuffled.slice(0, numExamples);
+        }
+
+        // Transform data to match frontend expectations
+        const transformedExamples = examples.map(song => ({
+          id: song.id,
+          title: song.title,
+          composer: song.composer,
+          textWriter: song.text_writer,
+          description: song.description,
+          language: song.language,
+          voicing: song.voicing,
+          difficulty: song.difficulty,
+          season: song.season,
+          theme: song.theme,
+          sourceLink: song.source_link
+        }));
+
+        return new Response(JSON.stringify({
+          examples: transformedExamples
+        }), {
+          headers: { 
+            ...corsHeaders, 
+            'Access-Control-Allow-Origin': req.headers.get('origin') || '*',
+            'Content-Type': 'application/json' 
+          }
+        });
+
+      } catch (error) {
+        console.error('Examples error:', error);
+        return new Response(JSON.stringify({ 
+          error: 'Examples failed',
+          details: error.message 
+        }), {
+          status: 500,
+          headers: { 
+            ...corsHeaders, 
+            'Access-Control-Allow-Origin': req.headers.get('origin') || '*',
+            'Content-Type': 'application/json' 
+          }
+        });
+      }
+    }
+
+    // Search endpoint with real database queries and filtering
     if ((path === '/search' || path === '/choir-music-api/search') && method === 'GET') {
       const query = url.searchParams.get('q') || '';
       const page = parseInt(url.searchParams.get('page') || '1');
       const limit = parseInt(url.searchParams.get('limit') || '20');
       const offset = (page - 1) * limit;
+
+      // Extract filter parameters
+      const filters = {
+        source: url.searchParams.get('source')?.split(',').filter(Boolean) || [],
+        voicing: url.searchParams.get('voicing')?.split(',').filter(Boolean) || [],
+        difficulty: url.searchParams.get('difficulty')?.split(',').filter(Boolean) || [],
+        language: url.searchParams.get('language')?.split(',').filter(Boolean) || [],
+        theme: url.searchParams.get('theme')?.split(',').filter(Boolean) || [],
+        season: url.searchParams.get('season')?.split(',').filter(Boolean) || [],
+        period: url.searchParams.get('period')?.split(',').filter(Boolean) || []
+      };
 
       try {
         let dbQuery = supabase
@@ -150,7 +263,31 @@ serve(async (req) => {
 
         // If there's a search query, use full-text search
         if (query.trim()) {
-          dbQuery = dbQuery.textSearch('search_text', query.trim());
+          // Use ilike for case-insensitive partial matching
+          dbQuery = dbQuery.or(`search_text.ilike.%${query.trim()}%,title.ilike.%${query.trim()}%,composer.ilike.%${query.trim()}%`);
+        }
+
+        // Apply filters
+        if (filters.source.length > 0) {
+          dbQuery = dbQuery.in('source', filters.source);
+        }
+        if (filters.voicing.length > 0) {
+          dbQuery = dbQuery.in('voicing', filters.voicing);
+        }
+        if (filters.difficulty.length > 0) {
+          dbQuery = dbQuery.in('difficulty', filters.difficulty);
+        }
+        if (filters.language.length > 0) {
+          dbQuery = dbQuery.in('language', filters.language);
+        }
+        if (filters.theme.length > 0) {
+          dbQuery = dbQuery.in('theme', filters.theme);
+        }
+        if (filters.season.length > 0) {
+          dbQuery = dbQuery.in('season', filters.season);
+        }
+        if (filters.period.length > 0) {
+          dbQuery = dbQuery.in('period', filters.period);
         }
 
         // Add pagination

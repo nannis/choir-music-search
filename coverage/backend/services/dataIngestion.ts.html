@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">43.28% </span>
+                <span class="strong">42.43% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>174/402</span>
+                <span class='fraction'>174/410</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">43.28% </span>
+                <span class="strong">42.43% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>174/402</span>
+                <span class='fraction'>174/410</span>
             </div>
         
             
@@ -592,7 +592,16 @@
 <a name='L527'></a><a href='#L527'>527</a>
 <a name='L528'></a><a href='#L528'>528</a>
 <a name='L529'></a><a href='#L529'>529</a>
-<a name='L530'></a><a href='#L530'>530</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L530'></a><a href='#L530'>530</a>
+<a name='L531'></a><a href='#L531'>531</a>
+<a name='L532'></a><a href='#L532'>532</a>
+<a name='L533'></a><a href='#L533'>533</a>
+<a name='L534'></a><a href='#L534'>534</a>
+<a name='L535'></a><a href='#L535'>535</a>
+<a name='L536'></a><a href='#L536'>536</a>
+<a name='L537'></a><a href='#L537'>537</a>
+<a name='L538'></a><a href='#L538'>538</a>
+<a name='L539'></a><a href='#L539'>539</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -769,6 +778,15 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1302,13 +1320,22 @@ class MuseScoreParser extends BaseParser {
 <span class="cstat-no" title="statement not covered" >          if (title.length &lt; 3 || composer.length &lt; 2) continue;</span>
 <span class="cstat-no" title="statement not covered" >          if (title.toLowerCase().includes('musescore') || title.toLowerCase().includes('sheet music')) continue;</span>
           
+<span class="cstat-no" title="statement not covered" >          // Determine voicing based on title/content analysis</span>
+<span class="cstat-no" title="statement not covered" >          let voicing = 'SSA'; // Default</span>
+<span class="cstat-no" title="statement not covered" >          const titleLower = title.toLowerCase();</span>
+<span class="cstat-no" title="statement not covered" >          if (titleLower.includes('ssaa') || titleLower.includes('4-part') || titleLower.includes('four part')) {</span>
+<span class="cstat-no" title="statement not covered" >            voicing = 'SSAA';</span>
+<span class="cstat-no" title="statement not covered" >          } else if (titleLower.includes('ssa') || titleLower.includes('3-part') || titleLower.includes('three part')) {</span>
+<span class="cstat-no" title="statement not covered" >            voicing = 'SSA';</span>
+<span class="cstat-no" title="statement not covered" >          }</span>
+          
 <span class="cstat-no" title="statement not covered" >          const songData: Partial&lt;SongRecord&gt; = {</span>
 <span class="cstat-no" title="statement not covered" >            title,</span>
 <span class="cstat-no" title="statement not covered" >            composer,</span>
-<span class="cstat-no" title="statement not covered" >            description: 'Score from MuseScore women\'s choir collection',</span>
+<span class="cstat-no" title="statement not covered" >            description: `Score from MuseScore women's choir collection (${voicing})`,</span>
 <span class="cstat-no" title="statement not covered" >            sourceLink: 'https://musescore.com/sheetmusic/womens-choir',</span>
 <span class="cstat-no" title="statement not covered" >            source: 'MuseScore',</span>
-<span class="cstat-no" title="statement not covered" >            voicing: 'SSA',</span>
+<span class="cstat-no" title="statement not covered" >            voicing,</span>
 <span class="cstat-no" title="statement not covered" >            difficulty: 'Intermediate',</span>
 <span class="cstat-no" title="statement not covered" >          };</span>
           
@@ -1657,7 +1684,7 @@ export default DataIngestionService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-23T07:56:16.693Z
+                at 2025-09-26T07:34:13.517Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

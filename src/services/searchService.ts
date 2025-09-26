@@ -1,4 +1,5 @@
 import { SearchResult } from '../components/SearchForm';
+import { FilterOptions } from '../components/SearchFilters';
 
 /**
  * SearchService handles all API communication with Supabase
@@ -13,12 +14,35 @@ export class SearchService {
   }
 
   /**
+   * Build query parameters for search with filters
+   * @param query - The search query string
+   * @param filters - Optional filter options
+   * @returns URLSearchParams object
+   */
+  private static buildSearchParams(query: string, filters?: FilterOptions): URLSearchParams {
+    const params = new URLSearchParams();
+    params.set('q', query);
+    
+    if (filters) {
+      // Add filter parameters
+      Object.entries(filters).forEach(([key, values]) => {
+        if (values.length > 0) {
+          params.set(key, values.join(','));
+        }
+      });
+    }
+    
+    return params;
+  }
+
+  /**
    * Search for choir music using the Supabase Edge Function
    * @param query - The search query string
+   * @param filters - Optional filter options
    * @returns Promise<SearchResult[]> - Array of search results
    * @throws Error if the API call fails
    */
-  static async searchMusic(query: string): Promise<SearchResult[]> {
+  static async searchMusic(query: string, filters?: FilterOptions): Promise<SearchResult[]> {
     const { supabaseUrl, supabaseKey } = this.getSupabaseConfig();
     
     // Return early for empty or whitespace-only queries
@@ -26,10 +50,9 @@ export class SearchService {
       return [];
     }
     
-    // Search for music using the API
-
     try {
-      const response = await fetch(`${supabaseUrl}/functions/v1/choir-music-api/search?q=${encodeURIComponent(query)}`, {
+      const searchParams = this.buildSearchParams(query, filters);
+      const response = await fetch(`${supabaseUrl}/functions/v1/choir-music-api/search?${searchParams.toString()}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${supabaseKey}`,
@@ -37,19 +60,14 @@ export class SearchService {
         }
       });
 
-      // Handle API response
-
       if (!response.ok) {
         throw new Error(`API request failed: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      // Process response data
-
       return data.results || [];
     } catch (error) {
       console.error('Search failed:', error);
-      // If it's already an Error object, re-throw it; otherwise create a new one
       if (error instanceof Error) {
         throw error;
       }

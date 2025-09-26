@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-09-23T06:06:18.079Z",
+  "timestamp": "2025-09-26T07:34:46.577Z",
   "wcagVersion": "2.2",
   "summary": {
     "violations": 1,
-    "passes": 32,
+    "passes": 33,
     "incomplete": 0,
-    "inapplicable": 57
+    "inapplicable": 56
   },
   "results": {
     "testEngine": {
@@ -22,7 +22,7 @@
       "orientationAngle": 0,
       "orientationType": "landscape-primary"
     },
-    "timestamp": "2025-09-23T06:06:17.302Z",
+    "timestamp": "2025-09-26T07:34:43.581Z",
     "url": "http://localhost:4173/",
     "toolOptions": {
       "reporter": "v1"
@@ -510,18 +510,6 @@
         "description": "Ensure <input type=\"image\"> elements have alternative text",
         "help": "Image buttons must have alternative text",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/input-image-alt?application=playwright",
-        "nodes": []
-      },
-      {
-        "id": "landmark-banner-is-top-level",
-        "impact": null,
-        "tags": [
-          "cat.semantics",
-          "best-practice"
-        ],
-        "description": "Ensure the banner landmark is at top level",
-        "help": "Banner landmark should not be contained in another landmark",
-        "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-banner-is-top-level?application=playwright",
         "nodes": []
       },
       {
@@ -1014,7 +1002,7 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -1040,7 +1028,7 @@
               }
             ],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -1058,6 +1046,24 @@
         "help": "ARIA role should be appropriate for the element",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-allowed-role?application=playwright",
         "nodes": [
+          {
+            "any": [
+              {
+                "id": "aria-allowed-role",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "minor",
+                "message": "ARIA role is allowed for given element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<main class=\"container-main py-8\" role=\"main\">",
+            "target": [
+              "main"
+            ]
+          },
           {
             "any": [
               {
@@ -1123,7 +1129,7 @@
             ],
             "none": [],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -1141,7 +1147,7 @@
             ],
             "none": [],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -1162,6 +1168,24 @@
         "help": "Deprecated ARIA roles must not be used",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-deprecated-role?application=playwright",
         "nodes": [
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "deprecatedrole",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "minor",
+                "message": "ARIA role is not deprecated"
+              }
+            ],
+            "impact": null,
+            "html": "<main class=\"container-main py-8\" role=\"main\">",
+            "target": [
+              "main"
+            ]
+          },
           {
             "any": [],
             "all": [],
@@ -1263,7 +1287,7 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -1281,7 +1305,7 @@
               }
             ],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -1302,6 +1326,24 @@
         "help": "Required ARIA attributes must be provided",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-attr?application=playwright",
         "nodes": [
+          {
+            "any": [
+              {
+                "id": "aria-required-attr",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "All required ARIA attributes are present"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<main class=\"container-main py-8\" role=\"main\">",
+            "target": [
+              "main"
+            ]
+          },
           {
             "any": [
               {
@@ -1336,6 +1378,38 @@
         "help": "ARIA roles used must conform to valid values",
         "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-roles?application=playwright",
         "nodes": [
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "invalidrole",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA role is valid"
+              },
+              {
+                "id": "abstractrole",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "Abstract roles are not used"
+              },
+              {
+                "id": "unsupportedrole",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA role is supported"
+              }
+            ],
+            "impact": null,
+            "html": "<main class=\"container-main py-8\" role=\"main\">",
+            "target": [
+              "main"
+            ]
+          },
           {
             "any": [],
             "all": [],
@@ -1443,7 +1517,7 @@
             ],
             "none": [],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -1475,7 +1549,7 @@
             ],
             "none": [],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -1527,7 +1601,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -1545,7 +1619,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -1594,7 +1668,39 @@
             ],
             "none": [],
             "impact": null,
-            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | 975fa4f</div>",
+            "html": "<div class=\"min-h-screen\" style=\"background: hsl(var(--color-background));\">",
+            "target": [
+              ".min-h-screen"
+            ]
+          },
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "important-letter-spacing",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Letter-spacing in the style attribute is not set to !important, or meets the minimum"
+              },
+              {
+                "id": "important-word-spacing",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "word-spacing in the style attribute is not set to !important, or meets the minimum"
+              },
+              {
+                "id": "important-line-height",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "line-height in the style attribute is not set to !important, or meets the minimum"
+              }
+            ],
+            "none": [],
+            "impact": null,
+            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | a9fb785</div>",
             "target": [
               "div[title=\"Click to see version info\"]"
             ]
@@ -1640,7 +1746,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -1669,24 +1775,49 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#0f172a",
-                  "bgColor": "#f8fafc",
-                  "contrastRatio": 17.06,
-                  "fontSize": "36.0pt (48px)",
+                  "fgColor": "#111827",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 17.73,
+                  "fontSize": "27.0pt (36px)",
                   "fontWeight": "bold",
                   "expectedContrastRatio": "3:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 17.06"
+                "message": "Element has sufficient color contrast of 17.73"
               }
             ],
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<h1 class=\"heading-1 text-center mb-8\">Choir Sheet Music Search</h1>",
+            "html": "<h1 class=\"heading-main mb-2\">Choir Music Search</h1>",
             "target": [
               "h1"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "13.5pt (18px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"subtitle-main\">Discover beautiful choral music for your ensemble</p>",
+            "target": [
+              ".subtitle-main"
             ]
           },
           {
@@ -1697,7 +1828,7 @@
                   "fgColor": "#0f172a",
                   "bgColor": "#ffffff",
                   "contrastRatio": 17.85,
-                  "fontSize": "12.0pt (16px)",
+                  "fontSize": "13.5pt (18px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
@@ -1709,7 +1840,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -1734,7 +1865,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -1769,24 +1900,24 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#0f172a",
+                  "fgColor": "#111827",
                   "bgColor": "#f8fafc",
-                  "contrastRatio": 17.06,
-                  "fontSize": "13.5pt (18px)",
+                  "contrastRatio": 16.95,
+                  "fontSize": "18.0pt (24px)",
                   "fontWeight": "normal",
-                  "expectedContrastRatio": "4.5:1"
+                  "expectedContrastRatio": "3:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 17.06"
+                "message": "Element has sufficient color contrast of 16.95"
               }
             ],
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<p class=\"body-large\">Enter a search term above to find choir music!</p>",
+            "html": "<h2 class=\"text-2xl font-semibold text-gray-900 mb-2\">Discover Beautiful Choral Music</h2>",
             "target": [
-              ".body-large"
+              "h2"
             ]
           },
           {
@@ -1794,24 +1925,974 @@
               {
                 "id": "color-contrast",
                 "data": {
-                  "fgColor": "#475569",
+                  "fgColor": "#4b5563",
                   "bgColor": "#f8fafc",
-                  "contrastRatio": 7.24,
+                  "contrastRatio": 7.22,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.22"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-gray-600\">Here are some random examples from our collection:</p>",
+            "target": [
+              ".text-center.mb-8 > .text-gray-600"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#111827",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 17.73,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 17.73"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Ave Maria</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
                   "fontSize": "10.5pt (14px)",
                   "fontWeight": "normal",
                   "expectedContrastRatio": "4.5:1"
                 },
                 "relatedNodes": [],
                 "impact": "serious",
-                "message": "Element has sufficient color contrast of 7.24"
+                "message": "Element has sufficient color contrast of 7.55"
               }
             ],
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<p class=\"body-small mt-3\">Try searching for composers like \"Bach\", \"Mozart\", or styles like \"Christmas\", \"Latin\"</p>",
+            "html": "<p><strong>Composer:</strong> Franz Schubert</p>",
             "target": [
-              ".mt-3"
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Composer:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(1) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Voicing:</strong> SSAA</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Voicing:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(2) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Difficulty:</strong> Intermediate</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Difficulty:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(3) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Language:</strong> Latin</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(4)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Language:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(4) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Theme:</strong> Sacred</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(5)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Theme:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(5) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#6b7280",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 4.83,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.83"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-sm text-gray-500 mt-2 italic\">Classic Ave Maria arranged for women's choir</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .text-gray-500.mt-2.italic"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#111827",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 17.73,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 17.73"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Danny Boy</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Composer:</strong> Traditional Irish</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Composer:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(1) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Voicing:</strong> SSA</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Voicing:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(2) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Difficulty:</strong> Beginner</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Difficulty:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(3) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Language:</strong> English</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(4)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Language:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(4) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Theme:</strong> Folk</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(5)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Theme:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(5) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#6b7280",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 4.83,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.83"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-sm text-gray-500 mt-2 italic\">Traditional Irish ballad arranged for women's choir</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .text-gray-500.mt-2.italic"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#111827",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 17.73,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 17.73"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Amazing Grace</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Composer:</strong> John Newton</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Composer:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(1) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Voicing:</strong> SSAA</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Voicing:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(2) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Difficulty:</strong> Easy</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Difficulty:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(3) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Language:</strong> English</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(4)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Language:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(4) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Theme:</strong> Sacred</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(5)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 7.55,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.55"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Theme:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(5) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#6b7280",
+                  "bgColor": "#ffffff",
+                  "contrastRatio": 4.83,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 4.83"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-sm text-gray-500 mt-2 italic\">Beloved hymn arranged for women's choir</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .text-gray-500.mt-2.italic"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#f8fafc",
+                  "contrastRatio": 7.22,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.22"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-gray-600\"><strong>Ready to explore?</strong> Use the search above to find more music by composer, title, or style!</p>",
+            "target": [
+              ".mt-8 > .text-gray-600"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#4b5563",
+                  "bgColor": "#f8fafc",
+                  "contrastRatio": 7.22,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "bold",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element has sufficient color contrast of 7.22"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Ready to explore?</strong>",
+            "target": [
+              ".text-gray-600 > strong"
             ]
           },
           {
@@ -1834,7 +2915,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | 975fa4f</div>",
+            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | a9fb785</div>",
             "target": [
               "div[title=\"Click to see version info\"]"
             ]
@@ -1905,7 +2986,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -1954,9 +3035,81 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<h1 class=\"heading-1 text-center mb-8\">Choir Sheet Music Search</h1>",
+            "html": "<h1 class=\"heading-main mb-2\">Choir Music Search</h1>",
             "target": [
               "h1"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "has-visible-text",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "minor",
+                "message": "Element has text that is visible to screen readers"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h2 class=\"text-2xl font-semibold text-gray-900 mb-2\">Discover Beautiful Choral Music</h2>",
+            "target": [
+              "h2"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "has-visible-text",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "minor",
+                "message": "Element has text that is visible to screen readers"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Ave Maria</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "has-visible-text",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "minor",
+                "message": "Element has text that is visible to screen readers"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Danny Boy</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "has-visible-text",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "minor",
+                "message": "Element has text that is visible to screen readers"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Amazing Grace</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > h3"
             ]
           }
         ]
@@ -1997,7 +3150,7 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -2023,9 +3176,33 @@
                   "headingOrder": [
                     {
                       "ancestry": [
-                        "html > body > div > div > main:nth-child(1) > header:nth-child(1) > h1"
+                        "html > body > div > div > header:nth-child(1) > div > div > h1:nth-child(1)"
                       ],
                       "level": 1
+                    },
+                    {
+                      "ancestry": [
+                        "html > body > div > div > main:nth-child(2) > div:nth-child(2) > div:nth-child(1) > h2:nth-child(1)"
+                      ],
+                      "level": 2
+                    },
+                    {
+                      "ancestry": [
+                        "html > body > div > div > main:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > h3:nth-child(1)"
+                      ],
+                      "level": 3
+                    },
+                    {
+                      "ancestry": [
+                        "html > body > div > div > main:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > h3:nth-child(1)"
+                      ],
+                      "level": 3
+                    },
+                    {
+                      "ancestry": [
+                        "html > body > div > div > main:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > h3:nth-child(1)"
+                      ],
+                      "level": 3
                     }
                   ]
                 },
@@ -2037,9 +3214,81 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<h1 class=\"heading-1 text-center mb-8\">Choir Sheet Music Search</h1>",
+            "html": "<h1 class=\"heading-main mb-2\">Choir Music Search</h1>",
             "target": [
               "h1"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h2 class=\"text-2xl font-semibold text-gray-900 mb-2\">Discover Beautiful Choral Music</h2>",
+            "target": [
+              "h2"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Ave Maria</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Danny Boy</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order valid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Amazing Grace</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > h3"
             ]
           }
         ]
@@ -2142,7 +3391,7 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -2203,9 +3452,42 @@
               }
             ],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "landmark-banner-is-top-level",
+        "impact": null,
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the banner landmark is at top level",
+        "help": "Banner landmark should not be contained in another landmark",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-banner-is-top-level?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "landmark-is-top-level",
+                "data": {
+                  "role": "banner"
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "The banner landmark is at the top level."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<header class=\"page-header\"><div class=\"container-main py-8\"><div class=\"max-w-4xl\"><h1 class=\"heading-main mb-2\">Choir Music Search</h1><p class=\"subtitle-main\">Discover beautiful choral music for your ensemble</p></div></div></header>",
+            "target": [
+              "header"
             ]
           }
         ]
@@ -2236,7 +3518,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<main class=\"container-main section-spacing\">",
+            "html": "<main class=\"container-main py-8\" role=\"main\">",
             "target": [
               "main"
             ]
@@ -2267,7 +3549,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<header><h1 class=\"heading-1 text-center mb-8\">Choir Sheet Music Search</h1></header>",
+            "html": "<header class=\"page-header\"><div class=\"container-main py-8\"><div class=\"max-w-4xl\"><h1 class=\"heading-main mb-2\">Choir Music Search</h1><p class=\"subtitle-main\">Discover beautiful choral music for your ensemble</p></div></div></header>",
             "target": [
               "header"
             ]
@@ -2298,7 +3580,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<main class=\"container-main section-spacing\">",
+            "html": "<main class=\"container-main py-8\" role=\"main\">",
             "target": [
               "main"
             ]
@@ -2324,7 +3606,7 @@
                 "data": null,
                 "relatedNodes": [
                   {
-                    "html": "<main class=\"container-main section-spacing\">",
+                    "html": "<main class=\"container-main py-8\" role=\"main\">",
                     "target": [
                       "main"
                     ]
@@ -2359,6 +3641,27 @@
               {
                 "id": "landmark-is-unique",
                 "data": {
+                  "role": "banner",
+                  "accessibleText": null
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Landmarks must have a unique role or role/label/title (i.e. accessible name) combination"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<header class=\"page-header\"><div class=\"container-main py-8\"><div class=\"max-w-4xl\"><h1 class=\"heading-main mb-2\">Choir Music Search</h1><p class=\"subtitle-main\">Discover beautiful choral music for your ensemble</p></div></div></header>",
+            "target": [
+              "header"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "landmark-is-unique",
+                "data": {
                   "role": "main",
                   "accessibleText": null
                 },
@@ -2370,7 +3673,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<main class=\"container-main section-spacing\">",
+            "html": "<main class=\"container-main py-8\" role=\"main\">",
             "target": [
               "main"
             ]
@@ -2493,7 +3796,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -2519,7 +3822,7 @@
                 "data": null,
                 "relatedNodes": [
                   {
-                    "html": "<h1 class=\"heading-1 text-center mb-8\">Choir Sheet Music Search</h1>",
+                    "html": "<h1 class=\"heading-main mb-2\">Choir Music Search</h1>",
                     "target": [
                       "h1"
                     ]
@@ -2584,7 +3887,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<div class=\"min-h-screen bg-secondary-50\">",
+            "html": "<div class=\"min-h-screen\" style=\"background: hsl(var(--color-background));\">",
             "target": [
               ".min-h-screen"
             ]
@@ -2604,27 +3907,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<main class=\"container-main section-spacing\">",
-            "target": [
-              "main"
-            ]
-          },
-          {
-            "any": [
-              {
-                "id": "region",
-                "data": {
-                  "isIframe": false
-                },
-                "relatedNodes": [],
-                "impact": "moderate",
-                "message": "All page content is contained by landmarks"
-              }
-            ],
-            "all": [],
-            "none": [],
-            "impact": null,
-            "html": "<header><h1 class=\"heading-1 text-center mb-8\">Choir Sheet Music Search</h1></header>",
+            "html": "<header class=\"page-header\"><div class=\"container-main py-8\"><div class=\"max-w-4xl\"><h1 class=\"heading-main mb-2\">Choir Music Search</h1><p class=\"subtitle-main\">Discover beautiful choral music for your ensemble</p></div></div></header>",
             "target": [
               "header"
             ]
@@ -2644,9 +3927,89 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<h1 class=\"heading-1 text-center mb-8\">Choir Sheet Music Search</h1>",
+            "html": "<div class=\"container-main py-8\"><div class=\"max-w-4xl\"><h1 class=\"heading-main mb-2\">Choir Music Search</h1><p class=\"subtitle-main\">Discover beautiful choral music for your ensemble</p></div></div>",
+            "target": [
+              "header > .container-main.py-8"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"max-w-4xl\"><h1 class=\"heading-main mb-2\">Choir Music Search</h1><p class=\"subtitle-main\">Discover beautiful choral music for your ensemble</p></div>",
+            "target": [
+              ".max-w-4xl"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h1 class=\"heading-main mb-2\">Choir Music Search</h1>",
             "target": [
               "h1"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"subtitle-main\">Discover beautiful choral music for your ensemble</p>",
+            "target": [
+              ".subtitle-main"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<main class=\"container-main py-8\" role=\"main\">",
+            "target": [
+              "main"
             ]
           },
           {
@@ -2684,7 +4047,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<div class=\"flex gap-3 mb-5\">",
+            "html": "<div class=\"flex gap-4 mb-6\">",
             "target": [
               ".flex"
             ]
@@ -2724,7 +4087,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"input-primary flex-1\" aria-describedby=\"search-help\" value=\"\">",
+            "html": "<input id=\"search-input\" type=\"text\" placeholder=\"Search for music by composer, title, or style...\" class=\"search-input-main flex-1\" aria-describedby=\"search-help\" value=\"\">",
             "target": [
               "#search-input"
             ]
@@ -2744,7 +4107,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<button type=\"submit\" class=\"btn-primary\" aria-label=\"Search for music\">Search</button>",
+            "html": "<button type=\"submit\" class=\"btn-search-main\" aria-label=\"Search for music\">Search</button>",
             "target": [
               "button"
             ]
@@ -2784,7 +4147,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<div class=\"text-center text-secondary-600 mt-12\"><p class=\"body-large\">Enter a search term above to find choir music!</p><p class=\"body-small mt-3\">Try searching for composers like \"Bach\", \"Mozart\", or styles like \"Christmas\", \"Latin\"</p></div>",
+            "html": "<div class=\"mt-12\">",
             "target": [
               ".mt-12"
             ]
@@ -2804,9 +4167,9 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<p class=\"body-large\">Enter a search term above to find choir music!</p>",
+            "html": "<div class=\"text-center mb-8\"><h2 class=\"text-2xl font-semibold text-gray-900 mb-2\">Discover Beautiful Choral Music</h2><p class=\"text-gray-600\">Here are some random examples from our collection:</p></div>",
             "target": [
-              ".body-large"
+              ".text-center.mb-8"
             ]
           },
           {
@@ -2824,9 +4187,949 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<p class=\"body-small mt-3\">Try searching for composers like \"Bach\", \"Mozart\", or styles like \"Christmas\", \"Latin\"</p>",
+            "html": "<h2 class=\"text-2xl font-semibold text-gray-900 mb-2\">Discover Beautiful Choral Music</h2>",
             "target": [
-              ".mt-3"
+              "h2"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-gray-600\">Here are some random examples from our collection:</p>",
+            "target": [
+              ".text-center.mb-8 > .text-gray-600"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"grid gap-4 md:grid-cols-2 lg:grid-cols-3\">",
+            "target": [
+              ".grid"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200\">",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Ave Maria</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"space-y-1 text-sm text-gray-600\"><p><strong>Composer:</strong> Franz Schubert</p><p><strong>Voicing:</strong> SSAA</p><p><strong>Difficulty:</strong> Intermediate</p><p><strong>Language:</strong> Latin</p><p><strong>Theme:</strong> Sacred</p></div>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Composer:</strong> Franz Schubert</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Composer:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(1) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Voicing:</strong> SSAA</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Voicing:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(2) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Difficulty:</strong> Intermediate</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Difficulty:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(3) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Language:</strong> Latin</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(4)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Language:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(4) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Theme:</strong> Sacred</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(5)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Theme:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .space-y-1.text-gray-600.text-sm > p:nth-child(5) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-sm text-gray-500 mt-2 italic\">Classic Ave Maria arranged for women's choir</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(1) > .text-gray-500.mt-2.italic"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200\">",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Danny Boy</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"space-y-1 text-sm text-gray-600\"><p><strong>Composer:</strong> Traditional Irish</p><p><strong>Voicing:</strong> SSA</p><p><strong>Difficulty:</strong> Beginner</p><p><strong>Language:</strong> English</p><p><strong>Theme:</strong> Folk</p></div>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Composer:</strong> Traditional Irish</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Composer:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(1) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Voicing:</strong> SSA</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Voicing:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(2) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Difficulty:</strong> Beginner</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Difficulty:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(3) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Language:</strong> English</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(4)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Language:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(4) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Theme:</strong> Folk</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(5)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Theme:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .space-y-1.text-gray-600.text-sm > p:nth-child(5) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-sm text-gray-500 mt-2 italic\">Traditional Irish ballad arranged for women's choir</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(2) > .text-gray-500.mt-2.italic"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200\">",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<h3 class=\"font-semibold text-gray-900 mb-2\">Amazing Grace</h3>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > h3"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"space-y-1 text-sm text-gray-600\"><p><strong>Composer:</strong> John Newton</p><p><strong>Voicing:</strong> SSAA</p><p><strong>Difficulty:</strong> Easy</p><p><strong>Language:</strong> English</p><p><strong>Theme:</strong> Sacred</p></div>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Composer:</strong> John Newton</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(1)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Composer:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(1) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Voicing:</strong> SSAA</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(2)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Voicing:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(2) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Difficulty:</strong> Easy</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(3)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Difficulty:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(3) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Language:</strong> English</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(4)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Language:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(4) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p><strong>Theme:</strong> Sacred</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(5)"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Theme:</strong>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .space-y-1.text-gray-600.text-sm > p:nth-child(5) > strong"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-sm text-gray-500 mt-2 italic\">Beloved hymn arranged for women's choir</p>",
+            "target": [
+              ".bg-white.rounded-lg.shadow-sm:nth-child(3) > .text-gray-500.mt-2.italic"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<div class=\"text-center mt-8\"><p class=\"text-gray-600\"><strong>Ready to explore?</strong> Use the search above to find more music by composer, title, or style!</p></div>",
+            "target": [
+              ".mt-8"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<p class=\"text-gray-600\"><strong>Ready to explore?</strong> Use the search above to find more music by composer, title, or style!</p>",
+            "target": [
+              ".mt-8 > .text-gray-600"
+            ]
+          },
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "All page content is contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": null,
+            "html": "<strong>Ready to explore?</strong>",
+            "target": [
+              ".text-gray-600 > strong"
             ]
           }
         ]
@@ -2860,7 +5163,7 @@
             "all": [],
             "none": [],
             "impact": "moderate",
-            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | 975fa4f</div>",
+            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | a9fb785</div>",
             "target": [
               "div[title=\"Click to see version info\"]"
             ],

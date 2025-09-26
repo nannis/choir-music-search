@@ -7,6 +7,52 @@ import App from '../src/App';
 // Mock fetch globally
 global.fetch = vi.fn();
 
+// Mock the example songs service
+vi.mock('../src/services/exampleSongsService', () => ({
+  fetchExampleSongs: vi.fn().mockResolvedValue({
+    examples: [
+      {
+        id: 'test-1',
+        title: 'Test Song 1',
+        composer: 'Test Composer 1',
+        voicing: 'SSAA',
+        difficulty: 'Intermediate',
+        language: 'English',
+        theme: 'Sacred',
+        description: 'Test description 1',
+        source: 'MuseScore',
+        sourceLink: '#'
+      },
+      {
+        id: 'test-2',
+        title: 'Test Song 2',
+        composer: 'Test Composer 2',
+        voicing: 'SSA',
+        difficulty: 'Beginner',
+        language: 'Latin',
+        theme: 'Christmas',
+        description: 'Test description 2',
+        source: 'MuseScore',
+        sourceLink: '#'
+      }
+    ]
+  }),
+  getFallbackExampleSongs: vi.fn().mockReturnValue([
+    {
+      id: 'fallback-1',
+      title: 'Fallback Song',
+      composer: 'Fallback Composer',
+      voicing: 'SSAA',
+      difficulty: 'Easy',
+      language: 'English',
+      theme: 'Sacred',
+      description: 'Fallback description',
+      source: 'MuseScore',
+      sourceLink: '#'
+    }
+  ])
+}));
+
 describe('Choir Music Search Frontend', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -16,7 +62,7 @@ describe('Choir Music Search Frontend', () => {
     it('should render search form elements', () => {
       render(<App />);
       
-      expect(screen.getByText('Choir Sheet Music Search')).toBeInTheDocument();
+      expect(screen.getByText('Choir Music Search')).toBeInTheDocument();
       expect(screen.getByPlaceholderText('Search for music by composer, title, or style...')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Search for music' })).toBeInTheDocument();
     });
@@ -215,17 +261,27 @@ describe('Choir Music Search Frontend', () => {
       await user.click(button);
 
       // Should show loading state
-      expect(screen.getByText('Searching...')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Searching...')).toBeInTheDocument();
+      });
       expect(button).toBeDisabled();
     });
   });
 
   describe('Initial State', () => {
-    it('should show welcome message when no search has been performed', () => {
+    it('should show welcome message when no search has been performed', async () => {
       render(<App />);
       
-      expect(screen.getByText('Enter a search term above to find choir music!')).toBeInTheDocument();
-      expect(screen.getByText('Try searching for composers like "Bach", "Mozart", or styles like "Christmas", "Latin"')).toBeInTheDocument();
+      // Initially shows loading state
+      expect(screen.getByText('Loading examples...')).toBeInTheDocument();
+      
+      // Wait for examples to load
+      await waitFor(() => {
+        expect(screen.getByText('Discover Beautiful Choral Music')).toBeInTheDocument();
+        expect(screen.getByText('Here are some random examples from our collection:')).toBeInTheDocument();
+        expect(screen.getByText('Test Song 1')).toBeInTheDocument();
+        expect(screen.getByText('Test Song 2')).toBeInTheDocument();
+      });
     });
   });
 

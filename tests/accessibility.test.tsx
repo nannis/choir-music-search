@@ -6,12 +6,45 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../src/App';
 
-// Mock fetch globally
-global.fetch = vi.fn();
+// Mock the example songs service
+vi.mock('../src/services/exampleSongsService', () => ({
+  fetchExampleSongs: vi.fn().mockResolvedValue({
+    examples: [
+      {
+        id: 'test-1',
+        title: 'Test Song 1',
+        composer: 'Test Composer 1',
+        voicing: 'SSAA',
+        difficulty: 'Intermediate',
+        language: 'English',
+        theme: 'Sacred',
+        description: 'Test description 1',
+        source: 'MuseScore',
+        sourceLink: '#'
+      }
+    ]
+  }),
+  getFallbackExampleSongs: vi.fn().mockReturnValue([
+    {
+      id: 'fallback-1',
+      title: 'Fallback Song',
+      composer: 'Fallback Composer',
+      voicing: 'SSAA',
+      difficulty: 'Easy',
+      language: 'English',
+      theme: 'Sacred',
+      description: 'Fallback description',
+      source: 'MuseScore',
+      sourceLink: '#'
+    }
+  ])
+}));
 
 describe('WCAG 2.2 Accessibility Compliance', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Mock fetch globally
+    global.fetch = vi.fn();
   });
 
   describe('1. Perceivable', () => {
@@ -24,7 +57,7 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
       it('should have descriptive headings', () => {
         render(<App />);
         const mainHeading = screen.getByRole('heading', { level: 1 });
-        expect(mainHeading).toHaveTextContent('Choir Sheet Music Search');
+        expect(mainHeading).toHaveTextContent('Choir Music Search');
       });
     });
 
@@ -83,7 +116,7 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
 
       it('should submit form with Enter key', async () => {
         const user = userEvent.setup();
-        fetch.mockResolvedValueOnce({
+        (global.fetch as any).mockResolvedValueOnce({
           ok: true,
           json: () => Promise.resolve({ results: [], total: 0, page: 1, limit: 20, hasMore: false }),
         });
@@ -131,7 +164,7 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
           hasMore: false
         };
 
-        (fetch as any).mockResolvedValueOnce({
+        (global.fetch as any).mockResolvedValueOnce({
           ok: true,
           json: async () => mockResults
         });
@@ -191,7 +224,7 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
     describe('3.3 Input Assistance', () => {
       it('should provide error identification', async () => {
         const user = userEvent.setup();
-        fetch.mockRejectedValueOnce(new Error('Network error'));
+        (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
 
         render(<App />);
         
@@ -273,7 +306,7 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
 
         const button = screen.getByRole('button', { name: 'Search for music' });
         // Check that the element has the proper CSS class that includes min-height
-        expect(button).toHaveClass('btn-primary');
+        expect(button).toHaveClass('btn-search-main');
         // The min-height is defined in the CSS class, so we check for the class instead
       });
     });
@@ -289,7 +322,7 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
 
     it('should announce loading states', async () => {
       // Mock a delayed response
-      (fetch as any).mockImplementationOnce(() => 
+        (global.fetch as any).mockImplementationOnce(() =>
         new Promise(resolve => 
           setTimeout(() => resolve({
             ok: true,
@@ -326,7 +359,7 @@ describe('WCAG 2.2 Accessibility Compliance', () => {
         hasMore: false
       };
 
-      (fetch as any).mockResolvedValueOnce({
+        (global.fetch as any).mockResolvedValueOnce({
         ok: true,
         json: async () => mockResults
       });
