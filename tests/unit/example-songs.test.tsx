@@ -5,11 +5,11 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { WelcomeMessage } from '../src/components/WelcomeMessage';
-import { fetchExampleSongs, getFallbackExampleSongs } from '../src/services/exampleSongsService';
+import { WelcomeMessage } from '../../src/components/WelcomeMessage';
+import { fetchExampleSongs, getFallbackExampleSongs } from '../../src/services/exampleSongsService';
 
 // Mock the example songs service
-vi.mock('../src/services/exampleSongsService', () => ({
+vi.mock('../../src/services/exampleSongsService', () => ({
   fetchExampleSongs: vi.fn(),
   getFallbackExampleSongs: vi.fn()
 }));

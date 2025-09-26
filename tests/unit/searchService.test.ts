@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { SearchService } from '../src/services/searchService';
+import { SearchService } from '../../src/services/searchService';
 
 // Mock fetch globally
 global.fetch = vi.fn();

@@ -6,7 +6,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SearchFilters, FilterOptions } from '../src/components/SearchFilters';
+import { SearchFilters, FilterOptions } from '../../src/components/SearchFilters';
 
 describe('SearchFilters Component', () => {
   const mockFilters: FilterOptions = {

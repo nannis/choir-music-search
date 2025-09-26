@@ -4,10 +4,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from '../src/App';
+import App from '../../src/App';
 
 // Mock the example songs service
-vi.mock('../src/services/exampleSongsService', () => ({
+vi.mock('../../src/services/exampleSongsService', () => ({
   fetchExampleSongs: vi.fn().mockResolvedValue({
     examples: [
       {

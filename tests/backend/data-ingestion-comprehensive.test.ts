@@ -39,7 +39,7 @@ vi.mock('uuid', () => ({
 }));
 
 // Import after mocking
-import { DataIngestionService } from '../backend/services/dataIngestion';
+import { DataIngestionService } from '../../backend/services/dataIngestion';
 import cron from 'node-cron';
 import { Pool } from 'pg';
 
