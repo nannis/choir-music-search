@@ -1,0 +1,67 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd backend && npm ci
+        
+    - name: Run unit tests
+      run: npm run test:unit
+      
+    - name: Run frontend tests
+      run: npm run test:frontend-only
+      
+    - name: Run backend tests
+      run: npm run test:backend
+      
+    - name: Run integration tests
+      run: npm run test:integration
+      
+    - name: Run accessibility tests
+      run: npm run test:accessibility-only
+      
+    - name: Run environmental tests (if configured)
+      if: env.VITE_SUPABASE_URL != ''
+      env:
+        VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+        VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      run: npm run test:environmental
+      
+    - name: Check test coverage
+      run: npm run test:coverage
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false

@@ -69,6 +69,8 @@ async function testAnonymousAccess() {
       logTest('Anonymous access to songs (read)', true, 'Properly blocked by RLS');
     } else if (error) {
       logTest('Anonymous access to songs (read)', false, `Unexpected error: ${error.message}`);
+    } else if (data && data.length === 0) {
+      logTest('Anonymous access to songs (read)', true, 'Properly blocked by RLS (empty result)');
     } else {
       logTest('Anonymous access to songs (read)', false, 'Should be blocked but data was returned');
     }

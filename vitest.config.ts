@@ -17,7 +17,8 @@ export default defineConfig({
       '**/pages_backup/**',
       '**/services_backup/**',
       'backend/node_modules/**',
-      'supabase/node_modules/**'
+      'supabase/node_modules/**',
+      'tests/environmental/**' // Exclude environmental tests from main test runs
     ],
     coverage: {
       provider: 'v8',

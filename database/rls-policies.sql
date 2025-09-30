@@ -38,27 +38,15 @@ FOR DELETE USING (auth.uid() = user_id);
 -- Policy: Admins can view all submissions (for review purposes)
 CREATE POLICY "Admins can view all submissions" ON public.user_submissions
 FOR SELECT USING (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- Policy: Admins can update submission status (for approval/rejection)
 CREATE POLICY "Admins can update submission status" ON public.user_submissions
 FOR UPDATE USING (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 ) WITH CHECK (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- ==============================================
@@ -67,42 +55,26 @@ FOR UPDATE USING (
 
 -- Policy: All authenticated users can view all songs (public read access)
 CREATE POLICY "All authenticated users can view songs" ON public.songs
-FOR SELECT USING (auth.role() = 'authenticated');
+FOR SELECT USING (auth.uid() IS NOT NULL);
 
 -- Policy: Only admins can insert new songs
 CREATE POLICY "Admins can insert songs" ON public.songs
 FOR INSERT WITH CHECK (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- Policy: Only admins can update songs
 CREATE POLICY "Admins can update songs" ON public.songs
 FOR UPDATE USING (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 ) WITH CHECK (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- Policy: Only admins can delete songs
 CREATE POLICY "Admins can delete songs" ON public.songs
 FOR DELETE USING (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- ==============================================
@@ -112,56 +84,38 @@ FOR DELETE USING (
 -- Policy: Only admins can view ingestion jobs (internal system data)
 CREATE POLICY "Admins can view ingestion jobs" ON public.ingestion_jobs
 FOR SELECT USING (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- Policy: Only admins can insert ingestion jobs
 CREATE POLICY "Admins can insert ingestion jobs" ON public.ingestion_jobs
 FOR INSERT WITH CHECK (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- Policy: Only admins can update ingestion jobs
 CREATE POLICY "Admins can update ingestion jobs" ON public.ingestion_jobs
 FOR UPDATE USING (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 ) WITH CHECK (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- Policy: Only admins can delete ingestion jobs
 CREATE POLICY "Admins can delete ingestion jobs" ON public.ingestion_jobs
 FOR DELETE USING (
-  EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE auth.users.id = auth.uid() 
-    AND auth.users.raw_user_meta_data->>'role' = 'admin'
-  )
+  auth.jwt() ->> 'role' = 'admin'
 );
 
 -- ==============================================
 -- NOTES AND CONSIDERATIONS
 -- ==============================================
 
--- 1. USER ROLES: These policies assume you have a 'role' field in user metadata
---    To set a user as admin, update their metadata in Supabase Auth:
---    UPDATE auth.users SET raw_user_meta_data = raw_user_meta_data || '{"role": "admin"}' WHERE id = 'user-uuid';
+-- 1. USER ROLES: These policies use JWT claims for role checking
+--    To set a user as admin, you need to configure custom claims in your auth system
+--    or use Supabase's built-in role system. For custom claims:
+--    - Configure your auth provider to include 'role' in JWT claims
+--    - Or use Supabase's user metadata and create a custom function
 
 -- 2. ANONYMOUS ACCESS: If you need anonymous users to view songs, you can modify the songs SELECT policy:
 --    CREATE POLICY "Public can view songs" ON public.songs FOR SELECT USING (true);

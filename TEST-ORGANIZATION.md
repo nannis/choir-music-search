@@ -17,10 +17,11 @@ tests/
 ├── backend/                 # Backend service and logic tests
 │   ├── backend-*.test.ts
 │   └── data-ingestion*.test.ts
-└── integration/             # Integration and API contract tests
-    ├── api-contract.test.ts
-    ├── edge-function*.test.ts
-    ├── integration.test.ts
+├── integration/             # Integration and API contract tests
+│   ├── api-contract.test.ts
+│   ├── edge-function*.test.ts
+│   └── integration.test.ts
+└── environmental/           # Tests requiring live external services
     └── rls-policies.test.ts
 ```
 
@@ -42,6 +43,9 @@ npm run test:backend
 
 # Run only integration tests
 npm run test:integration
+
+# Run environmental tests (requires live Supabase)
+npm run test:environmental
 ```
 
 ### Specific Test Categories
@@ -112,6 +116,27 @@ When only frontend files change (e.g., `src/**`, CSS, components):
 - **Fast**: Frontend changes get quick feedback
 - **Thorough**: Backend changes get full validation
 - **Reliable**: Ensures backend integrity when needed
+- **Environmental**: Excludes tests requiring live services from pre-push
+
+## Environmental Tests
+
+Environmental tests require live external services and are excluded from pre-push hooks:
+
+### RLS Policies Tests
+- **Location**: `tests/environmental/rls-policies.test.ts`
+- **Purpose**: Verify Row Level Security policies with live Supabase
+- **Requirements**: 
+  - `VITE_SUPABASE_URL`
+  - `VITE_SUPABASE_ANON_KEY` 
+  - `SUPABASE_SERVICE_ROLE_KEY`
+- **Run**: `npm run test:environmental`
+- **CI/CD**: Included in GitHub Actions workflow
+
+### Why Excluded from Pre-push
+- Requires live database connection
+- Network-dependent (can fail due to connectivity)
+- Slower execution time
+- Environment-specific configuration needed
 
 ## Development Workflow
 

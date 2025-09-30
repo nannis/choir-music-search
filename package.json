@@ -47,8 +47,9 @@
     "test:watch:unit": "vitest --watch tests/unit/",
     "test:watch:frontend": "vitest --watch tests/frontend/",
     "test:watch:backend": "vitest --watch tests/backend/",
-    "test:rls": "node scripts/test-rls-policies.js",
-    "test:rls-policies": "vitest run tests/rls-policies.test.ts"
+        "test:rls": "node scripts/test-rls-policies.js",
+        "test:rls-policies": "vitest run tests/rls-policies.test.ts",
+        "test:environmental": "vitest run tests/environmental/"
   },
   "dependencies": {
     "@radix-ui/react-collapsible": "^1.1.12",
