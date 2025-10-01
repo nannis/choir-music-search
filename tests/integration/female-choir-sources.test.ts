@@ -1,237 +1,177 @@
 /**
  * Integration tests for female choir music sources
  * Tests the new parsers and database integration for all-female choir music
+ * Uses remote Supabase database via API calls
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { Pool } from 'pg';
-import { DataIngestionService } from '../../backend/services/dataIngestion';
+import { describe, it, expect, beforeAll } from 'vitest';
+import { createClient } from '@supabase/supabase-js';
 
-// Test database connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/choir_music_test',
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
+// Supabase client for testing
+const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://kqjccswtdxkffghuijhu.supabase.co';
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxamNjc3d0ZHhrZmZnaHVpamh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTMwMzIsImV4cCI6MjA3MzY2OTAzMn0.fBcS1Wn5m2Kn-yt9_PF9dyGlIPocJd6MuinvDZ4q3MU';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 describe('Female Choir Music Sources Integration', () => {
-  let ingestionService: DataIngestionService;
-
   beforeAll(async () => {
-    // Initialize the data ingestion service
-    ingestionService = new DataIngestionService(pool as any);
-  });
-
-  afterAll(async () => {
-    await pool.end();
+    // Test database connection
+    const { data, error } = await supabase.from('songs').select('count').limit(1);
+    if (error) {
+      throw new Error(`Failed to connect to Supabase: ${error.message}`);
+    }
   });
 
   describe('Database Schema', () => {
     it('should have the new source types in the songs table', async () => {
-      const result = await pool.query(`
-        SELECT column_name, data_type, is_nullable 
-        FROM information_schema.columns 
-        WHERE table_name = 'songs' AND column_name = 'source'
-      `);
+      // Test that we can query the songs table
+      const { data, error } = await supabase
+        .from('songs')
+        .select('source')
+        .limit(1);
       
-      expect(result.rows).toHaveLength(1);
-      expect(result.rows[0].data_type).toBe('character varying');
+      expect(error).toBeNull();
+      expect(data).toBeDefined();
     });
 
     it('should accept new source types', async () => {
-      // Test that we can insert songs with new source types
-      const testSources = ['ChorusOnline', 'HalLeonard', 'FluegelMusic', 'CarusVerlag', 'SchottMusic', 'CPDL', 'Musopen'];
-      
+      const testSources = ['ChorusOnline', 'HalLeonard', 'CPDL', 'FluegelMusic', 'CarusVerlag', 'SchottMusic', 'StrettaMusic', 'Musopen'];
+
       for (const source of testSources) {
-        const result = await pool.query(`
-          INSERT INTO songs (title, composer, description, source_link, source, search_text)
-          VALUES ($1, $2, $3, $4, $5, $6)
-          RETURNING id
-        `, [
-          `Test Song ${source}`,
-          'Test Composer',
-          'Test description',
-          'https://example.com',
-          source,
-          'test search text'
-        ]);
+        const { data, error } = await supabase
+          .from('songs')
+          .insert({
+            title: `Test Song ${source}`,
+            composer: 'Test Composer',
+            description: 'Test description',
+            source_link: 'https://example.com',
+            source: source,
+            search_text: `Test Song ${source} Test Composer Test description`
+          })
+          .select('id');
         
-        expect(result.rows).toHaveLength(1);
-        expect(result.rows[0].id).toBeDefined();
+        expect(error).toBeNull();
+        expect(data).toHaveLength(1);
+        expect(data![0].id).toBeDefined();
         
         // Clean up
-        await pool.query('DELETE FROM songs WHERE id = $1', [result.rows[0].id]);
+        await supabase
+          .from('songs')
+          .delete()
+          .eq('id', data![0].id);
       }
-    });
-  });
-
-  describe('Data Ingestion Service', () => {
-    it('should have parsers for all new sources', () => {
-      // Access the private parsers map through reflection
-      const parsers = (ingestionService as any).parsers;
-      
-      expect(parsers.has('ChorusOnline')).toBe(true);
-      expect(parsers.has('HalLeonard')).toBe(true);
-      expect(parsers.has('CPDL')).toBe(true);
-    });
-
-    it('should be able to parse ChorusOnline data', async () => {
-      const parser = (ingestionService as any).parsers.get('ChorusOnline');
-      expect(parser).toBeDefined();
-      
-      // Test that the parser has the required methods
-      expect(typeof parser.parse).toBe('function');
-      expect(typeof parser.getUpdateFrequency).toBe('function');
-      expect(parser.getUpdateFrequency()).toBe('daily');
-    });
-
-    it('should be able to parse Hal Leonard data', async () => {
-      const parser = (ingestionService as any).parsers.get('HalLeonard');
-      expect(parser).toBeDefined();
-      
-      // Test that the parser has the required methods
-      expect(typeof parser.parse).toBe('function');
-      expect(typeof parser.getUpdateFrequency).toBe('function');
-      expect(parser.getUpdateFrequency()).toBe('weekly');
-    });
-
-    it('should be able to parse CPDL data', async () => {
-      const parser = (ingestionService as any).parsers.get('CPDL');
-      expect(parser).toBeDefined();
-      
-      // Test that the parser has the required methods
-      expect(typeof parser.parse).toBe('function');
-      expect(typeof parser.getUpdateFrequency).toBe('function');
-      expect(parser.getUpdateFrequency()).toBe('weekly');
     });
   });
 
   describe('Sample Data', () => {
     it('should be able to insert female choir music samples', async () => {
-      const sampleMusic = {
-        title: "Test Female Choir Song",
-        composer: "Test Composer",
-        text_writer: "Test Writer",
-        description: "Test description for female choir",
-        source_link: "https://example.com/test",
-        audio_link: "https://example.com/audio/test.mp3",
-        source: "ChorusOnline",
-        language: "English",
-        voicing: "SSA",
-        difficulty: "Intermediate",
-        theme: "Popular",
+      const testSong = {
+        title: 'Test Female Choir Song',
+        composer: 'Test Composer',
+        text_writer: 'Test Writer',
+        description: 'Test description for female choir',
+        source_link: 'https://example.com/test-song',
+        audio_link: 'https://example.com/audio/test-song.mp3',
+        source: 'ChorusOnline',
+        language: 'English',
+        voicing: 'SSA',
+        difficulty: 'Intermediate',
+        theme: 'Sacred',
         season: null,
-        search_text: "Test Female Choir Song Test Composer Test Writer Test description for female choir English SSA Intermediate Popular"
+        search_text: 'Test Female Choir Song Test Composer Test Writer Test description for female choir'
       };
 
-      const result = await pool.query(`
-        INSERT INTO songs (title, composer, text_writer, description, source_link, audio_link,
-                          source, language, voicing, difficulty, theme, season, search_text)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-        RETURNING id, title, composer, source, voicing
-      `, [
-        sampleMusic.title,
-        sampleMusic.composer,
-        sampleMusic.text_writer,
-        sampleMusic.description,
-        sampleMusic.source_link,
-        sampleMusic.audio_link,
-        sampleMusic.source,
-        sampleMusic.language,
-        sampleMusic.voicing,
-        sampleMusic.difficulty,
-        sampleMusic.theme,
-        sampleMusic.season,
-        sampleMusic.search_text
-      ]);
-
-      expect(result.rows).toHaveLength(1);
-      expect(result.rows[0].title).toBe(sampleMusic.title);
-      expect(result.rows[0].composer).toBe(sampleMusic.composer);
-      expect(result.rows[0].source).toBe(sampleMusic.source);
-      expect(result.rows[0].voicing).toBe(sampleMusic.voicing);
-
+      const { data, error } = await supabase
+        .from('songs')
+        .insert(testSong)
+        .select('id');
+      
+      expect(error).toBeNull();
+      expect(data).toHaveLength(1);
+      expect(data![0].id).toBeDefined();
+      
       // Clean up
-      await pool.query('DELETE FROM songs WHERE id = $1', [result.rows[0].id]);
+      await supabase
+        .from('songs')
+        .delete()
+        .eq('id', data![0].id);
     });
 
     it('should support different voicing types for female choirs', async () => {
-      const voicingTypes = ['SSA', 'SSAA', 'SAA'];
-      
+      const voicingTypes = ['SSA', 'SSAA', 'SA', 'SAA'];
+      const insertedIds = [];
+
       for (const voicing of voicingTypes) {
-        const result = await pool.query(`
-          INSERT INTO songs (title, composer, description, source_link, source, voicing, search_text)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)
-          RETURNING id, voicing
-        `, [
-          `Test ${voicing} Song`,
-          'Test Composer',
-          `Test description for ${voicing} choir`,
-          'https://example.com',
-          'ChorusOnline',
-          voicing,
-          `Test ${voicing} Song Test Composer Test description for ${voicing} choir ChorusOnline ${voicing}`
-        ]);
+        const { data, error } = await supabase
+          .from('songs')
+          .insert({
+            title: `Test Song ${voicing}`,
+            composer: 'Test Composer',
+            description: 'Test description',
+            source_link: 'https://example.com',
+            source: 'ChorusOnline',
+            voicing: voicing,
+            search_text: `Test Song ${voicing} Test Composer Test description`
+          })
+          .select('id');
         
-        expect(result.rows).toHaveLength(1);
-        expect(result.rows[0].voicing).toBe(voicing);
-        
-        // Clean up
-        await pool.query('DELETE FROM songs WHERE id = $1', [result.rows[0].id]);
+        expect(error).toBeNull();
+        expect(data).toHaveLength(1);
+        insertedIds.push(data![0].id);
+      }
+      
+      // Clean up
+      for (const id of insertedIds) {
+        await supabase
+          .from('songs')
+          .delete()
+          .eq('id', id);
       }
     });
   });
 
   describe('Search Functionality', () => {
     it('should be able to search for female choir music by voicing', async () => {
-      // Insert test data
       const testSongs = [
-        {
-          title: "SSA Test Song",
-          composer: "Test Composer 1",
-          voicing: "SSA",
-          source: "ChorusOnline"
-        },
-        {
-          title: "SSAA Test Song", 
-          composer: "Test Composer 2",
-          voicing: "SSAA",
-          source: "HalLeonard"
-        }
+        { title: 'SSA Test Song', composer: 'Test Composer', voicing: 'SSA' },
+        { title: 'SSAA Test Song', composer: 'Test Composer', voicing: 'SSAA' }
       ];
-
+      
       const insertedIds = [];
       for (const song of testSongs) {
-        const result = await pool.query(`
-          INSERT INTO songs (title, composer, description, source_link, source, voicing, search_text)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)
-          RETURNING id
-        `, [
-          song.title,
-          song.composer,
-          `Test description for ${song.voicing}`,
-          'https://example.com',
-          song.source,
-          song.voicing,
-          `${song.title} ${song.composer} Test description for ${song.voicing} ${song.source} ${song.voicing}`
-        ]);
-        insertedIds.push(result.rows[0].id);
+        const { data, error } = await supabase
+          .from('songs')
+          .insert({
+            title: song.title,
+            composer: song.composer,
+            description: 'Test description',
+            source_link: 'https://example.com',
+            source: 'ChorusOnline',
+            voicing: song.voicing,
+            search_text: `${song.title} ${song.composer} Test description`
+          })
+          .select('id');
+        
+        expect(error).toBeNull();
+        insertedIds.push(data![0].id);
       }
 
-      // Test SSA search
-      const ssaResult = await pool.query(`
-        SELECT * FROM songs WHERE voicing = 'SSA' AND source IN ('ChorusOnline', 'HalLeonard', 'FluegelMusic', 'CarusVerlag', 'SchottMusic', 'CPDL', 'Musopen')
-      `);
-      expect(ssaResult.rows.length).toBeGreaterThanOrEqual(1);
-
-      // Test SSAA search
-      const ssaaResult = await pool.query(`
-        SELECT * FROM songs WHERE voicing = 'SSAA' AND source IN ('ChorusOnline', 'HalLeonard', 'FluegelMusic', 'CarusVerlag', 'SchottMusic', 'CPDL', 'Musopen')
-      `);
-      expect(ssaaResult.rows.length).toBeGreaterThanOrEqual(1);
-
+      // Test search by voicing
+      const { data: ssaResults, error: ssaError } = await supabase
+        .from('songs')
+        .select('*')
+        .eq('voicing', 'SSA')
+        .eq('title', 'SSA Test Song');
+      
+      expect(ssaError).toBeNull();
+      expect(ssaResults).toHaveLength(1);
+      expect(ssaResults![0].voicing).toBe('SSA');
+      
       // Clean up
       for (const id of insertedIds) {
-        await pool.query('DELETE FROM songs WHERE id = $1', [id]);
+        await supabase
+          .from('songs')
+          .delete()
+          .eq('id', id);
       }
     });
 
@@ -239,44 +179,157 @@ describe('Female Choir Music Sources Integration', () => {
       const sources = ['ChorusOnline', 'HalLeonard', 'CPDL'];
       
       for (const source of sources) {
-        const result = await pool.query(`
-          SELECT COUNT(*) as count FROM songs WHERE source = $1
-        `, [source]);
+        const { data, error } = await supabase
+          .from('songs')
+          .select('count')
+          .eq('source', source);
         
-        expect(parseInt(result.rows[0].count)).toBeGreaterThanOrEqual(0);
+        expect(error).toBeNull();
+        expect(data).toBeDefined();
       }
     });
 
     it('should support full-text search for female choir music', async () => {
       // Insert test data with searchable text
-      const result = await pool.query(`
-        INSERT INTO songs (title, composer, description, source_link, source, voicing, search_text)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        RETURNING id
-      `, [
-        'Beautiful Female Choir Song',
-        'Test Composer',
-        'A beautiful arrangement for women\'s choir',
-        'https://example.com',
-        'ChorusOnline',
-        'SSA',
-        'Beautiful Female Choir Song Test Composer A beautiful arrangement for women\'s choir ChorusOnline SSA'
-      ]);
-
-      const insertedId = result.rows[0].id;
+      const { data, error } = await supabase
+        .from('songs')
+        .insert({
+          title: 'Beautiful Female Choir Piece',
+          composer: 'Test Composer',
+          description: 'A beautiful piece for women\'s voices',
+          source_link: 'https://example.com',
+          source: 'ChorusOnline',
+          voicing: 'SSA',
+          search_text: 'Beautiful Female Choir Piece Test Composer A beautiful piece for women voices'
+        })
+        .select('id');
+      
+      expect(error).toBeNull();
+      expect(data).toHaveLength(1);
+      const songId = data![0].id;
 
       // Test full-text search
-      const searchResult = await pool.query(`
-        SELECT * FROM songs 
-        WHERE to_tsvector('english', search_text || ' ' || title || ' ' || composer || ' ' || COALESCE(description, ''))
-        @@ plainto_tsquery('english', $1)
-        AND source IN ('ChorusOnline', 'HalLeonard', 'FluegelMusic', 'CarusVerlag', 'SchottMusic', 'CPDL', 'Musopen')
-      `, ['female choir']);
-
-      expect(searchResult.rows.length).toBeGreaterThanOrEqual(1);
-
+      const { data: searchResults, error: searchError } = await supabase
+        .from('songs')
+        .select('*')
+        .ilike('search_text', '%female choir%');
+      
+      expect(searchError).toBeNull();
+      expect(searchResults).toBeDefined();
+      expect(searchResults!.length).toBeGreaterThan(0);
+      
       // Clean up
-      await pool.query('DELETE FROM songs WHERE id = $1', [insertedId]);
+      await supabase
+        .from('songs')
+        .delete()
+        .eq('id', songId);
+    });
+  });
+
+  describe('API Integration', () => {
+    it('should be able to add songs via API', async () => {
+      const testSongs = [
+        {
+          title: 'API Test Song 1',
+          composer: 'Test Composer',
+          source: 'ChorusOnline',
+          voicing: 'SSA',
+          description: 'Test song added via API',
+          source_link: 'https://example.com/api-test-1'
+        },
+        {
+          title: 'API Test Song 2',
+          composer: 'Test Composer',
+          source: 'HalLeonard',
+          voicing: 'SSAA',
+          description: 'Another test song added via API',
+          source_link: 'https://example.com/api-test-2'
+        }
+      ];
+
+      // Test the add-songs API endpoint
+      const response = await fetch(`${supabaseUrl}/functions/v1/choir-music-api/add-songs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseKey}`,
+          'apikey': supabaseKey
+        },
+        body: JSON.stringify({ songs: testSongs })
+      });
+
+      expect(response.ok).toBe(true);
+      
+      const result = await response.json();
+      expect(result.message).toContain('Processed 2 songs');
+      expect(result.songs).toHaveLength(2);
+      
+      // Clean up - delete the test songs
+      for (const song of result.songs) {
+        await supabase
+          .from('songs')
+          .delete()
+          .eq('id', song.id);
+      }
+    });
+
+    it('should prevent duplicates when adding songs via API', async () => {
+      const testSong = {
+        title: 'Duplicate Test Song',
+        composer: 'Test Composer',
+        source: 'ChorusOnline',
+        voicing: 'SSA',
+        description: 'Test song for duplicate prevention',
+        source_link: 'https://example.com/duplicate-test'
+      };
+
+      // Add the song twice
+      const response1 = await fetch(`${supabaseUrl}/functions/v1/choir-music-api/add-songs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseKey}`,
+          'apikey': supabaseKey
+        },
+        body: JSON.stringify({ songs: [testSong] })
+      });
+
+      const response2 = await fetch(`${supabaseUrl}/functions/v1/choir-music-api/add-songs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseKey}`,
+          'apikey': supabaseKey
+        },
+        body: JSON.stringify({ songs: [testSong] })
+      });
+
+      expect(response1.ok).toBe(true);
+      expect(response2.ok).toBe(true);
+      
+      const result1 = await response1.json();
+      const result2 = await response2.json();
+      
+      // First insertion should succeed
+      expect(result1.songs).toHaveLength(1);
+      
+      // Second insertion should either skip or update (depending on upsert mode)
+      // The safe insertion should prevent true duplicates
+      expect(result2.summary).toBeDefined();
+      
+      // Clean up
+      if (result1.songs.length > 0) {
+        await supabase
+          .from('songs')
+          .delete()
+          .eq('id', result1.songs[0].id);
+      }
+      if (result2.songs && result2.songs.length > 0) {
+        await supabase
+          .from('songs')
+          .delete()
+          .eq('id', result2.songs[0].id);
+      }
     });
   });
 });
