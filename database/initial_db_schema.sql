@@ -1,14 +1,5 @@
--- PostgreSQL Database Schema for Choir Music Search
--- Optimized for Supabase with full-text search capabilities
--- 
--- IMPORTANT: This file contains PostgreSQL-specific syntax
--- Do not run this on SQL Server, MySQL, or other databases
--- This is designed specifically for Supabase (PostgreSQL)
---
--- To configure your IDE to recognize this as PostgreSQL:
--- 1. Set file association to PostgreSQL
--- 2. Install PostgreSQL language support
--- 3. Use .sqlfluff configuration (included in project root)
+-- Initial database schema for Choir Music Search
+-- This migration creates all the necessary tables and data
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -22,7 +13,7 @@ CREATE TABLE songs (
   description TEXT,
   source_link VARCHAR(500) NOT NULL,
   audio_link VARCHAR(500),
-  source VARCHAR(20) NOT NULL CHECK (source IN ('IMSLP', 'Hymnary', 'ChoralNet', 'MuseScore', 'SundMusik', 'ChorusOnline', 'HalLeonard', 'FluegelMusic', 'CarusVerlag', 'SchottMusic', 'StrettaMusic', 'CPDL', 'Musopen', 'Other')),
+  source VARCHAR(20) NOT NULL CHECK (source IN ('IMSLP', 'Hymnary', 'ChoralNet', 'MuseScore', 'SundMusik', 'Other')),
   
   -- Searchable metadata
   language VARCHAR(50),
@@ -39,10 +30,7 @@ CREATE TABLE songs (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_verified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active BOOLEAN DEFAULT TRUE,
-  
-  -- Indexes for performance
-  CONSTRAINT idx_title UNIQUE (title, composer)
+  is_active BOOLEAN DEFAULT TRUE
 );
 
 -- Create indexes for performance
@@ -77,9 +65,7 @@ CREATE TABLE user_submissions (
   submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   reviewed_at TIMESTAMP NULL,
   reviewed_by UUID,
-  review_notes TEXT,
-  
-  CONSTRAINT idx_submission_status UNIQUE (id)
+  review_notes TEXT
 );
 
 CREATE INDEX idx_user_submissions_status ON user_submissions (status);
@@ -97,30 +83,11 @@ CREATE TABLE ingestion_jobs (
   status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'paused', 'error')),
   error_message TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  
-  CONSTRAINT idx_ingestion_source_status UNIQUE (source, status)
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_ingestion_jobs_source_status ON ingestion_jobs (source, status);
 CREATE INDEX idx_ingestion_jobs_next_run ON ingestion_jobs (next_run);
-
--- Query cache table for performance
-CREATE TABLE query_cache (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  query_hash VARCHAR(64) UNIQUE NOT NULL,
-  query_text TEXT NOT NULL,
-  filters JSONB,
-  results JSONB,
-  result_count INTEGER,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  expires_at TIMESTAMP NOT NULL,
-  
-  CONSTRAINT idx_query_cache_hash UNIQUE (query_hash)
-);
-
-CREATE INDEX idx_query_cache_query_hash ON query_cache (query_hash);
-CREATE INDEX idx_query_cache_expires_at ON query_cache (expires_at);
 
 -- Function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -138,7 +105,7 @@ CREATE TRIGGER update_songs_updated_at BEFORE UPDATE ON songs
 CREATE TRIGGER update_ingestion_jobs_updated_at BEFORE UPDATE ON ingestion_jobs
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Insert initial data from current hardcoded databases
+-- Insert initial data
 INSERT INTO songs (id, title, composer, text_writer, description, source_link, source, language, voicing, difficulty, theme, season, search_text) VALUES
 -- IMSLP Works
 (uuid_generate_v4(), 'Ave Maria', 'Franz Schubert', 'Sir Walter Scott / Latin text', 'One of the most beloved Ave Maria settings for choir', 'https://imslp.org/wiki/Ave_Maria,_D.839_(Schubert,_Franz)', 'IMSLP', 'Latin', 'SATB', 'Intermediate', 'Sacred', NULL, 'Ave Maria Franz Schubert Sir Walter Scott Latin text One of the most beloved Ave Maria settings for choir'),
@@ -162,46 +129,8 @@ INSERT INTO songs (id, title, composer, text_writer, description, source_link, s
 (uuid_generate_v4(), 'Ave Verum Corpus', 'Wolfgang Amadeus Mozart', 'Latin hymn', 'Beautiful sacred motet for mixed choir, Mozart''s last completed sacred work', 'https://imslp.org/wiki/Ave_verum_corpus,_K.618_(Mozart,_Wolfgang_Amadeus)', 'IMSLP', 'Latin', 'SATB', 'Easy', 'Sacred', NULL, 'Ave Verum Corpus Wolfgang Amadeus Mozart Latin hymn Beautiful sacred motet for mixed choir Mozart''s last completed sacred work'),
 (uuid_generate_v4(), 'Gloria in Excelsis Deo', 'Antonio Vivaldi', 'Latin Gloria text', 'Joyful Christmas Gloria for mixed choir and orchestra', 'https://imslp.org/wiki/Gloria_in_D_major,_RV_589_(Vivaldi,_Antonio)', 'IMSLP', 'Latin', 'SATB', 'Advanced', 'Sacred', 'Christmas', 'Gloria in Excelsis Deo Antonio Vivaldi Latin Gloria text Joyful Christmas Gloria for mixed choir and orchestra');
 
--- Insert sample female choir music from various sources
-INSERT INTO songs (id, title, composer, text_writer, description, source_link, audio_link, source, language, voicing, difficulty, theme, season, search_text) VALUES
--- ChorusOnline Works (Modern arrangements with audio)
-(uuid_generate_v4(), 'It''s Raining Men', 'The Pointer Sisters', 'Paul Jabara, Paul Shaffer', 'Popular hit arranged for SSA choir with practice MP3 files', 'https://www.chorusonline.com/sheet-music-female-choir', 'https://www.chorusonline.com/audio/its-raining-men-ssa.mp3', 'ChorusOnline', 'English', 'SSA', 'Intermediate', 'Popular', NULL, 'It''s Raining Men The Pointer Sisters Paul Jabara Paul Shaffer Popular hit arranged for SSA choir with practice MP3 files'),
-(uuid_generate_v4(), 'Free Your Mind', 'En Vogue', 'Denise Matthews, Thomas McElroy', 'R&B classic arranged for SSAA choir with audio samples', 'https://www.chorusonline.com/sheet-music-female-choir', 'https://www.chorusonline.com/audio/free-your-mind-ssaa.mp3', 'ChorusOnline', 'English', 'SSAA', 'Advanced', 'Popular', NULL, 'Free Your Mind En Vogue Denise Matthews Thomas McElroy R&B classic arranged for SSAA choir with audio samples'),
-(uuid_generate_v4(), 'I''m Outta Love', 'Anastacia', 'Anastacia, Sam Watters, Louis Biancaniello', 'Pop hit arranged for SSA choir with practice tracks', 'https://www.chorusonline.com/sheet-music-female-choir', 'https://www.chorusonline.com/audio/im-outta-love-ssa.mp3', 'ChorusOnline', 'English', 'SSA', 'Intermediate', 'Popular', NULL, 'I''m Outta Love Anastacia Sam Watters Louis Biancaniello Pop hit arranged for SSA choir with practice tracks'),
-
--- Hal Leonard Works (Professional arrangements with rehearsal tracks)
-(uuid_generate_v4(), 'Let The Women Sing! A Cappella Collection', 'Various Composers', 'Various', 'Collection of 10 reproducible choral works for SSA voices with digital rehearsal mixes', 'https://www.halleonard.com/product/35032621/let-the-women-sing-a-cappella', 'https://www.halleonard.com/audio/let-the-women-sing-demo.mp3', 'HalLeonard', 'English', 'SSA', 'Intermediate', 'Sacred', NULL, 'Let The Women Sing A Cappella Collection Various Composers Collection of 10 reproducible choral works for SSA voices with digital rehearsal mixes'),
-(uuid_generate_v4(), 'The Sound of Music for Female Singers', 'Richard Rodgers', 'Oscar Hammerstein II', 'Classic musical selections arranged for women''s choir with demo and backing tracks', 'https://www.halleonard.com/product/280849/the-sound-of-music-for-female-singers', 'https://www.halleonard.com/audio/sound-of-music-female-demo.mp3', 'HalLeonard', 'English', 'SSA', 'Easy', 'Musical', NULL, 'The Sound of Music for Female Singers Richard Rodgers Oscar Hammerstein II Classic musical selections arranged for women''s choir with demo and backing tracks'),
-
--- Fluegel Music Works (High-quality arrangements)
-(uuid_generate_v4(), 'Hallelujah', 'Leonard Cohen', 'Leonard Cohen', 'Beautiful arrangement of Leonard Cohen''s classic for women''s choir', 'https://www.fluegelmusic.com/en/chor-arrangements', 'https://www.fluegelmusic.com/audio/hallelujah-female-choir.mp3', 'FluegelMusic', 'English', 'SSAA', 'Intermediate', 'Popular', NULL, 'Hallelujah Leonard Cohen Beautiful arrangement of Leonard Cohen''s classic for women''s choir'),
-(uuid_generate_v4(), 'Fields of Gold', 'Sting', 'Sting', 'Ethereal arrangement of Sting''s hit for SSA choir', 'https://www.fluegelmusic.com/en/chor-arrangements', 'https://www.fluegelmusic.com/audio/fields-of-gold-ssa.mp3', 'FluegelMusic', 'English', 'SSA', 'Intermediate', 'Popular', NULL, 'Fields of Gold Sting Ethereal arrangement of Sting''s hit for SSA choir'),
-
--- Carus-Verlag Works (Classical and contemporary)
-(uuid_generate_v4(), 'Ave Maria', 'Franz Biebl', 'Latin text', 'Beautiful Ave Maria setting for women''s choir, 4-part a cappella', 'https://www.carus-verlag.com/en/choral-music/choral-music-by-scoring/equal-voices/women-s-choir/', 'https://www.carus-verlag.com/audio/ave-maria-biebl-female.mp3', 'CarusVerlag', 'Latin', 'SSAA', 'Advanced', 'Sacred', NULL, 'Ave Maria Franz Biebl Latin text Beautiful Ave Maria setting for women''s choir 4-part a cappella'),
-(uuid_generate_v4(), 'O Magnum Mysterium', 'Morten Lauridsen', 'Latin antiphon', 'Contemporary setting of the Christmas antiphon for women''s choir', 'https://www.carus-verlag.com/en/choral-music/choral-music-by-scoring/equal-voices/women-s-choir/', 'https://www.carus-verlag.com/audio/o-magnum-mysterium-lauridsen-female.mp3', 'CarusVerlag', 'Latin', 'SSAA', 'Advanced', 'Sacred', 'Christmas', 'O Magnum Mysterium Morten Lauridsen Latin antiphon Contemporary setting of the Christmas antiphon for women''s choir'),
-
--- Schott Music Works (Professional publications)
-(uuid_generate_v4(), 'Locus Iste', 'Anton Bruckner', 'Latin antiphon', 'Sacred motet for women''s choir with organ accompaniment', 'https://www.schott-music.com/en/sheet-music/choral-vocal-music/women-s-choir-with-accompaniment.html', 'https://www.schott-music.com/audio/locus-iste-bruckner-female.mp3', 'SchottMusic', 'Latin', 'SSA', 'Intermediate', 'Sacred', NULL, 'Locus Iste Anton Bruckner Latin antiphon Sacred motet for women''s choir with organ accompaniment'),
-(uuid_generate_v4(), 'Ave Verum Corpus', 'Wolfgang Amadeus Mozart', 'Latin hymn', 'Mozart''s beautiful motet arranged for women''s choir', 'https://www.schott-music.com/en/sheet-music/choral-vocal-music/women-s-choir-with-accompaniment.html', 'https://www.schott-music.com/audio/ave-verum-corpus-mozart-female.mp3', 'SchottMusic', 'Latin', 'SSA', 'Easy', 'Sacred', NULL, 'Ave Verum Corpus Wolfgang Amadeus Mozart Latin hymn Mozart''s beautiful motet arranged for women''s choir'),
-
--- CPDL Works (Free public domain)
-(uuid_generate_v4(), 'Ave Maria', 'Josquin des Prez', 'Latin text', 'Renaissance masterpiece for women''s choir, free from CPDL', 'https://www.cpdl.org/wiki/index.php/Ave_Maria_(Josquin_des_Prez)', 'https://www.cpdl.org/audio/ave-maria-josquin-female.mp3', 'CPDL', 'Latin', 'SSAA', 'Advanced', 'Sacred', NULL, 'Ave Maria Josquin des Prez Latin text Renaissance masterpiece for women''s choir free from CPDL'),
-(uuid_generate_v4(), 'O Magnum Mysterium', 'Tomás Luis de Victoria', 'Latin antiphon', 'Renaissance Christmas motet for women''s choir', 'https://www.cpdl.org/wiki/index.php/O_magnum_mysterium_(Tomás_Luis_de_Victoria)', 'https://www.cpdl.org/audio/o-magnum-mysterium-victoria-female.mp3', 'CPDL', 'Latin', 'SSAA', 'Intermediate', 'Sacred', 'Christmas', 'O Magnum Mysterium Tomás Luis de Victoria Latin antiphon Renaissance Christmas motet for women''s choir'),
-
--- Musopen Works (Free classical)
-(uuid_generate_v4(), 'Ave Maria', 'Franz Schubert', 'Sir Walter Scott', 'Schubert''s beloved Ave Maria arranged for women''s choir', 'https://musopen.org/music/instrument/choir/', 'https://musopen.org/audio/ave-maria-schubert-female.mp3', 'Musopen', 'Latin', 'SSA', 'Intermediate', 'Sacred', NULL, 'Ave Maria Franz Schubert Sir Walter Scott Schubert''s beloved Ave Maria arranged for women''s choir'),
-(uuid_generate_v4(), 'Jesu, Joy of Man''s Desiring', 'Johann Sebastian Bach', 'Martin Jahn', 'Bach''s beautiful chorale arranged for women''s choir', 'https://musopen.org/music/instrument/choir/', 'https://musopen.org/audio/jesu-joy-bach-female.mp3', 'Musopen', 'German', 'SSA', 'Easy', 'Sacred', NULL, 'Jesu Joy of Man''s Desiring Johann Sebastian Bach Martin Jahn Bach''s beautiful chorale arranged for women''s choir');
-
 -- Insert initial ingestion jobs
 INSERT INTO ingestion_jobs (id, source, url, parser, schedule, status) VALUES
 (uuid_generate_v4(), 'IMSLP', 'https://imslp.org/wiki/Category:For_female_chorus', 'IMSLPParser', '0 2 * * *', 'active'),
 (uuid_generate_v4(), 'MuseScore', 'https://musescore.com/sheetmusic/womens-choir', 'MuseScoreParser', '0 */6 * * *', 'active'),
-(uuid_generate_v4(), 'SundMusik', 'https://sundmusik.com/product-category/kornoter/damkor/', 'SundMusikParser', '0 3 * * 0', 'active'),
-(uuid_generate_v4(), 'ChorusOnline', 'https://www.chorusonline.com/sheet-music-female-choir', 'ChorusOnlineParser', '0 4 * * *', 'active'),
-(uuid_generate_v4(), 'HalLeonard', 'https://www.halleonard.com/search?q=women%27s+choir', 'HalLeonardParser', '0 5 * * 0', 'active'),
-(uuid_generate_v4(), 'CPDL', 'https://www.cpdl.org/wiki/index.php/Category:Women%27s_choir', 'CPDLParser', '0 6 * * 0', 'active');
-
-
-
-
+(uuid_generate_v4(), 'SundMusik', 'https://sundmusik.com/product-category/kornoter/damkor/', 'SundMusikParser', '0 3 * * 0', 'active');

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-09-26T07:34:46.577Z",
+  "timestamp": "2025-09-30T09:06:24.923Z",
   "wcagVersion": "2.2",
   "summary": {
     "violations": 1,
@@ -22,7 +22,7 @@
       "orientationAngle": 0,
       "orientationType": "landscape-primary"
     },
-    "timestamp": "2025-09-26T07:34:43.581Z",
+    "timestamp": "2025-09-30T09:06:23.777Z",
     "url": "http://localhost:4173/",
     "toolOptions": {
       "reporter": "v1"
@@ -1700,7 +1700,7 @@
             ],
             "none": [],
             "impact": null,
-            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | a9fb785</div>",
+            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | 3f52ed0</div>",
             "target": [
               "div[title=\"Click to see version info\"]"
             ]
@@ -2915,7 +2915,7 @@
             "all": [],
             "none": [],
             "impact": null,
-            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | a9fb785</div>",
+            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | 3f52ed0</div>",
             "target": [
               "div[title=\"Click to see version info\"]"
             ]
@@ -5163,7 +5163,7 @@
             "all": [],
             "none": [],
             "impact": "moderate",
-            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | a9fb785</div>",
+            "html": "<div title=\"Click to see version info\" style=\"position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-family: monospace; z-index: 9999; opacity: 0.7; cursor: pointer;\">v1.0.0 | 3f52ed0</div>",
             "target": [
               "div[title=\"Click to see version info\"]"
             ],

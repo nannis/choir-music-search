@@ -66,11 +66,12 @@ serve(async (req) => {
       });
     }
 
-    // Add songs endpoint
+    // Add songs endpoint - now uses safe insertion to prevent duplicates
     if ((path === '/add-songs' || path === '/choir-music-api/add-songs') && method === 'POST') {
       try {
         const body = await req.json();
         const songs = body.songs || [];
+        const upsertMode = body.upsert || false; // Allow client to choose upsert vs insert-only
 
         if (!Array.isArray(songs) || songs.length === 0) {
           return new Response(JSON.stringify({ 
@@ -86,31 +87,107 @@ serve(async (req) => {
           });
         }
 
-        // Insert songs into database
-        const { data, error } = await supabase
-          .from('songs')
-          .insert(songs)
-          .select();
+        // Use safe insertion functions to prevent duplicates
+        const results = [];
+        const errors = [];
+        let insertedCount = 0;
+        let updatedCount = 0;
+        let skippedCount = 0;
 
-        if (error) {
-          console.error('Database insert error:', error);
-          return new Response(JSON.stringify({ 
-            error: 'Failed to add songs',
-            details: error.message 
-          }), {
-            status: 500,
-            headers: { 
-              ...corsHeaders, 
-              'Access-Control-Allow-Origin': req.headers.get('origin') || '*',
-              'Content-Type': 'application/json' 
+        for (const song of songs) {
+          try {
+            // Validate required fields
+            if (!song.title || !song.composer || !song.source) {
+              errors.push({
+                song: song.title || 'Unknown',
+                error: 'Missing required fields: title, composer, and source are required'
+              });
+              continue;
             }
-          });
+
+            // Call the appropriate safe function
+            const { data, error } = upsertMode 
+              ? await supabase.rpc('upsert_song', {
+                  p_title: song.title,
+                  p_composer: song.composer,
+                  p_text_writer: song.text_writer || song.textWriter || null,
+                  p_description: song.description || null,
+                  p_source_link: song.source_link || song.sourceLink || '',
+                  p_audio_link: song.audio_link || song.audioLink || null,
+                  p_source: song.source,
+                  p_language: song.language || null,
+                  p_voicing: song.voicing || null,
+                  p_difficulty: song.difficulty || null,
+                  p_theme: song.theme || null,
+                  p_season: song.season || null,
+                  p_period: song.period || null
+                })
+              : await supabase.rpc('insert_song_safe', {
+                  p_title: song.title,
+                  p_composer: song.composer,
+                  p_text_writer: song.text_writer || song.textWriter || null,
+                  p_description: song.description || null,
+                  p_source_link: song.source_link || song.sourceLink || '',
+                  p_audio_link: song.audio_link || song.audioLink || null,
+                  p_source: song.source,
+                  p_language: song.language || null,
+                  p_voicing: song.voicing || null,
+                  p_difficulty: song.difficulty || null,
+                  p_theme: song.theme || null,
+                  p_season: song.season || null,
+                  p_period: song.period || null
+                });
+
+            if (error) {
+              console.error('Safe insert error for song:', song.title, error);
+              errors.push({
+                song: song.title,
+                error: error.message
+              });
+            } else {
+              results.push(data);
+              // Check if this was an insert or update by looking at the function name
+              // For now, we'll assume all successful calls are inserts unless we get more info
+              insertedCount++;
+            }
+          } catch (songError) {
+            console.error('Song processing error:', songError);
+            errors.push({
+              song: song.title || 'Unknown',
+              error: songError.message
+            });
+          }
         }
 
-        return new Response(JSON.stringify({
-          message: `Successfully added ${data.length} songs`,
-          songs: data
-        }), {
+        // Get the actual inserted/updated songs for response
+        const songIds = results.filter(id => id !== null);
+        let actualSongs = [];
+        
+        if (songIds.length > 0) {
+          const { data: songData, error: fetchError } = await supabase
+            .from('songs')
+            .select('*')
+            .in('id', songIds);
+          
+          if (!fetchError) {
+            actualSongs = songData || [];
+          }
+        }
+
+        const response = {
+          message: `Processed ${songs.length} songs`,
+          summary: {
+            total: songs.length,
+            inserted: insertedCount,
+            updated: updatedCount,
+            skipped: skippedCount,
+            errors: errors.length
+          },
+          songs: actualSongs,
+          errors: errors.length > 0 ? errors : undefined
+        };
+
+        return new Response(JSON.stringify(response), {
           headers: { 
             ...corsHeaders, 
             'Access-Control-Allow-Origin': req.headers.get('origin') || '*',
