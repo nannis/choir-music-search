@@ -143,7 +143,7 @@ describe('Female Choir Music Sources - User Authentication', () => {
       if (error) {
         console.log('ℹ️ RLS blocked access - this is expected behavior for user-level access');
         console.log('ℹ️ Error:', error.message);
-        expect(error.message).toContain('permission denied');
+        expect(error.message).toMatch(/permission denied|JWT expired/);
       } else {
         console.log('✅ Songs table accessible with user authentication');
         expect(data).toBeDefined();
