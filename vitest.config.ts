@@ -22,8 +22,7 @@ export default defineConfig({
       '**/services_backup/**',
       'backend/node_modules/**',
       'supabase/node_modules/**',
-      'tests/environmental/**', // Exclude environmental tests from main test runs
-      'tests/integration/female-choir-sources.test.ts' // Exclude problematic JWT test - use female-choir-user-auth.test.ts instead
+      'tests/environmental/**' // Exclude environmental tests from main test runs
     ],
     coverage: {
       provider: 'v8',
