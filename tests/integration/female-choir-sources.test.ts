@@ -7,17 +7,84 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase client for testing
+// Supabase client for testing - uses test service role JWT
 const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://kqjccswtdxkffghuijhu.supabase.co';
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxamNjc3d0ZHhrZmZnaHVpamh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTMwMzIsImV4cCI6MjA3MzY2OTAzMn0.fBcS1Wn5m2Kn-yt9_PF9dyGlIPocJd6MuinvDZ4q3MU';
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxamNjc3d0ZHhrZmZnaHVpamh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwOTMwMzIsImV4cCI6MjA3MzY2OTAzMn0.fBcS1Wn5m2Kn-yt9_PF9dyGlIPocJd6MuinvDZ4q3MU';
+
+// Mint endpoint configuration
+const MINT_ENDPOINT = process.env.MINT_ENDPOINT || `${supabaseUrl}/functions/v1/mint-test-jwt`;
+const TEST_SUB = process.env.TEST_SUB || '00000000-0000-0000-0000-000000000001';
+const TEST_EMAIL = process.env.TEST_EMAIL || 'tester@example.com';
+const EXPIRES_IN = Number(process.env.EXPIRES_IN || 300); // 5 minutes for CI
+
+// Global variable for test token
+let testAuthToken: string;
+let supabase: ReturnType<typeof createClient>;
+
+// Mint token function as per Supabase documentation
+async function mintToken(): Promise<string> {
+  const res = await fetch(MINT_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${supabaseAnonKey}`,
+      'apikey': supabaseAnonKey
+    },
+    body: JSON.stringify({
+      sub: TEST_SUB,
+      email: TEST_EMAIL,
+      expires_in: EXPIRES_IN
+    })
+  });
+  
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.log('\n🚨 JWT Minting Failed!');
+    console.log(`   Status: ${res.status} ${res.statusText}`);
+    console.log(`   Error: ${errorText}`);
+    
+    if (res.status === 500 && errorText.includes('Server not configured')) {
+      console.log('\n💡 SOLUTION REQUIRED:');
+      console.log('   The mint-test-jwt Edge Function is missing the TEST_JWT_SECRET environment variable.');
+      console.log('   Please follow the instructions in: scripts/setup-jwt-function-secret.md');
+      console.log('   Or use the bypass test: tests/integration/female-choir-bypass.test.ts');
+    }
+    
+    throw new Error(`Mint failed: ${res.status} ${res.statusText} - ${errorText}. See setup-jwt-function-secret.md for solution.`);
+  }
+  
+  const body = await res.json();
+  return body.token; // string
+}
 
 describe('Female Choir Music Sources Integration', () => {
   beforeAll(async () => {
-    // Test database connection
-    const { data, error } = await supabase.from('songs').select('count').limit(1);
-    if (error) {
-      throw new Error(`Failed to connect to Supabase: ${error.message}`);
+    try {
+      // Use stored JWT or mint new one
+      testAuthToken = process.env.SUPABASE_TEST_JWT || await mintToken();
+      
+      console.log('🔑 Using test token with test_service role');
+      console.log(`📅 Token expires in ${EXPIRES_IN} seconds`);
+
+      // Create Supabase client with test token
+      supabase = createClient(supabaseUrl, supabaseAnonKey, {
+        global: {
+          headers: {
+            Authorization: `Bearer ${testAuthToken}`
+          }
+        }
+      });
+
+      // Test database connection
+      const { data, error } = await supabase.from('songs').select('count').limit(1);
+      if (error) {
+        throw new Error(`Failed to connect to Supabase: ${error.message}. This suggests RLS policies may not be properly configured for test_service role.`);
+      }
+      
+      console.log("✅ Test setup successful with test_service role token");
+    } catch (error) {
+      console.error('Test setup failed:', error);
+      throw error;
     }
   });
 
@@ -247,13 +314,13 @@ describe('Female Choir Music Sources Integration', () => {
         }
       ];
 
-      // Test the add-songs API endpoint
+      // Test the add-songs API endpoint using test token
       const response = await fetch(`${supabaseUrl}/functions/v1/choir-music-api/add-songs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseKey}`,
-          'apikey': supabaseKey
+          'Authorization': `Bearer ${testAuthToken}`,
+          'apikey': supabaseAnonKey
         },
         body: JSON.stringify({ songs: testSongs })
       });
@@ -283,13 +350,13 @@ describe('Female Choir Music Sources Integration', () => {
         source_link: 'https://example.com/duplicate-test'
       };
 
-      // Add the song twice
+      // Add the song twice using test token
       const response1 = await fetch(`${supabaseUrl}/functions/v1/choir-music-api/add-songs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseKey}`,
-          'apikey': supabaseKey
+          'Authorization': `Bearer ${testAuthToken}`,
+          'apikey': supabaseAnonKey
         },
         body: JSON.stringify({ songs: [testSong] })
       });
@@ -298,8 +365,8 @@ describe('Female Choir Music Sources Integration', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseKey}`,
-          'apikey': supabaseKey
+          'Authorization': `Bearer ${testAuthToken}`,
+          'apikey': supabaseAnonKey
         },
         body: JSON.stringify({ songs: [testSong] })
       });

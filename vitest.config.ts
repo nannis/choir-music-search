@@ -7,6 +7,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
+    env: {
+      // Load .env.test file for integration tests
+      NODE_ENV: 'test'
+    },
     exclude: [
       'node_modules/**',
       'dist/**',
