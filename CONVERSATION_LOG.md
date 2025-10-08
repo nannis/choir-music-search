@@ -318,5 +318,33 @@ Edge Function deployment succeeds but function is not accessible via any tested 
 5. **Consider function code syntax issues** (though code looks correct)
 
 ---
-**Last Updated**: September 17, 2025
-**Session**: Active - Troubleshooting Edge Function 404 errors
+
+## Latest Session: Test Setup and JWT Authentication Issues
+**Date:** January 2024
+**Topic:** Integration Testing with Supabase JWT Authentication
+
+### Current Challenge
+The user wants proper integration tests that work with Supabase Row Level Security. Main issue:
+- Tests need JWT tokens with `role: "test_service"` to bypass RLS
+- Supabase's `mint-test-jwt` Edge Function is returning 401 Unauthorized
+- Despite following documentation, unable to authenticate with the function
+
+### Current Status
+**Files created:** 
+- ✅ Updated Edge Function with safe insertion functions
+- ✅ RLS policies for test access (`test-rls-policies.sql`)
+- ✅ Duplicate prevention system (`remove-duplicates-and-prevent-future.sql`)
+- ✅ Main integration tests (`female-choir-sources.test.ts`) 
+- ✅ Simplified test approach (`simple-female-choir.test.ts`)
+
+**Deployment status:**
+- ✅ Edge Function `choir-music-api` deployed successfully
+- ✅ Edge Function `mint-test-jwt` downloaded but auth issues
+- ❌ Integration tests failing due to JWT minting issues
+
+### Next Action
+**User restarting computer.** Prepared message for Supabase AI to troubleshoot mint-test-jwt function authentication.
+
+---
+**Last Updated**: January 2024
+**Session**: Complete - User restarting computer
