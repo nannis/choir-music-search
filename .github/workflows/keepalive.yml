@@ -1,0 +1,67 @@
+# Keepalive workflow to ping Supabase project
+# Runs daily to prevent the project from going idle
+name: Supabase Keepalive
+
+on:
+  # Run on a daily schedule at 12:00 UTC (adjust timezone as needed)
+  schedule:
+    - cron: '0 12 * * *'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+  
+  # Also run on push to main (optional, helps keep it active during development)
+  push:
+    branches: [ main ]
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    name: Ping Supabase Keepalive Function
+    
+    steps:
+    - name: Ping Supabase
+      run: |
+        echo "🧪 Testing Supabase keepalive function..."
+        
+        # Get environment variables from repository secrets
+        # Users need to set these in GitHub repository settings
+        SUPABASE_URL="${{ secrets.SUPABASE_URL }}"
+        SUPABASE_ANON_KEY="${{ secrets.SUPABASE_ANON_KEY }}"
+        
+        if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+          echo "⚠️  Warning: SUPABASE_URL or SUPABASE_ANON_KEY not set"
+          echo "Please add these as secrets in GitHub repository settings"
+          exit 0
+        fi
+        
+        # Construct the keepalive function URL
+        # Format: https://<project-ref>.supabase.co/functions/v1/keepalive
+        PROJECT_REF=$(echo "$SUPABASE_URL" | sed -E 's|https?://([^.]+)\.supabase\.co.*|\1|')
+        KEEPALIVE_URL="https://${PROJECT_REF}.supabase.co/functions/v1/keepalive"
+        
+        echo "Pinging: $KEEPALIVE_URL"
+        
+        # Make the keepalive request
+        RESPONSE=$(curl -s -w "\nHTTP_CODE:%{http_code}" \
+          -X GET \
+          -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+          -H "apikey: ${SUPABASE_ANON_KEY}" \
+          "$KEEPALIVE_URL")
+        
+        # Extract HTTP code and response body
+        HTTP_CODE=$(echo "$RESPONSE" | grep "HTTP_CODE" | cut -d: -f2)
+        RESPONSE_BODY=$(echo "$RESPONSE" | sed '/HTTP_CODE:/d')
+        
+        echo "Response:"
+        echo "$RESPONSE_BODY"
+        
+        # Check if the request was successful
+        if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+          echo "✅ Keepalive successful (HTTP $HTTP_CODE)"
+          exit 0
+        else
+          echo "❌ Keepalive failed (HTTP $HTTP_CODE)"
+          exit 1
+        fi
+

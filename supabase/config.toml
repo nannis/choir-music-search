@@ -42,3 +42,6 @@ enable_confirmations = false
 [functions.choir-music-api]
 verify_jwt = false
 
+[functions.keepalive]
+verify_jwt = false
+
